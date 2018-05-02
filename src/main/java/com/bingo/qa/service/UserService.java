@@ -35,14 +35,12 @@ public class UserService {
             map.put("msg", "密码不能为空");
             return map;
         }
-
         // 判断用户是否已存在
         User user = userDAO.selectByName(username);
         if (user != null) {
             map.put("msg", "用户名已经被注册");
             return map;
         }
-
         // 用户不存在，可以创建用户
         user = new User();
         user.setName(username);

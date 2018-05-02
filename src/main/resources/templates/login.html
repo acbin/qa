@@ -27,13 +27,8 @@
                             <div class="input-wrapper">
                                 <input type="password" name="password" aria-label="密码" placeholder="密码" required="">
                             </div>
-                            <div class="input-wrapper captcha-module" data-type="en">
-
-                                <div class="captcha-container">
-                                    <img class="js-refreshCaptcha captcha" width="120" height="30" data-tip="s$t$看不清楚？换一张" alt="验证码">
-                                </div>
-                            </div>
                         </div>
+                        <input type="hidden" name="next" value="${next!''}">
                         <div class="button-wrapper command clearfix">
                             <button class="sign-button submit" type="submit" onclick="form=document.getElementById('regloginForm'); form.action='/login'">登录</button>
                             <button class="sign-button submit" type="submit" onclick="form=document.getElementById('regloginForm'); form.action='/reg'">注册</button>
