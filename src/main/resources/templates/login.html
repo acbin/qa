@@ -16,32 +16,32 @@
         <div class="index-main-body">
             <div class="index-header">
                 <h1 class="logo hide-text"><img src="../images/res/nk.png" alt=""></h1>
-                <h2 class="subtitle">与世界分享你的知识、经验和见解</h2>
+                <h2 class="subtitle">${msg!"与世界分享你的知识、经验和见解"}</h2>
             </div>
             <div class="desk-front sign-flow clearfix sign-flow-simple">
                 <div class="view view-signin" data-za-module="SignInForm" style="display: block;">
-                    <form novalidate="novalidate">
+                    <form method="post" action="/reg" id="regloginForm">
                         <div class="group-inputs">
                             <div class="email input-wrapper">
-                                <input type="text" name="account" aria-label="手机号或邮箱" placeholder="手机号或邮箱" required="">
+                                <input type="text" name="username" aria-label="手机号或邮箱" placeholder="手机号或邮箱" required="">
                             </div>
                             <div class="input-wrapper">
                                 <input type="password" name="password" aria-label="密码" placeholder="密码" required="">
                             </div>
                             <div class="input-wrapper captcha-module" data-type="en">
-                                <input id="captcha" name="" placeholder="验证码" required="" data-rule-required="true" data-msg-required="请填写验证码" class="is-ignoreValidation">
+
                                 <div class="captcha-container">
                                     <img class="js-refreshCaptcha captcha" width="120" height="30" data-tip="s$t$看不清楚？换一张" alt="验证码">
                                 </div>
                             </div>
                         </div>
                         <div class="button-wrapper command clearfix">
-                            <button class="sign-button submit" type="submit">登录</button>
-                            <button class="sign-button submit" type="submit">注册</button>
+                            <button class="sign-button submit" type="submit" onclick="form=document.getElementById('regloginForm'); form.action='/login'">登录</button>
+                            <button class="sign-button submit" type="submit" onclick="form=document.getElementById('regloginForm'); form.action='/reg'">注册</button>
                         </div>
                         <div class="signin-misc-wrapper clearfix">
                             <label class="remember-me">
-                                <input type="checkbox" name="remember_me" checked="" value="true"> 记住我
+                                <input type="checkbox" name="rememberme" checked="" value="true"> 记住我
                             </label>
                             <a class="unable-login" href="#">无法登录?</a>
                         </div>
