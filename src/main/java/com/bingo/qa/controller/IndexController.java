@@ -1,5 +1,6 @@
 package com.bingo.qa.controller;
 
+import com.bingo.qa.model.HostHolder;
 import com.bingo.qa.model.Question;
 import com.bingo.qa.model.ViewObject;
 import com.bingo.qa.service.QuestionService;
@@ -27,6 +28,9 @@ public class IndexController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private HostHolder hostHolder;
 
     @RequestMapping(path = {"/", "/index"}, method = RequestMethod.GET)
     public String index(Model model) {
