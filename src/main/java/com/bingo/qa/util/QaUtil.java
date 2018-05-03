@@ -1,5 +1,6 @@
 package com.bingo.qa.util;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,4 +36,18 @@ public class QaUtil {
             return null;
         }
     }
+
+    public static String getJSONString(int code) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        return jsonObject.toJSONString();
+    }
+
+    public static String getJSONString(int code, String message) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        jsonObject.put("msg", message);
+        return jsonObject.toJSONString();
+    }
+
 }
