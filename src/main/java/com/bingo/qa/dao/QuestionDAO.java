@@ -1,10 +1,7 @@
 package com.bingo.qa.dao;
 
 import com.bingo.qa.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 
 import java.util.List;
@@ -28,5 +25,7 @@ public interface QuestionDAO {
     Question selectById(int id);
 
 
-
+    @Update({"update ", TABLE_NAME, " set comment_count = #{comment_count} where id = #{entityId}"})
+    int updateCommentCount(@Param("entityId") int entityId,
+                           @Param("comment_count") int comment_count);
 }

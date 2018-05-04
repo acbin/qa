@@ -1,8 +1,8 @@
 package com.bingo.qa.controller;
 
 
-import com.bingo.qa.model.HostHolder;
-import com.bingo.qa.model.Question;
+import com.bingo.qa.model.*;
+import com.bingo.qa.service.CommentService;
 import com.bingo.qa.service.QuestionService;
 import com.bingo.qa.service.UserService;
 import com.bingo.qa.util.QaUtil;
@@ -13,7 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class QuestionController {
@@ -27,6 +29,9 @@ public class QuestionController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CommentService commentService;
 
     @RequestMapping(value = "/question/add", method = RequestMethod.POST)
     @ResponseBody
@@ -62,9 +67,19 @@ public class QuestionController {
     public String questionDetail(Model model,
                                  @PathVariable("qid") int qid) {
         Question question = questionService.getQuestionById(qid);
-        System.out.println(question);
         model.addAttribute("question", question);
-        model.addAttribute("user", userService.selectById(question.getUserId()));
+        // model.addAttribute("user", userService.selectById(question.getUserId()));
+        List<Comment> commentList = commentService.getCommentsByEntity(qid, EntityType.ENTITY_QUESTION);
+        List<ViewObject> vos = new ArrayList<>();
+        for (Comment comment : commentList) {
+            ViewObject vo = new ViewObject();
+            vo.set("comment", comment);
+            vo.set("user", userService.selectById(comment.getUserId()));
+            vos.add(vo);
+        }
+
+        model.addAttribute("vos", vos);
+
         return "detail";
     }
 
