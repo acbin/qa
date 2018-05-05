@@ -1,10 +1,10 @@
 # 问答社区
 Q & A Website Demo
 
-## 1.技术选型
+## 1. 技术选型
 SpringBoot + MyBatis + FreeMarker
 
-## 2.功能规划
+## 2. 功能规划
 
 ### 2.1 用户注册登录模块
 
