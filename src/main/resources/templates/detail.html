@@ -102,10 +102,10 @@
                         </div>
                         <div class="answer-head">
                             <div class="zm-item-answer-author-info">
-                                <a class="zm-item-link-avatar avatar-link" href="" target="_blank">
+                                <a class="zm-item-link-avatar avatar-link" href="/user/${vo.user.id}" target="_blank">
                                     <img src="${vo.user.headUrl}" class="zm-list-avatar avatar">
                                 </a>
-                                <a class="author-link" target="_blank" href="">${vo.user.name}</a>
+                                <a class="author-link" target="_blank" href="/user/${vo.user.id}">${vo.user.name}</a>
                             </div>
                             <div class="zm-item-vote-info">
                                 <span class="voters text">
@@ -120,7 +120,7 @@
                         <a class="zg-anchor-hidden ac" name="22162611-comment"></a>
                         <div class="zm-item-meta answer-actions clearfix js-contentActions">
                             <div class="zm-meta-panel">
-                                <a itemprop="url" class="answer-date-link meta-item" target="_blank" href="">发布于
+                                <a itemprop="url" class="answer-date-link meta-item" target="_blank" href="javascript:void(0);">发布于
                                     ${vo.comment.createdDate?string["yyyy/MM/dd HH:mm:ss"]}</a>
                                 <a href="" name="addcomment" class="meta-item toggle-comment js-toggleCommentBox">
                                     <i class="z-icon-comment"></i>${question.commentCount} 条评论</a>

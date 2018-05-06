@@ -28,7 +28,7 @@ public class LikeController {
         if (hostHolder.getUser() == null) {
             return QaUtil.getJSONString(999);
         }
-        System.out.println("commentId: " + commentId);
+        // System.out.println("commentId: " + commentId);
 
         long likeCount = likeService.like(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT, commentId);
         return QaUtil.getJSONString(0, String.valueOf(likeCount));

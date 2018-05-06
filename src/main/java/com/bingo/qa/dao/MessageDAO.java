@@ -1,10 +1,7 @@
 package com.bingo.qa.dao;
 
 import com.bingo.qa.model.Message;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,8 +24,8 @@ public interface MessageDAO {
 
     //select *, count(id) as id from (select * from message order by created_date desc)
     // tt group by conversation_id order by created_date desc limit 0, 10
-    @Select({"select ", INSERT_FIELDS, " ,count(id) as id from ( select * from ", TABLE_NAME,
-            " where from_id=#{userId} or to_id=#{userId} order by id desc) tt group by conversation_id  order by created_date desc limit #{offset}, #{limit}"})
+    @Select({"select ", INSERT_FIELDS, " , count(id) as id from ( select * from ", TABLE_NAME,
+            " where from_id=#{userId} or to_id=#{userId} order by created_date desc) tt group by conversation_id order by created_date desc limit #{offset}, #{limit}"})
     List<Message> getConversationList(@Param("userId") int userId,
                                       @Param("offset") int offset,
                                       @Param("limit") int limit);
@@ -37,6 +34,9 @@ public interface MessageDAO {
     int getConversationUnreadCount(@Param("userId") int userId,
                                    @Param("conversationId") String conversationId);
 
+    @Update({"update ", TABLE_NAME, " set has_read = #{status} where id = #{id}"})
+    int updateStatus(@Param("id") int id, @Param("status") int status);
 
-
+    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id = #{id}"})
+    Message getById(int id);
 }

@@ -48,7 +48,7 @@ public class CommentController {
 
             // 获得总评论数
             int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
-            System.out.println("评论数:" + count);
+            // System.out.println("评论数:" + count);
 
             // 更新问题的总评论数
             questionService.updateCommentCount(comment.getEntityId(), count);

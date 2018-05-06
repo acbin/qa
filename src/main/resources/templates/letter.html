@@ -19,15 +19,18 @@
                     </div>
                 </div>
                 <div class="chat-headbox">
+                    <#if vo.unread gt 0>
                         <span class="msg-num">
                             ${vo.unread}
                         </span>
-                    <a class="list-head">
+                    </#if>
+
+                    <a class="list-head" href="/user/${vo.user.id}">
                         <img alt="头像" src="${vo.user.headUrl}">
                     </a>
                 </div>
                 <div class="letter-detail">
-                    <a title="通知" class="letter-name level-color-1">
+                    <a title="通知" class="letter-name level-color-1" href="/user/${vo.user.id}">
                         ${vo.user.name}
                     </a>
                     <p class="letter-brief">

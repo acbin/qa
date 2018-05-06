@@ -101,10 +101,26 @@ public class MessageController {
             List<ViewObject> vos = new ArrayList<>();
             for (Message message : messageList) {
                 ViewObject vo = new ViewObject();
+
+
+                if (hostHolder.getUser() == null) {
+                    return "redirect:/reglogin";
+                }
+
+                int localUserId = hostHolder.getUser().getId();
+                if (localUserId == message.getToId()) {
+                    // 用户点击详情时，将消息设为已读
+                    messageService.updateStatus(message.getId());
+                    message = messageService.getById(message.getId());
+                }
+
+
                 vo.set("message", message);
 
                 // 找到发送消息的用户的id
                 vo.set("user", userService.selectById(message.getFromId()));
+
+
                 vos.add(vo);
 
             }
