@@ -3,6 +3,7 @@ package com.bingo.qa.controller;
 
 import com.bingo.qa.model.*;
 import com.bingo.qa.service.CommentService;
+import com.bingo.qa.service.LikeService;
 import com.bingo.qa.service.QuestionService;
 import com.bingo.qa.service.UserService;
 import com.bingo.qa.util.QaUtil;
@@ -32,6 +33,9 @@ public class QuestionController {
 
     @Autowired
     CommentService commentService;
+
+    @Autowired
+    LikeService likeService;
 
     @RequestMapping(value = "/question/add", method = RequestMethod.POST)
     @ResponseBody
@@ -74,6 +78,13 @@ public class QuestionController {
         for (Comment comment : commentList) {
             ViewObject vo = new ViewObject();
             vo.set("comment", comment);
+            if (hostHolder.getUser() == null) {
+                vo.set("liked", 0);
+            } else {
+                vo.set("liked", likeService.getLikeStatus(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT, comment.getId()));
+            }
+
+            vo.set("likeCount", likeService.getLikeCount(EntityType.ENTITY_COMMENT, comment.getId()));
             vo.set("user", userService.selectById(comment.getUserId()));
             vos.add(vo);
         }
