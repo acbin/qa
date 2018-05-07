@@ -22,13 +22,16 @@ public interface MessageDAO {
                                         @Param("limit") int limit);
 
 
-    //select *, count(id) as id from (select * from message order by created_date desc)
-    // tt group by conversation_id order by created_date desc limit 0, 10
-    @Select({"select ", INSERT_FIELDS, " , count(id) as id from ( select * from ", TABLE_NAME,
-            " where from_id=#{userId} or to_id=#{userId} order by created_date desc) tt group by conversation_id order by created_date desc limit #{offset}, #{limit}"})
+
+
+    @Select({"select t1.from_id, t1.to_id, t1.content, t1.has_read, t1.conversation_id, t1.created_date, t2.cnt id" +
+            " from message t1, (select count(1) cnt, max(created_date) created_date from message group by conversation_id) as t2" +
+            " where t1.created_date = t2.created_date and (from_id = #{userId} or to_id = #{userId})" +
+            " order by created_date desc limit #{offset}, #{limit}"})
     List<Message> getConversationList(@Param("userId") int userId,
                                       @Param("offset") int offset,
                                       @Param("limit") int limit);
+
 
     @Select({"select count(id) from ", TABLE_NAME, "where has_read = 0 and to_id=#{userId} and conversation_id=#{conversationId}"})
     int getConversationUnreadCount(@Param("userId") int userId,
