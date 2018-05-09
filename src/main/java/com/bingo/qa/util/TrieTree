@@ -1,0 +1,165 @@
+package com.bingo.qa.util
+
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.CharUtils;
+import org.apache.commons.lang3.StringUtils;
+
+/**
+ * 构造Trie树的工具类<br/>
+ * 参考自 : https://github.com/yanglbme/qa/blob/master/src/main/java/com/bingo/qa/service/SensitiveService.java
+ * 
+ * @author sothereer@gmail.com
+ *
+ */
+public class TrieTree {
+
+	// 用于保存敏感词的前缀树
+    private TrieNode root = new TrieNode();
+    
+    public TrieTree(final Collection<String> keywords){
+    	this.init(keywords);
+    }
+    
+	/**
+	 * 初始化,读取所有关键词
+	 * @param keywords 关键词集合
+	 * @return
+	 */
+	public void init(Collection<String> keywords){
+		for (String word : keywords) {
+			this.addWord(word);
+		}
+	}
+	
+	/**
+	 * 清空前缀树
+	 */
+	public void clear(){
+		this.root = new TrieNode();
+	}
+	
+    /**
+     * 读取关键词，建立前缀树
+     * @param keyword 关键词
+     */
+    private void addWord(String keyword) {
+        if (StringUtils.isEmpty(keyword)) {
+            return;
+        }
+
+        TrieNode tempNode = root;
+        char[] arr = keyword.toCharArray();
+        int len = arr.length;
+        for (int i = 0 ; i < len; ++i) {
+            Character c = arr[i];
+            if (isSymbol(c)) {
+                continue;
+            }
+
+            //判断temp下是否有此子结点
+            TrieNode subNode = tempNode.getSubNode(c);
+            if (subNode == null) {
+                // 没有此结点，则新建一个结点
+                subNode = new TrieNode();
+                tempNode.addSubNode(c, subNode);
+            }
+            tempNode = subNode;
+            if (i == len - 1) {
+                // 如果到了一行的最后一个文字，则进行标记
+                tempNode.setKeyWord(true);
+            }
+        }
+    }
+    
+    /**
+     * 判断是否是特殊字符
+     * @param c 字符
+     * @return true为特殊字符,false是中文或字母
+     */
+    private boolean isSymbol(char c) {
+        int ic = (int) c;
+        // 0x2E80~0x9FFF 为东亚文字
+        // 如果既不是东亚文字，也不是英文字符，返回false（说明是非法词）
+        return !CharUtils.isAsciiAlphanumeric(c) && (ic < 0x2E80 || ic > 0x9FFF);
+    }
+	
+    /**
+     * 检测给定字符串中是否含有关键词
+     * @param text 给定字符串
+     * @return 如果不包含关键词则返回false,包含则返回true
+     */
+	public boolean filter(String text) {
+		if (StringUtils.isEmpty(text)) {
+			return false;
+		}
+		
+		TrieNode tempNode = root;
+		int begin = 0;
+		int position = 0;
+		
+		while(position < text.length()){
+			char c = text.charAt(position);
+			
+			// 非法字符,跳过
+			if(isSymbol(c)){
+				if(tempNode == root){//这里没有使用equals
+					++begin;
+				}
+				++position;
+				continue;
+			}
+			
+			tempNode = tempNode.getSubNode(c);
+			if(tempNode == null){
+				// 该字符在敏感词前缀树中没有
+				position = begin + 1;
+				begin = position;
+				tempNode = root;
+			} else if(tempNode.isKeyWord()){
+				// 发现关键词
+				return true;
+			} else {
+				// 在下一个循环继续往子树查找
+				++position;
+			}
+		}
+		
+		return false;
+	}
+	
+    /**  Tire树结点 */
+    private class TrieNode {
+        // 表示是否是关键词的结尾
+        private boolean end; // 初始化为false
+
+        // 该结点下所有后续子结点
+        private Map<Character, TrieNode> subNodes = new HashMap<>();
+
+        public void addSubNode(Character key, TrieNode node) {
+            subNodes.put(key, node);
+        }
+
+        TrieNode getSubNode(Character key) {
+            return subNodes.get(key);
+        }
+
+        boolean isKeyWord() {
+            return this.end;
+        }
+
+        void setKeyWord(boolean end) {
+            this.end = end;
+        }
+    }
+
+    public static void main(String[] args) {
+    	TrieTree tt = new TrieTree(Arrays.asList("关键词一","关键词2","草个妈","一个脏话"));
+    	boolean result = tt.filter("输入文章 : 转关键词?一让英b50销售三 ❸箭气枪");
+    	System.out.println(result);
+	}
+}
