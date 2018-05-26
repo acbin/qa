@@ -29,3 +29,25 @@ SpringBoot + MyBatis + FreeMarker
 ### Python 爬虫实现数据抓取和导入
 
 ###  站内全文搜索
+
+## 3. 数据库字段设计
+### 用户(User)
+| id | name | password | salt | head_url |
+|-----|-----|------|-----|-----|
+| 1 | bingo   | 123 | xxx | xxx |
+
+### 站内信(Message)
+| id | fromid | toid | content | conversation_id | created_date |
+|-----|-----|------|-----|-----|-----|
+| 1 | 1   | 2 | 内容 | 1-2 | 2018/5/20|
+
+### 问题(Question)
+| id | title | content | user_id | created_date | comment_count |
+|-----|-----|------|-----|-----|-----|
+| 1 | 标题   | 内容 | 1 | 2018/5/20| 3 |
+
+### 评论(Comment)
+| id | content | user_id | created_date | entity_id | entity_type |
+|-----|-----|------|-----|-----|-----|
+| 1 | 内容   | 1 | 2018/5/20| 1 | ENTITY_TYPE.COMMENT |
+
