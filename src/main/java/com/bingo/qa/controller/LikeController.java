@@ -1,7 +1,12 @@
 package com.bingo.qa.controller;
 
+import com.bingo.qa.async.EventModel;
+import com.bingo.qa.async.EventProducer;
+import com.bingo.qa.async.EventType;
+import com.bingo.qa.model.Comment;
 import com.bingo.qa.model.EntityType;
 import com.bingo.qa.model.HostHolder;
+import com.bingo.qa.service.CommentService;
 import com.bingo.qa.service.LikeService;
 import com.bingo.qa.util.QaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,12 @@ public class LikeController {
     @Autowired
     private HostHolder hostHolder;
 
+    @Autowired
+    EventProducer eventProducer;
+
+    @Autowired
+    CommentService commentService;
+
     @RequestMapping(path = "/like",method = RequestMethod.POST)
     @ResponseBody
     public String like(@RequestParam("commentId") int commentId) {
@@ -28,6 +39,19 @@ public class LikeController {
         if (hostHolder.getUser() == null) {
             return QaUtil.getJSONString(999);
         }
+
+        Comment comment = commentService.getCommentById(commentId);
+
+        // 用户点了个赞，那么就发送一个event出去
+        eventProducer.fireEvent(new EventModel(EventType.LIKE)
+                .setActorId(hostHolder.getUser().getId())
+                .setEntityId(commentId)
+                .setEntityOwnerId(comment.getUserId())
+                .setEntityType(EntityType.ENTITY_COMMENT)
+                .setExt("questionId", String.valueOf(comment.getEntityId()))
+        );
+
+
         // System.out.println("commentId: " + commentId);
 
         long likeCount = likeService.like(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT, commentId);
