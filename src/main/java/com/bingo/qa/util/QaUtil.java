@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.MessageDigest;
+import java.util.Map;
 
 public class QaUtil {
     private static final Logger logger = LoggerFactory.getLogger(QaUtil.class);
@@ -50,6 +51,15 @@ public class QaUtil {
         jsonObject.put("code", code);
         jsonObject.put("msg", message);
         return jsonObject.toJSONString();
+    }
+
+    public static String getJSONString(int code, Map<String, Object> map) {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            json.put(entry.getKey(), entry.getValue());
+        }
+        return json.toJSONString();
     }
 
 }

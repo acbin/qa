@@ -140,7 +140,7 @@ public class FollowService {
     }
 
     /**
-     * 获取某一实体下的关注者数量
+     * 获取某一实体下的关注者数量（eg. 我被x, y, z关注，那么数量为3）
      * @param entityType
      * @param entityId
      * @return
@@ -150,6 +150,12 @@ public class FollowService {
         return jedisAdapter.zcard(followerKey);
     }
 
+    /**
+     * 获得当前实体所关注的某一类型实体的数量（eg. 我关注了 a,b,c,d,那么数量为4）
+     * @param userId
+     * @param entityType
+     * @return
+     */
     public long getFolloweeCount(int userId, int entityType) {
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
         return jedisAdapter.zcard(followeeKey);
