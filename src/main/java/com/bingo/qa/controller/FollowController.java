@@ -202,12 +202,15 @@ public class FollowController {
     @GetMapping(value = {"/user/{uid}/followees"})
     public String followees(Model model,
                             @PathVariable("uid") int userId) {
+        // 需要获取该用户的关注人数，以及每个用户的信息
         List<Integer> ids = followService.getFollowees(userId, EntityType.ENTITY_USER, 0, 10);
+        int localUserId = 0;
         if (hostHolder.getUser() != null) {
-            model.addAttribute("followees", getUsersInfo(hostHolder.getUser().getId(), ids));
-        } else {
-            model.addAttribute("followees", getUsersInfo(0, ids));
+            localUserId = hostHolder.getUser().getId();
         }
+        List<ViewObject> vos = getUsersInfo(localUserId, ids);
+
+        model.addAttribute("followees", vos);
         model.addAttribute("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER));
         model.addAttribute("curUser", userService.selectById(userId));
 
@@ -218,17 +221,28 @@ public class FollowController {
     public String followers(Model model,
                             @PathVariable("uid") int userId) {
         List<Integer> ids = followService.getFollowers(userId, EntityType.ENTITY_USER, 0, 10);
+        int localUserId = 0;
         if (hostHolder.getUser() != null) {
-            model.addAttribute("followers", getUsersInfo(hostHolder.getUser().getId(), ids));
-        } else {
-            model.addAttribute("followers", getUsersInfo(0, ids));
+            localUserId = hostHolder.getUser().getId();
         }
+        List<ViewObject> vos = getUsersInfo(localUserId, ids);
+        /**
+         * followers: uid对应的用户的所有粉丝 -> user \ followerCount \ followeeCount \ followed
+         * followerCount:uid对应的用户的所有粉丝数
+         * curUser: uid对应的用户
+         */
+        model.addAttribute("followers", vos);
         model.addAttribute("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER, userId));
         model.addAttribute("curUser", userService.selectById(userId));
         return "followers";
     }
 
-
+    /**
+     * 通过id获取每个用户的信息（user, followerCount, followeeCount, 以及当前用户是否关注了该用户）
+     * @param localUserId
+     * @param userIds
+     * @return 用户信息List
+     */
     public List<ViewObject> getUsersInfo(int localUserId, List<Integer> userIds) {
         List<ViewObject> userInfos = new ArrayList<>();
         for (Integer uid : userIds) {
