@@ -1,5 +1,8 @@
 package com.bingo.qa.controller;
 
+import com.bingo.qa.async.EventModel;
+import com.bingo.qa.async.EventProducer;
+import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.Comment;
 import com.bingo.qa.model.EntityType;
 import com.bingo.qa.model.HostHolder;
@@ -29,6 +32,9 @@ public class CommentController {
     @Autowired
     QuestionService questionService;
 
+    @Autowired
+    EventProducer eventProducer;
+
     @RequestMapping(path = "/addComment", method = RequestMethod.POST)
     public String addComment(@RequestParam("questionId") int questionId,
                              @RequestParam("content") String content) {
@@ -53,6 +59,8 @@ public class CommentController {
             // 更新问题的总评论数
             questionService.updateCommentCount(comment.getEntityId(), count);
 
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT).setActorId(comment.getUserId())
+                    .setEntityId(questionId));
 
         } catch (Exception e) {
             logger.error("增加评论失败" + e.getMessage());

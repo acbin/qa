@@ -4,9 +4,9 @@
         like: fLike,
         dislike: fDislike,
         followUser: fFollowUser,
-        unFollowUser: fUnFollowUser,
+        unfollowUser: fUnFollowUser,
         followQuestion: fFollowQuestion,
-        unFollowQuestion: fUnFollowQuestion,
+        unfollowQuestion: fUnFollowQuestion,
         post: fPost
     });
 

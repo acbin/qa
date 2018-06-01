@@ -5,6 +5,7 @@
 <div class="zg-wrap zu-main clearfix with-indention-votebar" id="zh-single-question-page">
     <div class="zu-main-content">
         <div class="zu-main-content-inner">
+            <!--
             <div class="zm-tag-editor zg-section">
                 <div class="zm-tag-editor-labels zg-clear">
                     <a class="zm-item-tag" href="">新浪微博</a>
@@ -17,6 +18,8 @@
                     </a>
                 </div>
             </div>
+-->
+
             <div id="zh-question-title" class="zm-editable-status-normal">
                 <h2 class="zm-item-title">
                     <span class="zm-editable-content">${question.title}</span>
@@ -27,50 +30,28 @@
             </div>
             <div class="zm-side-section">
                 <div class="zm-side-section-inner" id="zh-question-side-header-wrap">
-                    <button class="follow-button zg-follow zg-btn-green js-follow">关注问题</button>
-                    <div class="zg-btn-white goog-inline-block goog-menu-button" id="zh-question-operation-menu"
-                         style="-webkit-user-select: none;">
-                        <div class="goog-inline-block goog-menu-button-outer-box">
-                            <div class="goog-inline-block goog-menu-button-inner-box">
-                                <div class="goog-inline-block goog-menu-button-caption">
-                                    <i class="zg-icon-dropdown-menu zg-icon"></i>
-                                    <b class="hide-text">设置</b></div>
-                                <div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <#if followed>
+                    <button class="follow-button zg-follow zg-btn-white js-follow-question" data-id="${question.id}"
+                            data-status="1">
+                        取消关注
+                    </button>
+                    </#if>
+                    <#if !followed>
+                    <button class="follow-button zg-follow zg-btn-green js-follow-question" data-id="${question.id}">
+                        关注问题
+                    </button>
+                    </#if>
                     <div class="zh-question-followers-sidebar">
                         <div class="zg-gray-normal">
-                            <a href="">
-                                <strong>9</strong>
-                            </a>人关注该问题
+                            <a href="javascript:void(0);"><strong class="js-user-count">${followUsers?size}</strong></a>人关注该问题
                         </div>
-                        <div class="list zu-small-avatar-list zg-clear">
-                                <span class="zm-item-link-avatar">
-                                    <img title="匿名用户" class="zm-item-img-avatar"
-                                         src="../images/res/aadd7b895_s.jpg"></span>
-                            <a class="zm-item-link-avatar" href="">
-                                <img src="../images/res/6ceea810748d179f57cac0baa5cf9592_s.jpg"
+                        <div class="list zu-small-avatar-list zg-clear js-user-list">
+                        <#list followUsers as vo>
+                            <a class="zm-item-link-avatar js-user-${vo.id}" href="/user/${vo.id}"
+                               data-original_title="${vo.name}">
+                                <img src="${vo.headUrl}"
                                      class="zm-item-img-avatar"></a>
-                            <a class="zm-item-link-avatar" href="">
-                                <img src="../images/res/da8e974dc_s.jpg" class="zm-item-img-avatar"></a>
-                            <a class="zm-item-link-avatar" href="">
-                                <img src="../images/res/19456ebfe8b207320735f282769ac635_s.jpg"
-                                     class="zm-item-img-avatar"></a>
-                            <a class="zm-item-link-avatar" href="">
-                                <img src="../images/res/11be4a90ed938abfbab4899df56ee754_s.png"
-                                     class="zm-item-img-avatar"></a>
-                            <a class="zm-item-link-avatar" href="">
-                                <img src="../images/res/da8e974dc_s.jpg" class="zm-item-img-avatar"></a>
-                            <a class="zm-item-link-avatar" href="">
-                                <img src="../images/res/d207854fffc9e0289fbd6bbbb3986988_s.jpg"
-                                     class="zm-item-img-avatar"></a>
-                            <a class="zm-item-link-avatar" href="">
-                                <img src="../images/res/1ac7840eeb19ada0bbf85f51702d5784_s.jpg"
-                                     class="zm-item-img-avatar"></a>
-                            <a class="zm-item-link-avatar" href="">
-                                <img src="../images/res/da8e974dc_s.jpg" class="zm-item-img-avatar"></a>
+                        </#list>
                         </div>
                     </div>
                 </div>

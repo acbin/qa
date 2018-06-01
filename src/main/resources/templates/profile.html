@@ -3,12 +3,7 @@
 <link rel="stylesheet" href="../styles/detail.css">
 <div class="zg-wrap zu-main clearfix " role="main">
     <div class="zm-profile-section-wrap zm-profile-followee-page">
-        <!--
-            <div class="zm-profile-section-head">
-                <span class="zm-profile-section-name">
-                    <a href="#">${profileUser.user.name}</a> 关注了 ${profileUser.followerCount} 人
-                </span>
-            </div>-->
+
         <div class="zm-profile-section-list">
             <div id="zh-profile-follows-list">
                 <div class="zh-general-list clearfix">
@@ -29,7 +24,6 @@
                         <div class="zm-list-content-medium">
                             <h2 class="zm-list-content-title"><a data-tip="p$t$buaabarty" href="/user/${profileUser.user.id}" class="zg-link">${profileUser.user.name}</a></h2>
 
-                            <!-- <div class="zg-big-gray">计蒜客教研首席打杂</div> -->
                             <div class="details zg-gray">
                                 <a target="_blank" href="/user/${profileUser.user.id}/followers" class="zg-link-gray-normal">${profileUser.followerCount}粉丝</a>
                                 /
@@ -116,5 +110,6 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/scripts/main/site/profile.js"></script>
+
 <#include "/footer.html"/>
+<script type="text/javascript" src="/scripts/main/site/profile.js"></script>

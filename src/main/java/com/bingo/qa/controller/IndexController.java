@@ -61,7 +61,8 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-    public String userIndex(Model model, @PathVariable("userId") int userId) {
+    public String userIndex(Model model,
+                            @PathVariable("userId") int userId) {
         model.addAttribute("vos", getQuestions(userId, 0, 10));
 
         User user = userService.selectById(userId);

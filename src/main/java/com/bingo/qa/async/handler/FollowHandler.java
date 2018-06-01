@@ -37,7 +37,7 @@ public class FollowHandler implements EventHandler{
         User user = userService.selectById(model.getActorId());
         if (model.getEntityType() == EntityType.ENTITY_QUESTION) {
             message.setContent("用户" + user.getName() + "关注了你的问题,http://localhost:8080/question/"
-                    + model.getExt("questionId"));
+                    + model.getEntityId());
 
         } else if (model.getEntityType() == EntityType.ENTITY_USER) {
             message.setContent("用户" + user.getName()

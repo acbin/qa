@@ -46,6 +46,7 @@ public class FollowController {
     @PostMapping(value = {"/followUser"})
     @ResponseBody
     public String follow(@RequestParam("userId") int userId) {
+        System.out.println("调用了此方法, 参数为id:" + userId);
         if (hostHolder.getUser() == null) {
             return QaUtil.getJSONString(999);
         }
@@ -60,6 +61,9 @@ public class FollowController {
         );
 
         // 若成功，返回0 和 当前登录用户所关注的用户数量
+        System.out.println(followService.getFolloweeCount(
+                hostHolder.getUser().getId(), EntityType.ENTITY_USER));
+        System.out.println(ret);
         return QaUtil.getJSONString(ret ? 0 : 1, followService.getFolloweeCount(
                                                 hostHolder.getUser().getId(), EntityType.ENTITY_USER) + "");
 
