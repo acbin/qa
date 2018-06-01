@@ -5,21 +5,6 @@
 <div class="zg-wrap zu-main clearfix with-indention-votebar" id="zh-single-question-page">
     <div class="zu-main-content">
         <div class="zu-main-content-inner">
-            <!--
-            <div class="zm-tag-editor zg-section">
-                <div class="zm-tag-editor-labels zg-clear">
-                    <a class="zm-item-tag" href="">新浪微博</a>
-                    <a class="zm-item-tag" href="">网络营销</a>
-                    <a class="zm-item-tag" href="">微博粉丝</a>
-                    <a class="zm-item-tag" href="">僵尸粉</a>
-                    <a class="zm-item-tag" href="">网络水军</a>
-                    <a href="javascript:;" class="zu-edit-button" name="edit">
-                        <i class="zu-edit-button-icon"></i>修改
-                    </a>
-                </div>
-            </div>
--->
-
             <div id="zh-question-title" class="zm-editable-status-normal">
                 <h2 class="zm-item-title">
                     <span class="zm-editable-content">${question.title}</span>
@@ -31,8 +16,7 @@
             <div class="zm-side-section">
                 <div class="zm-side-section-inner" id="zh-question-side-header-wrap">
                     <#if followed>
-                    <button class="follow-button zg-follow zg-btn-white js-follow-question" data-id="${question.id}"
-                            data-status="1">
+                    <button class="follow-button zg-follow zg-btn-white js-follow-question" data-id="${question.id}" data-status="1">
                         取消关注
                     </button>
                     </#if>
@@ -136,5 +120,6 @@
         </div>
     </div>
 </div>
+
 
 <#include "/footer.html"/>

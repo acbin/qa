@@ -133,6 +133,13 @@ public class JedisAdapter implements InitializingBean{
         return null;
     }
 
+    /**
+     * 执行事务内命令:
+     * List中每个Object对应每一条命令的返回值
+     * @param tx
+     * @param jedis
+     * @return
+     */
     public List<Object> exec(Transaction tx, Jedis jedis) {
         try {
             return tx.exec();
@@ -141,12 +148,14 @@ public class JedisAdapter implements InitializingBean{
         } finally {
             if (tx != null) {
                 try {
+                    // 关闭事务
                     tx.close();
                 } catch (Exception e) {
                     logger.error("发生异常" + e.getMessage());
                 }
             }
 
+            // 关闭jedis
             if (jedis != null) {
                 jedis.close();
             }
@@ -154,6 +163,13 @@ public class JedisAdapter implements InitializingBean{
         return null;
     }
 
+    /**
+     * 加入zset中
+     * @param key
+     * @param score
+     * @param value
+     * @return
+     */
     public long zadd(String key, double score, String value) {
         Jedis jedis = null;
         try {

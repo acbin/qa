@@ -7,6 +7,7 @@
         followQuestion: fFollowQuestion
     });
 
+    // 关注用户
     function fFollowUser() {
         $(document).on('click', '.js-follow-user', function (oEvent) {
             var oEl = $(oEvent.currentTarget);
@@ -38,6 +39,12 @@
                         oEl.removeClass('zg-btn-follow zg-btn-unfollow').addClass(bFollow ? 'zg-btn-follow' : 'zg-btn-unfollow');
                         // 文字
                         oEl.html(bFollow ? '关注' : '取消关注');
+
+                        // 新增
+                        // alert('followeeCount:' + oResult.followeeCount + ',followerCount:' + oResult.followerCount);
+                        $(".ferCount").html(oResult.followerCount + "粉丝");
+                        $(".feeCount").html(oResult.followeeCount + "关注");
+
                     } else {
                         alert('出现错误，请重试');
                     }
@@ -52,6 +59,7 @@
         });
     }
 
+    // 关注问题
     function fFollowQuestion(oConf) {
         var that = this;
         var oCountEl = $(oConf.countEl);

@@ -4,10 +4,7 @@ import com.bingo.qa.async.EventModel;
 import com.bingo.qa.async.EventProducer;
 import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.*;
-import com.bingo.qa.service.CommentService;
-import com.bingo.qa.service.FollowService;
-import com.bingo.qa.service.QuestionService;
-import com.bingo.qa.service.UserService;
+import com.bingo.qa.service.*;
 import com.bingo.qa.util.QaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +35,9 @@ public class FollowController {
     UserService userService;
 
     @Autowired
+    LikeService likeService;
+
+    @Autowired
     HostHolder hostHolder;
 
     @Autowired
@@ -53,6 +53,9 @@ public class FollowController {
 
         // 当前登录的用户，关注了另一个人
         boolean ret = followService.follow(hostHolder.getUser().getId(), EntityType.ENTITY_USER, userId);
+
+        // 当前登陆用户关注了用户A，触发一个event
+        // 需要向A发送消息, entityId与entityOwnerId均为用户A的id
         eventProducer.fireEvent(new EventModel(EventType.FOLLOW)
                 .setActorId(hostHolder.getUser().getId())
                 .setEntityId(userId)
@@ -60,12 +63,22 @@ public class FollowController {
                 .setEntityType(EntityType.ENTITY_USER)
         );
 
+        Map<String, Object> info = new HashMap<>();
+        // 粉丝数
+        info.put("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER, userId));
+
+        // 关注数
+        info.put("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER));
+
+        // 回答数
+        info.put("commentCount", commentService.getUserCommentCount(userId));
+
+        // 赞同数
+        info.put("likeCount", likeService.getLikeCount(EntityType.ENTITY_USER, userId));
+
+
         // 若成功，返回0 和 当前登录用户所关注的用户数量
-        System.out.println(followService.getFolloweeCount(
-                hostHolder.getUser().getId(), EntityType.ENTITY_USER));
-        System.out.println(ret);
-        return QaUtil.getJSONString(ret ? 0 : 1, followService.getFolloweeCount(
-                                                hostHolder.getUser().getId(), EntityType.ENTITY_USER) + "");
+        return QaUtil.getJSONString(ret ? 0 : 1, info);
 
     }
 
@@ -84,9 +97,22 @@ public class FollowController {
                 .setEntityType(EntityType.ENTITY_USER)
         );
 
+        Map<String, Object> info = new HashMap<>();
+        // 粉丝数
+        info.put("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER, userId));
+
+        // 关注数
+        info.put("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER));
+
+        // 回答数
+        info.put("commentCount", commentService.getUserCommentCount(userId));
+
+        // 赞同数
+        info.put("likeCount", likeService.getLikeCount(EntityType.ENTITY_USER, userId));
+
+
         // 若成功，返回0 和 当前登录用户所关注的用户数量
-        return QaUtil.getJSONString(ret ? 0 : 1, followService.getFolloweeCount(
-                hostHolder.getUser().getId(), EntityType.ENTITY_USER) + "");
+        return QaUtil.getJSONString(ret ? 0 : 1, info);
 
     }
 
@@ -109,6 +135,8 @@ public class FollowController {
 
         // 当前登录的用户，关注了某一个问题
         boolean ret = followService.follow(hostHolder.getUser().getId(), EntityType.ENTITY_QUESTION, questionId);
+
+        // 触发事件，向该问题所属的用户发送一条Message
         eventProducer.fireEvent(new EventModel(EventType.FOLLOW)
                 .setActorId(hostHolder.getUser().getId())
                 .setEntityId(questionId)
@@ -118,13 +146,16 @@ public class FollowController {
 
 
         Map<String, Object> info = new HashMap<>();
+
+        // 将当前用户的信息写入map，并返回到页面
         info.put("headUrl", hostHolder.getUser().getHeadUrl());
         info.put("name", hostHolder.getUser().getName());
         info.put("id", hostHolder.getUser().getId());
+
         // 当前问题的关注者数量
         info.put("count", followService.getFollowerCount(EntityType.ENTITY_QUESTION, questionId));
 
-        // 若成功，返回0 和 当前登录用户所关注的问题数量
+        // 若成功，返回0 和 当前问题的关注者信息
         return QaUtil.getJSONString(ret ? 0 : 1, info);
 
     }
@@ -159,10 +190,11 @@ public class FollowController {
         info.put("headUrl", hostHolder.getUser().getHeadUrl());
         info.put("name", hostHolder.getUser().getName());
         info.put("id", hostHolder.getUser().getId());
+
         // 当前问题的关注者数量
         info.put("count", followService.getFollowerCount(EntityType.ENTITY_QUESTION, questionId));
 
-        // 若成功，返回0 和 当前登录用户所关注的问题数量
+        // 若成功，返回0 和 当前问题的关注者信息
         return QaUtil.getJSONString(ret ? 0 : 1, info);
 
     }
@@ -207,7 +239,10 @@ public class FollowController {
 
             ViewObject vo = new ViewObject();
             vo.set("user", user);
+            // 粉丝数
             vo.set("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER, uid));
+
+            // 关注数
             vo.set("followeeCount", followService.getFolloweeCount(EntityType.ENTITY_USER, uid));
 
             if (localUserId != 0) {

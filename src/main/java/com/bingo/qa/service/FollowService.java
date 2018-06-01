@@ -21,20 +21,22 @@ public class FollowService {
     JedisAdapter jedisAdapter;
 
     /**
-     * 关注功能
+     * 关注功能:关注的发起者是用户，关注的实体可以是用户，也可以是问题等..
      * @param userId
      * @param entityType
      * @param entityId
-     * @return
+     * @return 是否关注成功
      */
     public boolean follow(int userId, int entityType, int entityId) {
         // 一个实体下的关注者，该实体作为key，关注者存入该key对应的值
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
 
+        // 用户关注的对象
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
 
         Date date = new Date();
         Jedis jedis = jedisAdapter.getJedis();
+        // 此处开启redis事务，确保数据一致性
         Transaction tx = jedisAdapter.multi(jedis);
 
         // 某个实体下的粉丝列表
@@ -43,8 +45,10 @@ public class FollowService {
         // 某个实体下关注的类型列表
         tx.zadd(followeeKey, date.getTime(), entityId + "");
 
+        // 执行事务内所有操作
         List<Object> ret = jedisAdapter.exec(tx, jedis);
 
+        // 返回结果数量为2，并且每个结果返回值均大于0，则返回true
         return ret.size() == 2 && (Long) ret.get(0) > 0 && (Long) ret.get(1) > 0;
 
 
@@ -55,7 +59,7 @@ public class FollowService {
      * @param userId
      * @param entityType
      * @param entityId
-     * @return
+     * @return 是否取关成功
      */
     public boolean unfollow(int userId, int entityType, int entityId) {
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
@@ -90,7 +94,7 @@ public class FollowService {
      * 获取某一实体下粉丝关注列表（不带offset）
      * @param entityType
      * @param entityId
-     * @param count
+     * @param count 获取followers数量
      * @return
      */
     public List<Integer> getFollowers(int entityType, int entityId, int count) {
@@ -100,7 +104,7 @@ public class FollowService {
 
 
     /**
-     * 获取某一实体下粉丝关注列表（带offset）
+     * 获取某一实体下最新粉丝关注列表（带offset）
      * @param entityType
      * @param entityId
      * @param offset
@@ -143,7 +147,7 @@ public class FollowService {
      * 获取某一实体下的关注者数量（eg. 我被x, y, z关注，那么数量为3）
      * @param entityType
      * @param entityId
-     * @return
+     * @return 我的粉丝数
      */
     public long getFollowerCount(int entityType, int entityId) {
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
@@ -154,7 +158,7 @@ public class FollowService {
      * 获得当前实体所关注的某一类型实体的数量（eg. 我关注了 a,b,c,d,那么数量为4）
      * @param userId
      * @param entityType
-     * @return
+     * @return 我的关注数
      */
     public long getFolloweeCount(int userId, int entityType) {
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
@@ -163,13 +167,14 @@ public class FollowService {
 
     /**
      * 判断用户是否是某一实体的关注者
-      * @param userId
+     * @param userId
      * @param entityType
      * @param entityId
      * @return
      */
     public boolean isFollower(int userId, int entityType, int entityId) {
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
+        // 每个成员的score越大，表示越是新近关注
         return jedisAdapter.zscore(followerKey, userId + "") != null;
     }
 

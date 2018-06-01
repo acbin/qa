@@ -7,8 +7,10 @@ public class RedisKeyUtil {
 
     private static String BIZ_EVENTQUEUE = "EVENT_QUEUE";
 
+    // 实体下的粉丝(关注者)
     private static String BIZ_FOLLOWER = "FOLLOWER";
 
+    // 用户所关注的实体(关注对象)
     private static String BIZ_FOLLOWEE = "FOLLOWEE";
 
     public static String getLikeKey(int entityType, int entityId) {
@@ -35,7 +37,7 @@ public class RedisKeyUtil {
     }
 
     /**
-     * 一个用户，关注了某一类实体(作为key)
+     * 一个用户，关注了某一类实体,如用户、问题等(由userId与entityType共同组成key)
      * @param userId
      * @param entityType
      * @return
