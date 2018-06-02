@@ -31,12 +31,12 @@
                                         </h2>
                                         <div class="entry-body post-body js-collapse-body">
                                             <div class="zm-item-vote">
-                                                <a class="zm-item-vote-count js-expand js-vote-count" href="#">1082</a>
+                                                <a class="zm-item-vote-count js-expand js-vote-count" href="#">${vo.followCount}</a>
                                             </div>
                                             <div class="zm-votebar">
                                                 <button class="up" title="赞同">
                                                     <i class="icon vote-arrow"></i>
-                                                    <span class="count">1082</span>
+                                                    <span class="count">${vo.followCount}</span>
                                                     <span class="label sr-only">赞同</span>
                                                 </button>
                                             </div>
@@ -46,7 +46,7 @@
                                             <div class="zm-item-vote-info">
                                                 <span class="voters text">
                                                     <a href="#" class="more text">
-                                                        <span class="js-voteCount">1082</span>&nbsp;人赞
+                                                        <span class="js-voteCount">${vo.followCount}</span>&nbsp;人赞
                                                     </a>
                                                 </span>
                                             </div>
@@ -87,4 +87,6 @@
         </div>
     </div>
 
+<#include "/js.html"/>
+<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
 <#include "/footer.html"/>

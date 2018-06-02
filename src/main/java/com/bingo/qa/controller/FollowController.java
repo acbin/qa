@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by bingo in 2018/5/31.
+ * Created by bingo on 2018/5/31.
  */
 
 @Controller
@@ -46,7 +46,6 @@ public class FollowController {
     @PostMapping(value = {"/followUser"})
     @ResponseBody
     public String follow(@RequestParam("userId") int userId) {
-        System.out.println("调用了此方法, 参数为id:" + userId);
         if (hostHolder.getUser() == null) {
             return QaUtil.getJSONString(999);
         }
@@ -203,7 +202,7 @@ public class FollowController {
     public String followees(Model model,
                             @PathVariable("uid") int userId) {
         // 需要获取该用户的关注人数，以及每个用户的信息
-        List<Integer> ids = followService.getFollowees(userId, EntityType.ENTITY_USER, 0, 10);
+        List<Integer> ids = followService.getFollowees(EntityType.ENTITY_USER, userId, 0, 10);
         int localUserId = 0;
         if (hostHolder.getUser() != null) {
             localUserId = hostHolder.getUser().getId();
@@ -214,6 +213,7 @@ public class FollowController {
         model.addAttribute("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER));
         model.addAttribute("curUser", userService.selectById(userId));
 
+        // 返回followees页面
         return "followees";
     }
 
@@ -221,6 +221,7 @@ public class FollowController {
     public String followers(Model model,
                             @PathVariable("uid") int userId) {
         List<Integer> ids = followService.getFollowers(userId, EntityType.ENTITY_USER, 0, 10);
+
         int localUserId = 0;
         if (hostHolder.getUser() != null) {
             localUserId = hostHolder.getUser().getId();
@@ -258,6 +259,9 @@ public class FollowController {
 
             // 关注数
             vo.set("followeeCount", followService.getFolloweeCount(EntityType.ENTITY_USER, uid));
+
+            // 评论数
+            vo.set("commentCount", commentService.getUserCommentCount(uid));
 
             if (localUserId != 0) {
                 vo.set("followed", followService.isFollower(localUserId, EntityType.ENTITY_USER, uid));

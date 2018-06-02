@@ -24,12 +24,12 @@
     }
 
     function fClickMsg() {
-            var that = this;
-            PopupMsg.show({
-                ok: function () {
-                    window.location.replace("/msg/list");
-                }
-            });
-        }
+        var that = this;
+        PopupMsg.show({
+            ok: function () {
+                window.location.replace("/msg/list");
+            }
+        });
+    }
 
 })(window);

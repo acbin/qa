@@ -196,7 +196,7 @@ public class JedisAdapter implements InitializingBean{
         Jedis jedis = null;
         try {
             jedis = pool.getResource();
-            return jedis.zrange(key, start, end);
+            return jedis.zrevrange(key, start, end);
         } catch (Exception e) {
             logger.error("发生异常" + e.getMessage());
         } finally {

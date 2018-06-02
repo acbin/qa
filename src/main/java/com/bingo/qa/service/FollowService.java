@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by bingo in 2018/5/31.
+ * Created by bingo on 2018/5/31.
  */
 @Service
 public class FollowService {

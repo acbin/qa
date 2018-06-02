@@ -69,7 +69,7 @@ public class QuestionController {
             logger.error("增加问题失败" + e.getMessage());
         }
 
-        return QaUtil.getJSONString(999);
+        return QaUtil.getJSONString(1, "失败");
     }
 
 
