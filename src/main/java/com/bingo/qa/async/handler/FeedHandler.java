@@ -76,6 +76,7 @@ public class FeedHandler implements EventHandler{
         // 将触发的事件存入数据库中
         feedService.addFeed(feed);
 
+
         // 将事件推给关注的粉丝(将事件的id存入每个关注该事件的粉丝的timeline中)
         List<Integer> followers = followService.getFollowers(EntityType.ENTITY_USER, model.getActorId(), Integer.MAX_VALUE);
         followers.add(0);
@@ -84,6 +85,8 @@ public class FeedHandler implements EventHandler{
             jedisAdapter.lpush(timelineKey, feed.getId() + "");
         }
 
+        // to do....
+        // 当用户取消关注的时候，需要将timeline中的事件id移出
 
 
 
