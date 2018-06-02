@@ -13,8 +13,16 @@ public class RedisKeyUtil {
     // 用户所关注的实体(关注对象)
     private static String BIZ_FOLLOWEE = "FOLLOWEE";
 
+    // TimeLine key
+    private static String BIZ_TIME_LINE = "TIMELINE";
+
     public static String getLikeKey(int entityType, int entityId) {
         return BIZ_LIKE + SPLIT + String.valueOf(entityType) + SPLIT + String.valueOf(entityId);
+    }
+
+    // 每个用户都有自己的timeline key(由 TIMELINE+ userId 组成)
+    public static String getTimeLineKey(int userId) {
+        return BIZ_TIME_LINE + SPLIT + userId;
     }
 
     

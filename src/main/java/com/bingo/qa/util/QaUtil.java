@@ -10,7 +10,7 @@ import java.util.Map;
 public class QaUtil {
     private static final Logger logger = LoggerFactory.getLogger(QaUtil.class);
 
-    public static int SYSTEM_USERID = 4;
+    public static int SYSTEM_USERID = 12;
 
     public static String MD5(String key) {
         char hexDigits[] = {
