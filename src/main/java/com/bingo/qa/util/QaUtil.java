@@ -82,6 +82,7 @@ public class QaUtil {
 
         FileOutputStream fos = new FileOutputStream("src/main/resources/static/images/avatar/" + id + ".png");
         ImageIO.write(identicon, "PNG", fos);
+        fos.close();
 
 
     }
