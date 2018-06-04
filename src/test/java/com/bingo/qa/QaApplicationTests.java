@@ -72,7 +72,7 @@ public class QaApplicationTests {
 	@Test
 	public void testAvatar() {
 		try {
-			QaUtil.createIdenticon(1, "bb", 200);
+			QaUtil.createIdenticon("bb", 200);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

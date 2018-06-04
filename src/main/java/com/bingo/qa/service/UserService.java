@@ -51,20 +51,15 @@ public class UserService {
         user = new User();
         user.setName(username);
         user.setSalt(UUID.randomUUID().toString().substring(0, 5));
-        user.setHeadUrl("");
+        user.setHeadUrl("/images/avatar/" + username + ".png");
         user.setPassword(QaUtil.MD5(password + user.getSalt()));
-        userDAO.addUser(user);
-        user = userDAO.selectByName(username);
-        int newId = user.getId() + 1;
         try {
-            QaUtil.createIdenticon(newId, username, 200);
+            QaUtil.createIdenticon(username, 200);
         } catch (IOException e) {
             map.put("msg", "头像生成失败，请重试");
             return map;
         }
-
-        user.setHeadUrl("/images/avatar/" + newId + ".png");
-        userDAO.updateHeadUrl(user);
+        userDAO.addUser(user);
 
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);

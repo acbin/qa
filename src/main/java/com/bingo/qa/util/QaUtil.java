@@ -54,7 +54,7 @@ public class QaUtil {
         }
     }
 
-    public static void createIdenticon(int id, String username, int size) throws IOException {
+    public static void createIdenticon(String username, int size) throws IOException {
         String hash = MD5(username);
 
         AvatarGenerator generator = new AvatarGenerator();
@@ -80,7 +80,7 @@ public class QaUtil {
             }
         }
 
-        FileOutputStream fos = new FileOutputStream("src/main/resources/static/images/avatar/" + id + ".png");
+        FileOutputStream fos = new FileOutputStream("src/main/resources/static/images/avatar/" + username + ".png");
         ImageIO.write(identicon, "PNG", fos);
         fos.close();
 
