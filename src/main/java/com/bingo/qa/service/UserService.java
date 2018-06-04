@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -50,9 +51,20 @@ public class UserService {
         user = new User();
         user.setName(username);
         user.setSalt(UUID.randomUUID().toString().substring(0, 5));
-        user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000)));
+        user.setHeadUrl("");
         user.setPassword(QaUtil.MD5(password + user.getSalt()));
         userDAO.addUser(user);
+        user = userDAO.selectByName(username);
+        int newId = user.getId() + 1;
+        try {
+            QaUtil.createIdenticon(newId, username, 200);
+        } catch (IOException e) {
+            map.put("msg", "头像生成失败，请重试");
+            return map;
+        }
+
+        user.setHeadUrl("/images/avatar/" + newId + ".png");
+        userDAO.updateHeadUrl(user);
 
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);

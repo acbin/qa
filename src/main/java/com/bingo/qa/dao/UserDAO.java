@@ -25,4 +25,7 @@ public interface UserDAO {
     @Select({"select", SELECT_FIELDS, " from ", TABLE_NAME, " where name = #{name}"})
     User selectByName(String name);
 
+    @Update({"update ", TABLE_NAME, "set head_url = #{headUrl} where id = #{id}"})
+    void updateHeadUrl(User user);
+
 }

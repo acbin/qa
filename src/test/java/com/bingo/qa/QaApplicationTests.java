@@ -4,12 +4,14 @@ import com.bingo.qa.dao.QuestionDAO;
 import com.bingo.qa.dao.UserDAO;
 import com.bingo.qa.model.Question;
 import com.bingo.qa.model.User;
+import com.bingo.qa.util.QaUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
 
@@ -65,6 +67,15 @@ public class QaApplicationTests {
 	public void testDelete() {
 		userDAO.deleteById(12);
 
+	}
+
+	@Test
+	public void testAvatar() {
+		try {
+			QaUtil.createIdenticon(1, "bb", 200);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -1,9 +1,23 @@
 package com.bingo.qa.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
+import com.google.common.math.DoubleMath;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.RoundingMode;
 import java.security.MessageDigest;
 import java.util.Map;
 
@@ -39,6 +53,39 @@ public class QaUtil {
             return null;
         }
     }
+
+    public static void createIdenticon(int id, String username, int size) throws IOException {
+        String hash = MD5(username);
+
+        AvatarGenerator generator = new AvatarGenerator();
+        Preconditions.checkArgument(size > 0 && StringUtils.isNotBlank(hash));
+
+        boolean[][] array = generator.getBooleanValueArray(hash);
+
+
+        int ratio = DoubleMath.roundToInt(size / 5.0, RoundingMode.HALF_UP);
+
+        BufferedImage identicon = new BufferedImage(ratio * 5, ratio * 5, BufferedImage.TYPE_INT_ARGB);
+        Graphics graphics = identicon.getGraphics();
+
+        graphics.setColor(generator.getBackgroundColor()); // 背景色
+        graphics.fillRect(0, 0, identicon.getWidth(), identicon.getHeight());
+
+        graphics.setColor(generator.getForegroundColor()); // 图案前景色
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (array[i][j]) {
+                    graphics.fillRect(j * ratio, i * ratio, ratio, ratio);
+                }
+            }
+        }
+
+        FileOutputStream fos = new FileOutputStream("src/main/resources/static/images/avatar/" + id + ".png");
+        ImageIO.write(identicon, "PNG", fos);
+
+
+    }
+
 
     public static String getJSONString(int code) {
         JSONObject jsonObject = new JSONObject();
