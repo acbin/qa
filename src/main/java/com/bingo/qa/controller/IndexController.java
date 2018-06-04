@@ -10,9 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ public class IndexController {
     @Autowired
     CommentService commentService;
 
-    @RequestMapping(path = {"/", "/index"}, method = RequestMethod.GET)
+    @GetMapping(value = {"/", "/index"})
     public String index(Model model) {
         List<ViewObject> vos = getQuestions(0, 0, 10);
         model.addAttribute("vos", vos);
@@ -60,7 +59,7 @@ public class IndexController {
         return vos;
     }
 
-    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
+    @GetMapping(value = "/user/{userId}")
     public String userIndex(Model model,
                             @PathVariable("userId") int userId) {
         model.addAttribute("vos", getQuestions(userId, 0, 10));

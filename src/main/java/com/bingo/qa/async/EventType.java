@@ -11,8 +11,8 @@ public enum EventType {
     FOLLOW(4),
     UNFOLLOW(5);
 
-
     private int value;
+
     EventType(int value) {
         this.value = value;
     }

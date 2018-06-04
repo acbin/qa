@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -35,7 +35,7 @@ public class MessageController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(path = "/msg/addMessage", method = RequestMethod.POST)
+    @PostMapping(value = {"/msg/addMessage"})
     @ResponseBody
     public String addMessage(@RequestParam("toName") String toName,
                              @RequestParam("content") String content) {
@@ -66,7 +66,7 @@ public class MessageController {
     }
 
 
-    @RequestMapping(path = "/msg/list", method = RequestMethod.GET)
+    @GetMapping(value = {"/msg/list"})
     public String getConversationList(Model model) {
         if (hostHolder.getUser() == null) {
             return "redirect:/reglogin";
@@ -92,7 +92,7 @@ public class MessageController {
     }
 
     // 与某人的所有会话(详情)
-    @RequestMapping(path = "/msg/detail", method = RequestMethod.GET)
+    @GetMapping(value = {"/msg/detail"})
     public String getConversationDetail(Model model,
                                         @RequestParam("conversationId") String conversationId) {
         try {

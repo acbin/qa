@@ -1,8 +1,6 @@
 package com.bingo.qa.controller;
 
 
-import com.bingo.qa.async.EventModel;
-import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.*;
 import com.bingo.qa.service.*;
 import com.bingo.qa.util.QaUtil;
@@ -39,7 +37,7 @@ public class QuestionController {
     @Autowired
     FollowService followService;
 
-    @RequestMapping(value = "/question/add", method = RequestMethod.POST)
+    @PostMapping(value = {"/question/add"})
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title,
                               @RequestParam("content") String content) {
@@ -73,7 +71,7 @@ public class QuestionController {
     }
 
 
-    @RequestMapping(value = "/question/{qid}", method = RequestMethod.GET)
+    @GetMapping(value = "/question/{qid}")
     public String questionDetail(Model model,
                                  @PathVariable("qid") int qid) {
         Question question = questionService.getQuestionById(qid);

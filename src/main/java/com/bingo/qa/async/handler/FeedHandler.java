@@ -88,8 +88,6 @@ public class FeedHandler implements EventHandler{
         // to do....
         // 当用户取消关注的时候，需要将timeline中的事件id移出
 
-
-
     }
 
     @Override

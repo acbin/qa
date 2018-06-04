@@ -88,13 +88,12 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware{
 
         thread.start();
 
-
-
-
     }
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
+
 }

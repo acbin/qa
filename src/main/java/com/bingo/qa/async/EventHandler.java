@@ -13,5 +13,4 @@ public interface EventHandler {
     // 注册自己：关注的是哪些EventType
     List<EventType> getSupportEventTypes();
 
-
 }

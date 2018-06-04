@@ -244,7 +244,7 @@ public class FollowController {
      * @param userIds
      * @return 用户信息List
      */
-    public List<ViewObject> getUsersInfo(int localUserId, List<Integer> userIds) {
+    private List<ViewObject> getUsersInfo(int localUserId, List<Integer> userIds) {
         List<ViewObject> userInfos = new ArrayList<>();
         for (Integer uid : userIds) {
             User user = userService.selectById(uid);
