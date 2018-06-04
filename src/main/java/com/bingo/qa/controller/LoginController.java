@@ -71,7 +71,7 @@ public class LoginController {
 
 
     // 用户登录
-    @PostMapping(value = "{/login}")
+    @PostMapping(value = {"/login"})
     public String login(Model model,
                         @RequestParam("username") String username,
                         @RequestParam("password") String password,
