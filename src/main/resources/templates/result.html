@@ -1,0 +1,82 @@
+<#assign bodyclass = "page-search">
+
+<#include "header.html"/>
+<link rel="stylesheet" href="../styles/result.css">
+<link rel="stylesheet" href="../styles/detail.css">
+<div class="zg-wrap zu-main clearfix" role="main">
+    <div class="zu-main-content">
+        <div class="zu-main-content-inner">
+            <div class="zu-main-feed-con navigable" data-feedtype="topstory" id="zh-question-list">
+                <div id="js-home-feed-list" class="zh-general-list topstory clearfix">
+                    <#list vos as vo>
+                        <div class="feed-item folding feed-item-hook feed-item-1">
+                            <div class="feed-item-inner">
+                                <div class="avatar">
+                                    <a title="${vo.user.name}" class="zm-item-link-avatar" target="_blank" href="/user/${vo.user.id}">
+                                        <img src="${vo.user.headUrl}" class="zm-item-img-avatar">
+                                    </a>
+                                </div>
+                                <div class="feed-main">
+                                    <div class="feed-source" data-za-module="FeedSource">热门文章</div>
+                                    <div class="feed-content" data-za-module="PostItem">
+                                        <h2 class="feed-title">
+                                            <a target="_blank" class="post-link" href="/question/${vo.question.id!''}">${vo.question.title}</a>
+                                        </h2>
+                                        <div class="entry-body post-body js-collapse-body">
+                                            <div class="zm-item-vote">
+                                                <a class="zm-item-vote-count js-expand js-vote-count" href="#">${vo.followCount}</a>
+                                            </div>
+                                            <div class="zm-votebar">
+                                                <button class="up" title="赞同">
+                                                    <i class="icon vote-arrow"></i>
+                                                    <span class="count">${vo.followCount}</span>
+                                                    <span class="label sr-only">赞同</span>
+                                                </button>
+                                            </div>
+                                            <div class="author-info">
+                                                <a href="/user/${vo.user.id}" class="name">${vo.user.name}</a>，${vo.question.createdDate?string["yyyy/MM/dd HH:mm:ss"]}
+                                            </div>
+                                            <div class="zm-item-vote-info">
+                                                <span class="voters text">
+                                                    <a href="#" class="more text">
+                                                        <span class="js-voteCount">${vo.followCount}</span>&nbsp;人赞
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="post-content">
+                                                <div class="zh-summary summary clearfix">
+                                                    ${vo.question.content}
+                                                    <a href="/question/${vo.question.id!''}" class="toggle-expand">显示全部</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="feed-meta">
+                                            <div class="zm-item-meta answer-actions clearfix js-contentActions">
+                                                <div class="zm-meta-panel">
+                                                    <a data-follow="q:link" class="follow-link zg-follow meta-item" href="javascript:;" id="sfb-123114">
+                                                        <i class="z-icon-follow"></i>关注问题
+                                                    </a>
+                                                    <a href="/question/${vo.question.id!''}" name="addcomment" class="meta-item toggle-comment js-toggleCommentBox">
+                                                        <i class="z-icon-comment"></i>${vo.question.commentCount} 条评论
+                                                    </a>
+                                                    <a href="#" class="meta-item js-thank" data-thanked="false">
+                                                        <i class="z-icon-thank"></i>感谢
+                                                    </a>
+                                                    <button class="meta-item item-collapse js-collapse">
+                                                        <i class="z-icon-fold"></i>收起
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </#list>
+                </div>
+        </div>
+    </div>
+</div>
+
+<#include "/js.html"/>
+<#include "/footer.html"/>
