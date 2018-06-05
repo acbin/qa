@@ -1,6 +1,9 @@
 package com.bingo.qa.controller;
 
 
+import com.bingo.qa.async.EventModel;
+import com.bingo.qa.async.EventProducer;
+import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.*;
 import com.bingo.qa.service.*;
 import com.bingo.qa.util.QaUtil;
@@ -37,6 +40,9 @@ public class QuestionController {
     @Autowired
     FollowService followService;
 
+    @Autowired
+    EventProducer eventProducer;
+
     @PostMapping(value = {"/question/add"})
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title,
@@ -56,10 +62,11 @@ public class QuestionController {
 
             int res = questionService.addQuestion(question);
             if (res > 0) {
-//                eventProducer.fireEvent(new EventModel(EventType.ADD_QUESTION)
-//                        .setActorId(question.getUserId()).setEntityId(question.getId())
-//                        .setExt("title", question.getTitle()).setExt("content", question.getContent()));
-//
+                // 添加问题成功之后，发送一个事件
+                eventProducer.fireEvent(new EventModel(EventType.ADD_QUESTION)
+                        .setActorId(question.getUserId()).setEntityId(question.getId())
+                        .setExt("title", question.getTitle()).setExt("content", question.getContent()));
+
                 return QaUtil.getJSONString(0);
             }
 
