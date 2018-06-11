@@ -28,12 +28,23 @@ public class PassportInterceptor implements HandlerInterceptor{
     @Autowired
     private HostHolder hostHolder;
 
+    /**
+     * 在处理controller之前，调用preHandler
+     * @param request
+     * @param response
+     * @param handler
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String ticket = null;
+
+        // 从request中取出ticket
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if ("ticket".equals(cookie.getName())) {
+                    // 说明用户的请求携带有ticket
                     ticket = cookie.getValue();
                     break;
                 }
@@ -42,30 +53,50 @@ public class PassportInterceptor implements HandlerInterceptor{
 
         if (ticket != null) {
             LoginTicket loginTicket = loginTicketDAO.selectByTicket(ticket);
-            if (loginTicket == null || loginTicket.getExpired().before(new Date()) || loginTicket.getStatus() != 0) {
+            // 判断ticket状态: ticket为空/过期/已经失效
+            if (loginTicket == null
+                    || loginTicket.getExpired().before(new Date())
+                    || loginTicket.getStatus() != 0) {
                 return true;
             }
 
             // 此时ticket真实有效
+            // 将ticket关联的用户取出来，放入hostHolder上下文中
             User user = userDAO.selectById(loginTicket.getUserId());
+
             hostHolder.setUser(user);
-
-
-
         }
 
         return true;
-
-
     }
 
+
+    /**
+     * 在渲染页面之前，回调postHanlde
+     * @param request
+     * @param response
+     * @param handler
+     * @param modelAndView
+     * @throws Exception
+     */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
         if (modelAndView != null && hostHolder.getUser() != null) {
+            // 每次渲染页面之前，先将hostHolder中的user添加至model中
+            // 好处就是，在所有的页面，都可以直接访问user变量
             modelAndView.addObject("user", hostHolder.getUser());
         }
     }
 
+
+    /**
+     * 清除处理后留下的信息
+     * @param request
+     * @param response
+     * @param handler
+     * @param ex
+     * @throws Exception
+     */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
         hostHolder.clear();
