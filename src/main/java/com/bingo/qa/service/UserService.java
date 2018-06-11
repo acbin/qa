@@ -52,6 +52,8 @@ public class UserService {
         user.setName(username);
         user.setSalt(UUID.randomUUID().toString().substring(0, 5));
         user.setHeadUrl("/images/avatar/" + username + ".png");
+
+        // 利用md5和盐加密用户密码
         user.setPassword(QaUtil.MD5(password + user.getSalt()));
         try {
             QaUtil.createIdenticon(username, 200);
@@ -63,7 +65,6 @@ public class UserService {
 
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);
-
         return map;
 
     }
@@ -94,10 +95,7 @@ public class UserService {
         // 下发ticket
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);
-
-
         return map;
-
 
     }
 
@@ -114,6 +112,10 @@ public class UserService {
         return loginTicket.getTicket();
     }
 
+    /**
+     * 用户退出，将ticket的status设置为1
+     * @param ticket
+     */
     public void logout(String ticket) {
         loginTicketDAO.updateStatus(ticket, 1);
     }

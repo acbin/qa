@@ -47,11 +47,16 @@ public class LoginController {
             Map<String, String> map = userService.register(username, password);
 
             if (map.containsKey("ticket")) {
+                // map包含ticket，说明用户注册成功，则下发ticket
                 Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
                 cookie.setPath("/");
                 if (rememberme) {
+                    // 若用户勾选"记住我", 则将cookie的有效期设置为5天，关闭浏览器，cookie依然存在
+                    // 否则，默认一次cookie在一次会话内有效，关闭浏览器，cookie就没了
                     cookie.setMaxAge(3600 * 24 * 5);
                 }
+
+                // 将cookie添加至response，响应给客户端
                 response.addCookie(cookie);
                 if (!StringUtils.isEmpty(next)) {
                     return "redirect:" + next;
@@ -81,6 +86,7 @@ public class LoginController {
         try {
             Map<String, String> map = userService.login(username, password);
             if (map.containsKey("ticket")) {
+                // 若登录成功，同样下发ticket
                 Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
                 cookie.setPath("/");
                 if (rememberme) {
