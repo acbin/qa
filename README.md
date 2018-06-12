@@ -1,8 +1,11 @@
 # Q & A 问答社区
 
-## 网站简介
+**QA** 是一个基于 [B/S](https://zh.wikipedia.org/wiki/%E6%B5%8F%E8%A7%88%E5%99%A8-%E6%9C%8D%E5%8A%A1%E5%99%A8) 架构而设计开发的社区网站。
 
-**QA** 是一个基于 [B/S](https://zh.wikipedia.org/wiki/%E6%B5%8F%E8%A7%88%E5%99%A8-%E6%9C%8D%E5%8A%A1%E5%99%A8) 架构而设计开发的社区网站，主要为用户提供以下服务：
+[![Java Version](https://img.shields.io/badge/Java-%3E%3D8-blue.svg)](https://github.com/yanglbme/qa)
+[![Framework](https://img.shields.io/badge/Powered%20by-Spring%20Framework-green.svg)](https://spring.io/projects/spring-boot)
+
+主要为用户提供以下服务：
 
 - 问题发布
 - 评论
@@ -18,7 +21,7 @@
 ### 注册登录模块
 为了保证用户信息安全，系统对用户密码采用`salt + md5` 方式进行加密。用户注册/登录成功后，系统会生成一个`ticket`，将`ticket`与用户`id`相关联，并将此信息插入到数据库表`login_ticket`中，同时将`ticket`响应给客户端。
 
-用户每次请求页面的时候，都需要先经过`PassportInterceptor`拦截器，拦截器判断此`ticket`是否真实有效，若是，根据ticket对应的用户id，查出相应用户信息，并添加至页面上下文中。
+用户每次请求页面的时候，都需要先经过`PassportInterceptor`拦截器，拦截器判断此`ticket`是否真实有效，若是，根据`ticket`对应的用户`id`，查出相应用户信息，并添加至页面上下文中。
 
 ### 问题发布模块
 敏感词、 `JS` 标签过滤(前缀树实现)
@@ -67,3 +70,9 @@
 | id | content | user_id | created_date | entity_id | entity_type |
 |-----|-----|------|-----|-----|-----|
 | 1 | 内容   | 1 | 2018/5/20| 1 | ENTITY_TYPE.COMMENT |
+
+### feed
+| id | created_date | user_id | data | type |
+|-----|-----|------|-----|-----|
+| 1 | 2018/5/20   | 1 | 数据 | 4 |
+
