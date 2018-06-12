@@ -31,12 +31,12 @@ public class SensitiveService implements InitializingBean{
             InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("SensitiveWords.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String lineTxt;
+
+            // 循环读取敏感词文本中的每一行
             while ((lineTxt = br.readLine()) != null) {
                 addWord(lineTxt.trim());
             }
-
             br.close();
-
 
         } catch (Exception e) {
             logger.error("读取敏感词文件失败:" + e.getMessage());
@@ -60,7 +60,7 @@ public class SensitiveService implements InitializingBean{
                 continue;
             }
 
-            //判断temp下是否有此子结点
+            // 判断temp下是否有此子结点
             TrieNode node = tempNode.getSubNode(c);
             if (node == null) {
                 // 没有此结点，则新建一个结点
@@ -77,7 +77,10 @@ public class SensitiveService implements InitializingBean{
 
 
     /**
-     * 前缀树结点
+     * 前缀树结点：
+     * 1）根结点不包含字符，除根结点外每一个结点都只包含一个字符
+     * 2）从根结点到某一结点，路径上经过的字符连接起来，为该结点对应的字符串
+     * 3）每个结点的所有子结点包含的字符都不相同
      */
     private class TrieNode {
         // 表示是否是敏感词的结尾
@@ -90,6 +93,7 @@ public class SensitiveService implements InitializingBean{
             subNodes.put(key, node);
         }
 
+        // 根据key获取map中的某个子结点
         TrieNode getSubNode(Character key) {
             return subNodes.get(key);
         }
@@ -117,17 +121,22 @@ public class SensitiveService implements InitializingBean{
 
     /**
      * 敏感词过滤方法
-     * @param text
-     * @return
+     * @param text UGC
+     * @return 过滤后的UGC
      */
     public String filter(String text) {
         if (StringUtils.isEmpty(text)) {
+            // 空文本直接返回
             return text;
         }
 
         StringBuilder result = new StringBuilder();
+
+        // replacement作为敏感词的替换
         String replacement = "***";
         TrieNode tempNode = root;
+
+        // begin和position均指向text
         int begin = 0;
         int position = 0;
 
@@ -163,10 +172,8 @@ public class SensitiveService implements InitializingBean{
             }
 
         }
-
         result.append(text.substring(begin));
         return result.toString();
-
     }
 
 }

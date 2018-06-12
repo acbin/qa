@@ -72,7 +72,7 @@ public class PassportInterceptor implements HandlerInterceptor{
 
 
     /**
-     * 在渲染页面之前，回调postHanlde
+     * 在渲染页面之前，回调postHandle
      * @param request
      * @param response
      * @param handler
