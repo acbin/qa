@@ -1,12 +1,24 @@
-# 问答社区
-Q & A Website Demo
+# Q & A 问答社区
 
-## 1. 技术选型
-SpringBoot + MyBatis + FreeMarker
+## 网站简介
 
-## 2. 功能规划
+**QA** 是一个基于 [B/S](https://zh.wikipedia.org/wiki/%E6%B5%8F%E8%A7%88%E5%99%A8-%E6%9C%8D%E5%8A%A1%E5%99%A8) 架构而设计开发的社区网站，主要为用户提供以下服务：
 
-### 用户注册登录模块
+- 问题发布
+- 评论
+- 用户私信
+- 关注
+- 站内全文搜索
+
+## 技术选型
+[Spring Boot](https://spring.io/projects/spring-boot) + [MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html) + MySQL + [Redis](https://redis.io/) + [FreeMarker](http://freemarker.foofun.cn/index.html)
+
+## 功能描述
+
+### 注册登录模块
+为了保证用户信息安全，系统对用户密码采用`salt + md5` 方式进行加密。用户注册/登录成功后，系统会生成一个`ticket`，将`ticket`与用户`id`相关联，并将此信息插入到数据库表`login_ticket`中，同时将`ticket`响应给客户端。
+
+用户每次请求页面的时候，都需要先经过`PassportInterceptor`拦截器，拦截器判断此`ticket`是否真实有效，若是，根据ticket对应的用户id，查出相应用户信息，并添加至页面上下文中。
 
 ### 问题发布模块
 敏感词、 `JS` 标签过滤(前缀树实现)
@@ -30,24 +42,28 @@ SpringBoot + MyBatis + FreeMarker
 
 ###  站内全文搜索
 
-## 3. 数据库字段设计
-### 用户(User)
+## 数据库表字段设计
+### user
 | id | name | password | salt | head_url |
 |-----|-----|------|-----|-----|
 | 1 | bingo   | 123 | xxx | xxx |
 
-### 站内信(Message)
-| id | fromid | toid | content | conversation_id | created_date |
+### login_ticket
+| id | user_id | ticket | expired | status |
+|-----|-----|------|-----|-----|
+| 1 | 3 | 91fb5280710040059bb86dbf7dc9eeda | 2018/5/12 | 1 |
+
+### message
+| id | from_id | to_id | content | conversation_id | created_date |
 |-----|-----|------|-----|-----|-----|
 | 1 | 1   | 2 | 内容 | 1-2 | 2018/5/20|
 
-### 问题(Question)
+### question
 | id | title | content | user_id | created_date | comment_count |
 |-----|-----|------|-----|-----|-----|
 | 1 | 标题   | 内容 | 1 | 2018/5/20| 3 |
 
-### 评论(Comment)
+### comment
 | id | content | user_id | created_date | entity_id | entity_type |
 |-----|-----|------|-----|-----|-----|
 | 1 | 内容   | 1 | 2018/5/20| 1 | ENTITY_TYPE.COMMENT |
-
