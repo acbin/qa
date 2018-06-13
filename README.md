@@ -48,32 +48,47 @@
 
 ## 数据库表字段设计
 ### user
-| id | name | password | salt | head_url |
-|-----|-----|------|-----|-----|
-| 1 | bingo   | 123 | xxx | xxx |
+- id
+- name
+- password
+- salt
+- head_url
 
 ### login_ticket
-| id | user_id | ticket | expired | status |
-|-----|-----|------|-----|-----|
-| 1 | 3 | 91fb5280710040059bb86dbf7dc9eeda | 2018/5/12 | 1 |
+- id
+- user_id
+- ticket
+- expired
+- status
 
 ### message
-| id | from_id | to_id | content | conversation_id | created_date |
-|-----|-----|------|-----|-----|-----|
-| 1 | 1   | 2 | 内容 | 1-2 | 2018/5/20|
+- id
+- from_id
+- to_id
+- content
+- conversation_id
+- created_date
 
 ### question
-| id | title | content | user_id | created_date | comment_count |
-|-----|-----|------|-----|-----|-----|
-| 1 | 标题   | 内容 | 1 | 2018/5/20| 3 |
+- id
+- title
+- content
+- user_id
+- created_date
+- comment_count
 
 ### comment
-| id | content | user_id | created_date | entity_id | entity_type |
-|-----|-----|------|-----|-----|-----|
-| 1 | 内容   | 1 | 2018/5/20| 1 | ENTITY_TYPE.COMMENT |
+- id
+- content
+- user_id
+- created_date
+- entity_id
+- entity_type
 
 ### feed
-| id | created_date | user_id | data | type |
-|-----|-----|------|-----|-----|
-| 1 | 2018/5/20   | 1 | 数据 | 4 |
+- id
+- created_date
+- user_id
+- data
+- type
 
