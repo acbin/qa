@@ -5,7 +5,8 @@ jdk:
 
 before_install:
   - chmod +x mvnw
-  - pip install --user codecov
+
+script: "mvn cobertura:cobertura"
 
 after_success:
-  - codecov
+  - bash <(curl -s https://codecov.io/bash)
