@@ -7,7 +7,5 @@ before_install:
   - chmod +x mvnw
   - pip install --user codecov
 
-install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
-
 after_success:
   - codecov
