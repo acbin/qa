@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +25,9 @@ public class QuestionController {
 
     @Autowired
     QuestionService questionService;
+
+    @Autowired
+    SensitiveService sensitiveService;
 
     @Autowired
     HostHolder hostHolder;
@@ -49,18 +53,27 @@ public class QuestionController {
                               @RequestParam("content") String content) {
 
         try {
+            // 从hostHolder中取出用户
+            User user = hostHolder.getUser();
+            if (user ==  null) {
+                // 未登录，直接返回
+                return QaUtil.getJSONString(999);
+            }
+
             Question question = new Question();
+            question.setUserId(user.getId());
+
+            // 过滤title和content中的html标签和敏感词
+            title = sensitiveService.filter(HtmlUtils.htmlEscape(title));
+            content = sensitiveService.filter(HtmlUtils.htmlEscape(content));
+
             question.setTitle(title);
             question.setContent(content);
             question.setCreatedDate(new Date());
             question.setCommentCount(0);
-            if (hostHolder.getUser() == null) {
-                return QaUtil.getJSONString(999);
-            }
-
-            question.setUserId(hostHolder.getUser().getId());
 
             int res = questionService.addQuestion(question);
+
             if (res > 0) {
                 // 添加问题成功之后，发送一个事件
                 eventProducer.fireEvent(new EventModel(EventType.ADD_QUESTION)
@@ -83,7 +96,7 @@ public class QuestionController {
                                  @PathVariable("qid") int qid) {
         Question question = questionService.getQuestionById(qid);
         model.addAttribute("question", question);
-        // model.addAttribute("user", userService.selectById(question.getUserId()));
+
         List<Comment> commentList = commentService.getCommentsByEntity(qid, EntityType.ENTITY_QUESTION);
         List<ViewObject> vos = new ArrayList<>();
         for (Comment comment : commentList) {
@@ -122,7 +135,6 @@ public class QuestionController {
         } else {
             model.addAttribute("followed", false);
         }
-
         return "detail";
     }
 
