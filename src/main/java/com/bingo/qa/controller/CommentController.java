@@ -6,14 +6,17 @@ import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.Comment;
 import com.bingo.qa.model.EntityType;
 import com.bingo.qa.model.HostHolder;
+import com.bingo.qa.model.User;
 import com.bingo.qa.service.CommentService;
 import com.bingo.qa.service.QuestionService;
+import com.bingo.qa.service.SensitiveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.Date;
 
@@ -32,33 +35,54 @@ public class CommentController {
     QuestionService questionService;
 
     @Autowired
+    SensitiveService sensitiveService;
+
+    @Autowired
     EventProducer eventProducer;
 
+    /**
+     *
+     * @param questionId 评论所对应的问题ID
+     * @param content 评论的内容
+     * @return question页面
+     */
     @PostMapping(value = {"/addComment"})
     public String addComment(@RequestParam("questionId") int questionId,
                              @RequestParam("content") String content) {
 
         try {
-            Comment comment = new Comment();
-            comment.setContent(content);
-            if (hostHolder.getUser() == null) {
+            // 从hostHolder中取出用户
+            User user = hostHolder.getUser();
+            if (user == null) {
+                // 未登录，直接重定向到登录页面
                 return "redirect:/reglogin";
-            } else {
-                comment.setUserId(hostHolder.getUser().getId());
             }
+
+            Comment comment = new Comment();
+            comment.setUserId(user.getId());
+
+            // 过滤评论内容中的html标签和敏感词
+            content = sensitiveService.filter(HtmlUtils.htmlEscape(content));
+            comment.setContent(content);
+
+            // 设置评论时间
             comment.setCreatedDate(new Date());
+
+            // 设置评论对应的实体类型和ID
             comment.setEntityType(EntityType.ENTITY_QUESTION);
             comment.setEntityId(questionId);
+
+            // 将评论添加至数据库
             commentService.addComment(comment);
 
-            // 获得总评论数
+            // 查出当前评论对应的问题的总评论数
             int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
-            // System.out.println("评论数:" + count);
 
             // 更新问题的总评论数
             questionService.updateCommentCount(comment.getEntityId(), count);
 
-            eventProducer.fireEvent(new EventModel(EventType.COMMENT).setActorId(comment.getUserId())
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT)
+                    .setActorId(comment.getUserId())
                     .setEntityId(questionId));
 
         } catch (Exception e) {
