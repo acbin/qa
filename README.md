@@ -19,16 +19,44 @@
 
 ## 功能描述
 
-### 注册登录模块
-为了保证用户信息安全，系统对用户密码采用`salt + md5` 方式进行加密。用户注册/登录成功后，系统会生成一个`ticket`，将`ticket`与用户`id`相关联，并将此信息插入到数据库表`login_ticket`中，同时将`ticket`响应给客户端。
+### 注册登录
+为了保证用户信息安全，系统对用户密码采用「salt + md5」方式进行加密。用户注册/登录成功后，系统会生成一个 ticket ，将 ticket 与用户 id 相关联，并将此信息插入到数据库表 login_ticket 中，同时将 ticket 响应给客户端。
 
-用户每次请求页面的时候，都需要先经过`PassportInterceptor`拦截器，拦截器判断此`ticket`是否真实有效，若是，根据`ticket`对应的用户`id`，查出相应用户信息，并添加至页面上下文中。
+用户每次请求页面的时候，都需要先经过 PassportInterceptor 拦截器，拦截器判断此 ticket 是否真实有效，若是，根据 ticket 对应的用户 id ，查出相应用户信息，并添加至页面上下文中。
 
-### 问题发布模块
-敏感词、 `JS` 标签过滤(前缀树实现)
+### 用户内容发布
+- 问题发布
+- 评论发布
+- 私信发布
 
-### 评论中心
-统一的评论服务：评论针对的实体可以是评论，也可以是问题
+在以上 **UGC** (User Generated Content, 用户产生的内容)中，系统都会进行 HTML 标签及敏感词过滤，这在一定程度上防止网站被注入<script>脚本或者充斥着不良信息。
+
+对于**敏感词过滤**，采用「前缀树」方式实现，前缀树结点结构如下：
+
+```java
+class TrieNode {
+    // 标记是否为敏感词结尾
+    boolean end;
+    
+    // 该结点的所有直接子结点
+    Map<Character, TrieNode> subNodes = new HashMap<>();
+    
+    // 添加一个子结点
+    void addSubNode(Character key, TrieNode node) {
+        subNodes.put(key, node);
+    }
+    
+    // 根据key获取子结点
+    TrieNode getSubNode(Character key) {
+        return subNodes.get(key);
+    }
+}
+```
+
+从敏感词文件 SensitiveWords.txt 顺序读取每一行，建立前缀树。进行过滤时，遍历需要过滤的文本，用星号替换发现的敏感词。
+
+对于**评论功能**，系统依靠 EntityType 与 EntityId 识别所评论的实体，从而建立起一个统一的评论服务中心。用户对于问题/评论的回复，都可以应用此服务。查询某实体下的评论时，同样根据 EntityType 和 EntityId 查询即可。 
+
 
 ###  站内信
 未读消息实现
