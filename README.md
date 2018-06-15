@@ -89,8 +89,45 @@ Redis 适合放一些频繁使用、比较热的数据。因为数据放在了�
 最后将点赞数响应给页面。
 
 
-### 异步队列
+### 异步事件处理
+本项目涉及到多种异步事件的处理。如：
 
+- 用户评论了某个问题
+- 用户点赞了某条评论
+- 用户关注了另一个用户
+
+这些动作并不是单一的，它们会触发一些后续的操作：
+> 用户评论了某个问题，系统除了处理“评论”这个动作外，还需要给该问题对应的用户发送一条消息，通知说“xx评论你的问题”，或者还需要给用户增加积分/经验...
+
+事件触发者并不关心这些后续的任务，系统处理完某个动作后就可以将结果返回给触发者，而后续的任务交给系统进行异步处理即可。
+
+因此，设计一个异步事件处理框架尤为重要。
+本项目的异步框架如下图所示：
+
+![Async Event](http://p9ucdlghd.bkt.clouddn.com/event.jpg)
+
+业务触发一个异步事件，EventProducer 将该事件(EventModel)序列化并存入队列(Redis List)中，EventConsumer开启线程循环从队列中取出事件，识别该事件的类型，找出该类型对应的一系列 EventHandler，交由这些 Handler 去处理。
+
+EventModel的设计如下：
+```java
+class EventModel {
+    // 事件类型
+    EventType type;
+    
+    // 事件触发者
+    int actorId;
+    
+    // 事件对应的实体
+    int entityType;
+    int entityId;
+    
+    // 事件对应的实体的Owner
+    int entityOwnerId;
+    
+    // 一些扩展字段
+    Map<String, String> exts;
+}
+```
 
 ###  SNS 关注功能，关注和粉丝列表页实现
 
