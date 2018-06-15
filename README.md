@@ -130,74 +130,53 @@ class EventModel {
 ```
 
 ###  SNS 关注服务
-与评论功能类似，对于关注功能，系统建立的是一个统一的关注服务中心，用户既可以关注不同的实体(问题/用户)，只需要通过 EntityType 和 EntityId 识别即可。
+与评论功能类似，对于关注功能，系统同样建立了一个统一的关注服务中心，用户可以关注不同的实体(问题/用户)，只需要通过 EntityType 和 EntityId 识别即可。
 在数据存储方面，采用 Redis 的 zset 完成，原因有以下几个：
 
-- zset 有序，系统可以更新用户关注的时间倒序排列，获取最新的关注列表；
+- zset 有序，系统可以根据用户关注实体的时间倒序排列，获取最新的关注列表；
 - zset 去重，用户不能重复关注同一个实体；
 - zset 可以获取两用户之间的共同关注。
 
-一个用户，系统存储两个集合，①保存用户关注的实体，②保存关注用户的人。即 A 是 B 的粉丝，B 是 A 的关注对象。[[参考资料](https://segmentfault.com/n/1330000004260609)]
+一个用户，系统存储两个集合：①保存用户关注的实体；②保存关注用户的人。即 A 是 B 的粉丝，B 是 A 的关注对象。[ [参考资料](https://segmentfault.com/n/1330000004260609) ]
 
 用户关注了一个问题，需要发生两个动作：
 
 - 将问题存入①中
-- 在②中存入用户id
+- 在②中存入用户 id
 
 这两个动作必须同时发生，因此，这里用到了 Redis 事务保证原子性和数据的一致性。
 
 另外，对于关注功能，如前面所说，会触发异步事件，将消息通知被关注的实体 / 实体 Owner。
 
+### 用户内容排名
 
-### Timeline 实现
+本系统未采用排名算法。若要了解相关算法，可以参考如下资料：
+
+- [基于用户投票的排名算法（一）：Delicious和Hacker News](http://www.ruanyifeng.com/blog/2012/02/ranking_algorithm_hacker_news.html)
+- [基于用户投票的排名算法（二）：Reddit](http://www.ruanyifeng.com/blog/2012/03/ranking_algorithm_reddit.html)
+- [基于用户投票的排名算法（三）：Stack Overflow](http://www.ruanyifeng.com/blog/2012/03/ranking_algorithm_stack_overflow.html)
+- [基于用户投票的排名算法（四）：牛顿冷却定律](http://www.ruanyifeng.com/blog/2012/03/ranking_algorithm_newton_s_law_of_cooling.html)
+- [基于用户投票的排名算法（五）：威尔逊区间](http://www.ruanyifeng.com/blog/2012/03/ranking_algorithm_wilson_score_interval.html)
+- [基于用户投票的排名算法（六）：贝叶斯平均](http://www.ruanyifeng.com/blog/2012/03/ranking_algorithm_bayesian_average.html)
+
+### Timeline Feed 流服务
+当用户更新动态时，该用户所有粉丝都可以在一定时间内收到新的动态（也称为新鲜事、feed），可以由 “推拉模式” 实现。
+
+| 模式 | 定义 | 优缺点 |
+| ---- | ---- | ---- |
+| 推 | 事件触发后广播给所有粉丝 | 对于粉丝数过多的事件，后台压力较大，浪费存储空间。<br>流程清晰，开发难度低，关注新用户需要同步更新 feed 流|
+| 拉 | 登录打开页面时，根据关注的实体动态生成 timeline 内容 | 读取压力大，存储占用小，缓存最新读取的 feed, 根据时间分区拉取 |
+| 推拉 | 活跃/在线用户推，其他用户拉 | 降低存储空间，又满足大部分用户的读取需求 |
+
+关于推拉模式，可以参考[ [微博 feed 系统推拉模式](https://www.cnblogs.com/sunli/archive/2010/08/24/twitter_feeds_push_pull.html
+) ]。
+
 
 ### Python 爬虫实现数据抓取和导入
 
+
+
 ###  站内全文搜索
 
-## 数据库表字段设计
-### user
-- id
-- name
-- password
-- salt
-- head_url
 
-### login_ticket
-- id
-- user_id
-- ticket
-- expired
-- status
-
-### message
-- id
-- from_id
-- to_id
-- content
-- conversation_id
-- created_date
-
-### question
-- id
-- title
-- content
-- user_id
-- created_date
-- comment_count
-
-### comment
-- id
-- content
-- user_id
-- created_date
-- entity_id
-- entity_type
-
-### feed
-- id
-- created_date
-- user_id
-- data
-- type
 
