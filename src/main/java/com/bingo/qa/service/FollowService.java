@@ -17,6 +17,7 @@ import java.util.Set;
  */
 @Service
 public class FollowService {
+
     @Autowired
     JedisAdapter jedisAdapter;
 
@@ -36,10 +37,11 @@ public class FollowService {
 
         Date date = new Date();
         Jedis jedis = jedisAdapter.getJedis();
+
         // 此处开启redis事务，确保数据一致性
         Transaction tx = jedisAdapter.multi(jedis);
 
-        // 某个实体下的粉丝列表
+        // 某个实体下的粉丝列表(时间戳作为score)
         tx.zadd(followerKey, date.getTime(), userId + "");
 
         // 某个实体下关注的类型列表
@@ -50,8 +52,6 @@ public class FollowService {
 
         // 返回结果数量为2，并且每个结果返回值均大于0，则返回true
         return ret.size() == 2 && (Long) ret.get(0) > 0 && (Long) ret.get(1) > 0;
-
-
     }
 
     /**
@@ -117,7 +117,6 @@ public class FollowService {
     }
 
 
-
     /**
      * 获取某一用户关注的某一类型 的 实体列表（不带offset）
      * @param entityType
@@ -177,7 +176,4 @@ public class FollowService {
         // 每个成员的score越大，表示越是新近关注
         return jedisAdapter.zscore(followerKey, userId + "") != null;
     }
-
-
-
 }

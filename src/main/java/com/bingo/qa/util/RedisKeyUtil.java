@@ -5,6 +5,7 @@ public class RedisKeyUtil {
     private static String BIZ_LIKE = "LIKE";
     private static String BIZ_DISLIKE = "DISLIKE";
 
+    // 事件队列
     private static String BIZ_EVENTQUEUE = "EVENT_QUEUE";
 
     // 实体下的粉丝(关注者)
@@ -17,7 +18,7 @@ public class RedisKeyUtil {
     private static String BIZ_TIME_LINE = "TIMELINE";
 
     public static String getLikeKey(int entityType, int entityId) {
-        return BIZ_LIKE + SPLIT + String.valueOf(entityType) + SPLIT + String.valueOf(entityId);
+        return BIZ_LIKE + SPLIT + entityType + SPLIT + entityId;
     }
 
     // 每个用户都有自己的timeline key(由 TIMELINE+ userId 组成)
@@ -25,9 +26,8 @@ public class RedisKeyUtil {
         return BIZ_TIME_LINE + SPLIT + userId;
     }
 
-    
     public static String getDisLikeKey(int entityType, int entityId) {
-        return BIZ_DISLIKE + SPLIT + String.valueOf(entityType)+ SPLIT + String.valueOf(entityId);
+        return BIZ_DISLIKE + SPLIT + entityType+ SPLIT + entityId;
     }
 
     public static String getEventQueueKey() {
@@ -53,5 +53,4 @@ public class RedisKeyUtil {
     public static String getFolloweeKey(int userId, int entityType) {
         return BIZ_FOLLOWEE + SPLIT + userId + SPLIT + entityType;
     }
-
 }
