@@ -7,48 +7,72 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LikeService {
+
     @Autowired
     JedisAdapter jedisAdapter;
 
-
-    // 某个人喜欢了某个东西
-    // 某个实体(作为key)，有多少个人点赞(一个用户点一个赞，则将该用户id add)
+    /**
+     * 当前登录用户点赞某一实体(实体：EntityType + EntityId)
+     * 实体作为key，userId作为value，添加进like set集合，同时移除disLike集合中的userId
+     * @param userId
+     * @param entityType
+     * @param entityId
+     * @return
+     */
     public long like(int userId, int entityType, int entityId) {
         String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
-        jedisAdapter.sadd(likeKey, String.valueOf(userId));
+        jedisAdapter.sadd(likeKey, userId + "");
 
         String disLikeKey = RedisKeyUtil.getDisLikeKey(entityType, entityId);
-        jedisAdapter.srem(disLikeKey, String.valueOf(userId));
+        jedisAdapter.srem(disLikeKey, userId + "");
 
         return jedisAdapter.scard(likeKey);
     }
 
+
+    /**
+     * 当前登录用户点踩某一实体
+     * @param userId
+     * @param entityType
+     * @param entityId
+     * @return
+     */
     public long disLike(int userId, int entityType, int entityId) {
         String disLikeKey = RedisKeyUtil.getDisLikeKey(entityType, entityId);
-        jedisAdapter.sadd(disLikeKey, String.valueOf(userId));
+        jedisAdapter.sadd(disLikeKey, userId + "");
 
         String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
-        jedisAdapter.srem(likeKey, String.valueOf(userId));
+        jedisAdapter.srem(likeKey, userId + "");
 
         return jedisAdapter.scard(likeKey);
     }
 
-    // 返回用户对实体的喜欢状态
+    /**
+     * 返回用户对实体的喜欢状态(1:赞 -1:踩 0:不赞不踩)
+     * @param userId
+     * @param entityType
+     * @param entityId
+     * @return
+     */
     public int getLikeStatus(int userId, int entityType, int entityId) {
         String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
-        if (jedisAdapter.sismember(likeKey, String.valueOf(userId))) {
+        if (jedisAdapter.sismember(likeKey, userId + "")) {
             return 1;
         }
 
         String disLikeKey = RedisKeyUtil.getDisLikeKey(entityType, entityId);
-        return jedisAdapter.sismember(disLikeKey, String.valueOf(userId)) ? -1 : 0;
+        return jedisAdapter.sismember(disLikeKey, userId + "") ? -1 : 0;
 
     }
 
-    // 实体有多少人喜欢
+    /**
+     * 返回某实体的点赞数
+     * @param entityType
+     * @param entityId
+     * @return
+     */
     public long getLikeCount(int entityType, int entityId) {
         String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
         return jedisAdapter.scard(likeKey);
     }
-
 }

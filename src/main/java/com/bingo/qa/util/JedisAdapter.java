@@ -83,7 +83,6 @@ public class JedisAdapter implements InitializingBean{
             }
         }
 
-
         return false;
     }
 
@@ -99,7 +98,6 @@ public class JedisAdapter implements InitializingBean{
                 jedis.close();
             }
         }
-
 
         return 0;
     }
