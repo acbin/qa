@@ -3,10 +3,7 @@ package com.bingo.qa.controller;
 import com.bingo.qa.async.EventModel;
 import com.bingo.qa.async.EventProducer;
 import com.bingo.qa.async.EventType;
-import com.bingo.qa.model.Comment;
-import com.bingo.qa.model.EntityType;
-import com.bingo.qa.model.HostHolder;
-import com.bingo.qa.model.User;
+import com.bingo.qa.model.*;
 import com.bingo.qa.service.CommentService;
 import com.bingo.qa.service.QuestionService;
 import com.bingo.qa.service.SensitiveService;
@@ -81,9 +78,13 @@ public class CommentController {
             // 更新问题的总评论数
             questionService.updateCommentCount(comment.getEntityId(), count);
 
+            Question question = questionService.getQuestionById(questionId);
+
+            // 这是一个评论事件
             eventProducer.fireEvent(new EventModel(EventType.COMMENT)
                     .setActorId(comment.getUserId())
-                    .setEntityId(questionId));
+                    .setEntityOwnerId(question.getUserId())
+                    .setEntityId(question.getId()));
 
         } catch (Exception e) {
             logger.error("增加评论失败" + e.getMessage());
@@ -91,8 +92,5 @@ public class CommentController {
 
         return "redirect:/question/" + questionId;
     }
-
-
-
 
 }
