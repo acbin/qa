@@ -20,10 +20,11 @@ public class EventProducer {
     public boolean fireEvent(EventModel eventModel) {
         try {
             String json = JSONObject.toJSONString(eventModel);
-            String key = RedisKeyUtil.getEventQueueKey();
-            // Model序列化，并存放到redis list队列中
-            jedisAdapter.lpush(key, json);
 
+            // key: EVENT_QUEUE
+            String key = RedisKeyUtil.getEventQueueKey();
+            // 将eventModel序列化，并存放到redis list队列中
+            jedisAdapter.lpush(key, json);
             return true;
         } catch (Exception e) {
             return false;

@@ -18,10 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
 /**
  * 将队列中的event取出,将event与handler关联起来
  */
+@Service
 public class EventConsumer implements InitializingBean, ApplicationContextAware{
 
     @Autowired
@@ -29,71 +29,76 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware{
 
     private static final Logger logger = LoggerFactory.getLogger(EventConsumer.class);
 
-    // 每个EventType，对应一系列的EventHandler
+    // 每个eventType对应一系列的eventHandler
     private Map<EventType, List<EventHandler>> config = new HashMap<>();
 
     private ApplicationContext applicationContext;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        //找到所有实现EventHandler接口的类
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        // 通过applicationContext找到所有实现EventHandler接口的类
+        // key为bean的名字，key对应的value为bean的实例(eventHandler)
         Map<String, EventHandler> beans = applicationContext.getBeansOfType(EventHandler.class);
 
         if (beans != null) {
             for (Map.Entry<String, EventHandler> entry : beans.entrySet()) {
-                // 找出每个Handler所关注的EventType
-                // entry.getValue()就是一个Handler
-                List<EventType> eventTypes = entry.getValue().getSupportEventTypes();
+
+                // 实现EventHandler接口的类
+                EventHandler eventHandler = entry.getValue();
+
+                // 找到该Handler所关注的eventType
+                List<EventType> eventTypes = eventHandler.getSupportEventTypes();
+
                 if (eventTypes != null) {
-                    for (EventType type : eventTypes) {
-                        // 如果config不包含该type，添加至config中
-                        if (!config.containsKey(type)) {
-                            config.put(type, new ArrayList<>());
+                    for (EventType eventType : eventTypes) {
+                        if (!config.containsKey(eventType)) {
+                            config.put(eventType, new ArrayList<>());
                         }
-                        config.get(type).add(entry.getValue());
+
+                        // 为该eventType添加一个eventHandler
+                        config.get(eventType).add(eventHandler);
                     }
                 }
-
             }
         }
 
         // 以上代码执行完后，config包含所有的type以及每个type对应的List<EventHandler>
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    String key = RedisKeyUtil.getEventQueueKey();
-                    // 如果没有取到，就一直卡着
-                    List<String> events = jedisAdapter.brpop(0, key);
-                    for (String message : events) {
-                        if (message.equals(key)) {
-                            continue;
-                        }
-                        EventModel eventModel = JSON.parseObject(message, EventModel.class);
-                        if (!config.containsKey(eventModel.getType())) {
-                            // System.out.println(eventModel.getType());
-                            // logger.error("不能识别的type");
-                            continue;
-                        }
-                        EventType type = eventModel.getType();
-                        for (EventHandler handler : config.get(type)) {
-                            handler.doHandler(eventModel);
-                        }
-
+        new Thread(() -> {
+            String key = RedisKeyUtil.getEventQueueKey();
+            while (true) {
+                // Redis Brpop 命令移出并获取列表的最后一个元素
+                // 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止
+                // 返回一个含有两个元素的列表，第一个元素是被弹出元素所属的 key ，第二个元素是被弹出元素的值。
+                List<String> events = jedisAdapter.brpop(0, key);
+                for (String message : events) {
+                    if (message.equals(key)) {
+                        continue;
                     }
+
+                    // 将message json字符串转换为eventModel对象
+                    EventModel eventModel = JSON.parseObject(message, EventModel.class);
+                    if (!config.containsKey(eventModel.getType())) {
+                        // 该事件包含系统不能识别的eventType，直接跳过
+                        logger.error("不能识别的eventType");
+                        continue;
+                    }
+
+                    EventType type = eventModel.getType();
+
+                    // 交给该eventType对应的一系列handler处理
+                    for (EventHandler handler : config.get(type)) {
+                        handler.doHandler(eventModel);
+                    }
+
                 }
             }
-        });
-
-        thread.start();
-
-    }
-
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+        }).start();
     }
 
 }

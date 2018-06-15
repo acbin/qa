@@ -30,7 +30,6 @@ public class AddCommentHandler implements EventHandler {
         Message message = new Message();
         // 评论了某个实体
         // 实体对应的owner应该收到来自System的一条消息
-
         message.setFromId(QaUtil.SYSTEM_USERID);
         message.setToId(model.getEntityOwnerId());
         message.setCreatedDate(new Date());
