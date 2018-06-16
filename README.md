@@ -104,7 +104,7 @@ Redis 适合放一些频繁使用、比较热的数据。因为数据放在了�
 因此，设计一个异步事件处理框架尤为重要。
 本项目的异步框架如下图所示：
 
-![Async Event](http://p9ucdlghd.bkt.clouddn.com/event.jpg)
+![Async Event](http://p9ucdlghd.bkt.clouddn.com/event_ylb.jpg)
 
 业务触发一个异步事件，EventProducer 将该事件(EventModel)序列化并存入队列(Redis List)中，EventConsumer 开启线程循环从队列中取出事件，识别该事件的类型，找出该类型对应的一系列 EventHandler，交由这些 Handler 去处理。
 
@@ -169,20 +169,30 @@ class EventModel {
 | 模式 | 定义 | 优缺点 |
 | ---- | ---- | ---- |
 | 推 | 事件触发后广播给所有粉丝。 | 对于粉丝数过多的事件，后台压力较大，浪费存储空间；<br>流程清晰，开发难度低，关注新用户需要同步更新 feed 流。|
-| 拉 | 登录打开页面时，根据关注的实体动态生成 timeline 内容。 | 读取压力大，存储占用小，缓存最新读取的 feed，根据时间分区拉取。 |
+| 拉 | 登录打开页面时，根据关注的实体动态生成 Timeline 内容。 | 读取压力大，存储占用小，缓存最新读取的 feed，根据时间分区拉取。 |
 | 推拉 | 活跃/在线用户推，其他用户拉。 | 降低存储空间，又满足大部分用户的读取需求。 |
 
-具体来说，推模式就是：事件触发后产生 feed，触发事件的用户下所有粉丝的timeline(redis list 实现)中都存入该feed的 id。而拉模式，就是当前用户去拉取自己关注的人的 feed。
+具体来说，推模式就是：事件触发后产生 feed，触发事件的用户下所有粉丝的 Timeline(redis list 实现)中都存入该 feed 的 id。而拉模式，就是当前用户去拉取自己关注的人的 feed。
 
 更多关于推拉模式，可以参考[ [微博 feed 系统推拉模式](https://www.cnblogs.com/sunli/archive/2010/08/24/twitter_feeds_push_pull.html
 ) ]。
 
 
-### Python 爬虫实现数据抓取和导入
+### Python 爬虫
+由于系统初始数据较少，为了丰富网站内容，本项目采用 [pyspider](http://docs.pyspider.org/en/latest/) 实现对 [V2EX](https://www.v2ex.com/) 网站的数据爬取，存储到后台数据库，并展示在前端页面上。
 
+安装 pyspider：
 
+```
+pip install pyspider
+```
 
-###  站内全文搜索
+启动 pyspider：
+```
+pyspider
+```
+###  站内全文搜索服务
+本项目在全文搜索服务上采用 [Solr](http://lucene.apache.org/solr/) 框架，中文分词采用 Solr 自带的中文分词插件 solr_cnAnalyzer 。
 
 
 
