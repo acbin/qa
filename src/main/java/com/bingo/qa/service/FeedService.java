@@ -13,9 +13,17 @@ import java.util.List;
 
 @Service
 public class FeedService {
+
     @Autowired
     FeedDAO feedDAO;
 
+    /**
+     * 拉模式，把关注的所有用户的feed都查找出来
+     * @param maxId
+     * @param userIds
+     * @param count
+     * @return list
+     */
     public List<Feed> getUserFeeds(int maxId, List<Integer> userIds, int count) {
         return feedDAO.selectUserFeeds(maxId, userIds, count);
     }

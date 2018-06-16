@@ -44,6 +44,7 @@ public class FeedController {
         if (user != null) {
             localUserId = user.getId();
         }
+
         // 找到用户所有关注的人
         List<Integer> followees = followService.getFollowees(
                 EntityType.ENTITY_USER,

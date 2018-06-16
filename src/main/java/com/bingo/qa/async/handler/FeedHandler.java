@@ -35,6 +35,11 @@ public class FeedHandler implements EventHandler{
     @Autowired
     JedisAdapter jedisAdapter;
 
+    /**
+     * 构建新鲜事数据
+     * @param model
+     * @return
+     */
     private String buildFeedData(EventModel model) {
         Map<String, String> map = new HashMap<>();
         User actor = userService.selectById(model.getActorId());
@@ -42,9 +47,11 @@ public class FeedHandler implements EventHandler{
             return null;
         }
 
-        map.put("userId", String.valueOf(actor.getId()));
+        map.put("userId", actor.getId() + "");
         map.put("userHead", actor.getHeadUrl());
         map.put("userName", actor.getName());
+
+        // 当前是一个评论事件或者是一个用户关注了一个问题(排除"用户关注的是人"的情况)
         if (model.getType() == EventType.COMMENT ||
                 (model.getType() == EventType.FOLLOW && model.getEntityType() == EntityType.ENTITY_QUESTION)) {
             Question question = questionService.getQuestionById(model.getEntityId());
@@ -64,7 +71,11 @@ public class FeedHandler implements EventHandler{
         Feed feed = new Feed();
 
         feed.setCreatedDate(new Date());
+
+        // 新鲜事是谁发的
         feed.setUserId(model.getActorId());
+
+        // 新鲜事的类型
         feed.setType(model.getType().getValue());
 
         // data包括:userId, userHead, userName, questionId, questionTitle
@@ -73,15 +84,20 @@ public class FeedHandler implements EventHandler{
             return;
         }
 
-        // 将触发的事件存入数据库中
+        // 将新鲜事数据(json格式)存入数据库中
         feedService.addFeed(feed);
 
+        // 找出触发该事件的用户的粉丝
+        List<Integer> followers = followService.getFollowers(
+                EntityType.ENTITY_USER,
+                model.getActorId(),
+                Integer.MAX_VALUE);
 
-        // 将事件推给关注的粉丝(将事件的id存入每个关注该事件的粉丝的timeline中)
-        List<Integer> followers = followService.getFollowers(EntityType.ENTITY_USER, model.getActorId(), Integer.MAX_VALUE);
         followers.add(0);
         for (int follower : followers) {
             String timelineKey = RedisKeyUtil.getTimeLineKey(follower);
+            // 推模式
+            // 将新鲜事id放入每个粉丝的timeline(redis list)中
             jedisAdapter.lpush(timelineKey, feed.getId() + "");
         }
 
@@ -93,6 +109,7 @@ public class FeedHandler implements EventHandler{
     @Override
     public List<EventType> getSupportEventTypes() {
         // 该FeedHandler监听COMMENT、FOLLOW事件
+        // 当有评论或者关注事件发生时，此handler会被调用
         return Arrays.asList(new EventType[] {EventType.COMMENT, EventType.FOLLOW});
     }
 }
