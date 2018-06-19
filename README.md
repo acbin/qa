@@ -1,6 +1,6 @@
 # Q & A 问答社区
 
-**QA** 是一个基于 [B/S](https://zh.wikipedia.org/wiki/%E6%B5%8F%E8%A7%88%E5%99%A8-%E6%9C%8D%E5%8A%A1%E5%99%A8) 架构而设计开发的社区网站。
+**QA** 是一个基于 [B/S](https://zh.wikipedia.org/wiki/%E6%B5%8F%E8%A7%88%E5%99%A8-%E6%9C%8D%E5%8A%A1%E5%99%A8) 架构而设计开发的问答网站。
 
 [![Build Status](https://travis-ci.org/yanglbme/qa.svg?branch=master)](https://travis-ci.org/yanglbme/qa)
 [![Java Version](https://img.shields.io/badge/Java-%3E%3D8-blue.svg)](https://github.com/yanglbme/qa)
@@ -13,6 +13,11 @@
 - 用户私信
 - 关注
 - 站内全文搜索
+
+![Demo](http://p9ucdlghd.bkt.clouddn.com/index.png)
+
+![Demo](http://p9ucdlghd.bkt.clouddn.com/msglist.png)
+
 
 ## 技术选型
 [Spring Boot](https://spring.io/projects/spring-boot) + [MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html) + MySQL + [Redis](https://redis.io/) + [FreeMarker](http://freemarker.foofun.cn/index.html)
