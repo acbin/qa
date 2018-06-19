@@ -12,7 +12,7 @@
 - 评论
 - 用户私信
 - 关注
-- 站内全文搜索
+- 站内全文检索
 
 ![Demo](http://p9ucdlghd.bkt.clouddn.com/index.png)
 
@@ -200,8 +200,18 @@ pip install pyspider
 ```
 pyspider
 ```
-###  站内全文搜索服务
-本项目在全文搜索服务上采用 [Solr](http://lucene.apache.org/solr/) 框架，中文分词采用 Solr 自带的中文分词插件 solr_cnAnalyzer 。
+###  站内全文检索服务
+数据大致分为两种：
+
+- 结构化数据： 指具有固定格式或有限长度的数据，如数据库，元数据等。
+- 非结构化数据： 指不定长或无固定格式的数据，如邮件，word文档等。
+
+全文检索大体分两个过程，索引创建 (Indexing) 和搜索索引 (Search) 。
+
+- 索引创建：将现实世界中所有的结构化和非结构化数据提取信息，创建索引的过程。
+- 搜索索引：就是得到用户的查询请求，搜索创建的索引，然后返回结果的过程。
+
+本项目在全文检索服务上采用 [Solr](http://lucene.apache.org/solr/) 框架，中文分词采用 Solr 自带的中文分词插件 solr_cnAnalyzer 。
 
 
 
