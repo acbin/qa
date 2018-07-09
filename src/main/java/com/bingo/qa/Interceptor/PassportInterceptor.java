@@ -29,7 +29,7 @@ public class PassportInterceptor implements HandlerInterceptor{
     private HostHolder hostHolder;
 
     /**
-     * 在处理controller之前，调用preHandler
+     * 在处理controller之前，调用preHandle
      * @param request
      * @param response
      * @param handler

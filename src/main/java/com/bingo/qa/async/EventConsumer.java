@@ -20,6 +20,11 @@ import java.util.Map;
 
 /**
  * 将队列中的event取出,将event与handler关联起来
+ *
+ * 总体实现思路：
+ * 先从上下文获取一系列实现了 Handler 接口的类，每个 Handler 实现类都关注着多个不同类型的事件
+ * 我们的目标就是：找出某个类型的事件所对应的一系列 Handler
+ * 这样可以根据 EventModel 中的事件类型，交由一系列 Handler 去处理。
  */
 @Service
 public class EventConsumer implements InitializingBean, ApplicationContextAware{
