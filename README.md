@@ -183,6 +183,8 @@ class EventModel {
 
 具体来说，推模式就是：事件触发后产生 feed，触发事件的用户下所有粉丝的 Timeline(redis list 实现)中都存入该 feed 的 id。而拉模式，就是当前用户去拉取自己关注的人的 feed。
 
+这里其实是**观察者模式**的一个具体应用。推模式就是主题对象直接将数据传送给观察者对象；拉模式则是观察者对象间接去获取变化猴的主题数据，观察者自己把数据“拉”过来。
+
 更多关于推拉模式，可以参考[ [微博 feed 系统推拉模式](https://www.cnblogs.com/sunli/archive/2010/08/24/twitter_feeds_push_pull.html
 ) ]。
 
