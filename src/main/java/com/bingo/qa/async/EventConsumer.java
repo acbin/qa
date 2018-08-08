@@ -51,6 +51,7 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware{
         Map<String, EventHandler> beans = applicationContext.getBeansOfType(EventHandler.class);
 
         if (beans != null) {
+            // 此处可以使用 Java 8 Stream 形式
             for (Map.Entry<String, EventHandler> entry : beans.entrySet()) {
 
                 // 实现EventHandler接口的类
