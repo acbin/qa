@@ -217,5 +217,5 @@ pyspider
 
 本项目在全文检索服务上采用 [Solr](http://lucene.apache.org/solr/) 框架，中文分词采用 Solr 自带的中文分词插件 solr_cnAnalyzer 。
 
-
+这个项目还有很多需要优化，我会抽空更新。
 
