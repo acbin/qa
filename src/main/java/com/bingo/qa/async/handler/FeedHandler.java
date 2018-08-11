@@ -8,8 +8,8 @@ import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.*;
 import com.bingo.qa.service.impl.FeedServiceImpl;
 import com.bingo.qa.service.impl.FollowServiceImpl;
-import com.bingo.qa.service.impl.QuestionService;
-import com.bingo.qa.service.impl.UserService;
+import com.bingo.qa.service.impl.QuestionServiceImpl;
+import com.bingo.qa.service.impl.UserServiceImpl;
 import com.bingo.qa.util.JedisAdapter;
 import com.bingo.qa.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,10 @@ import java.util.*;
 public class FeedHandler implements EventHandler{
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     @Autowired
-    QuestionService questionService;
+    QuestionServiceImpl questionServiceImpl;
 
     @Autowired
     FeedServiceImpl feedServiceImpl;
@@ -42,7 +42,7 @@ public class FeedHandler implements EventHandler{
      */
     private String buildFeedData(EventModel model) {
         Map<String, String> map = new HashMap<>();
-        User actor = userService.selectById(model.getActorId());
+        User actor = userServiceImpl.selectById(model.getActorId());
         if (actor == null) {
             return null;
         }
@@ -54,7 +54,7 @@ public class FeedHandler implements EventHandler{
         // 当前是一个评论事件或者是一个用户关注了一个问题(排除"用户关注的是人"的情况)
         if (model.getType() == EventType.COMMENT ||
                 (model.getType() == EventType.FOLLOW && model.getEntityType() == EntityType.ENTITY_QUESTION)) {
-            Question question = questionService.getQuestionById(model.getEntityId());
+            Question question = questionServiceImpl.getQuestionById(model.getEntityId());
             if (question == null) {
                 return null;
             }

@@ -1,15 +1,20 @@
 package com.bingo.qa.service.impl;
 
-
 import com.bingo.qa.dao.MessageDAO;
 import com.bingo.qa.model.Message;
+import com.bingo.qa.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author bingo
+ * @since 2018/8/11
+ */
+
 @Service
-public class MessageService {
+public class MessageServiceImpl implements MessageService {
 
     @Autowired
     private MessageDAO messageDAO;
@@ -37,4 +42,5 @@ public class MessageService {
     public Message getById(int id) {
         return messageDAO.getById(id);
     }
+
 }

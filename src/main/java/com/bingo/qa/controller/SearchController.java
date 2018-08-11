@@ -3,10 +3,10 @@ package com.bingo.qa.controller;
 import com.bingo.qa.model.EntityType;
 import com.bingo.qa.model.Question;
 import com.bingo.qa.model.ViewObject;
-import com.bingo.qa.service.impl.FollowServiceImpl;
-import com.bingo.qa.service.impl.QuestionService;
-import com.bingo.qa.service.impl.SearchService;
-import com.bingo.qa.service.impl.UserService;
+import com.bingo.qa.service.FollowService;
+import com.bingo.qa.service.QuestionService;
+import com.bingo.qa.service.SearchService;
+import com.bingo.qa.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,13 @@ import java.util.List;
 
 @Controller
 public class SearchController {
-    private static final Logger logger = LoggerFactory.getLogger(SearchController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
     @Autowired
     SearchService searchService;
 
     @Autowired
-    FollowServiceImpl followService;
+    FollowService followService;
 
     @Autowired
     UserService userService;
@@ -69,7 +69,7 @@ public class SearchController {
             model.addAttribute("keyword", keyword);
 
         } catch (Exception e) {
-            logger.error("搜索评论失败:" + e.getMessage());
+            LOGGER.error("搜索评论失败:" + e.getMessage());
 
         }
 

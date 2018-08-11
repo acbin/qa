@@ -1,12 +1,13 @@
 package com.bingo.qa.service.impl;
 
+import com.bingo.qa.service.LikeService;
 import com.bingo.qa.util.JedisAdapter;
 import com.bingo.qa.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LikeService {
+public class LikeServiceImpl implements LikeService {
 
     @Autowired
     JedisAdapter jedisAdapter;

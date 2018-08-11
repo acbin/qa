@@ -5,7 +5,7 @@ import com.bingo.qa.async.EventModel;
 import com.bingo.qa.async.EventProducer;
 import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.*;
-import com.bingo.qa.service.impl.*;
+import com.bingo.qa.service.*;
 import com.bingo.qa.util.QaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import java.util.List;
 
 @Controller
 public class QuestionController {
-    private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuestionController.class);
 
     @Autowired
     QuestionService questionService;
@@ -36,13 +36,13 @@ public class QuestionController {
     UserService userService;
 
     @Autowired
-    CommentServiceImpl commentServiceImpl;
+    CommentService commentService;
 
     @Autowired
     LikeService likeService;
 
     @Autowired
-    FollowServiceImpl followService;
+    FollowService followService;
 
     @Autowired
     EventProducer eventProducer;
@@ -84,7 +84,7 @@ public class QuestionController {
             }
 
         } catch (Exception e) {
-            logger.error("增加问题失败" + e.getMessage());
+            LOGGER.error("增加问题失败" + e.getMessage());
         }
 
         return QaUtil.getJSONString(1, "失败");
@@ -97,7 +97,7 @@ public class QuestionController {
         Question question = questionService.getQuestionById(qid);
         model.addAttribute("question", question);
 
-        List<Comment> commentList = commentServiceImpl.getCommentsByEntity(qid, EntityType.ENTITY_QUESTION);
+        List<Comment> commentList = commentService.getCommentsByEntity(qid, EntityType.ENTITY_QUESTION);
         List<ViewObject> vos = new ArrayList<>();
         for (Comment comment : commentList) {
             ViewObject vo = new ViewObject();

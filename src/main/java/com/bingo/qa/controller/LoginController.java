@@ -1,7 +1,7 @@
 package com.bingo.qa.controller;
 
 
-import com.bingo.qa.service.impl.UserService;
+import com.bingo.qa.service.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private UserService userService;
@@ -68,7 +68,7 @@ public class LoginController {
             }
 
         } catch (Exception e) {
-            logger.error("注册异常: " + e.getMessage());
+            LOGGER.error("注册异常: " + e.getMessage());
             model.addAttribute("msg", "服务器错误");
             return "login";
         }
@@ -104,7 +104,7 @@ public class LoginController {
             }
 
         } catch (Exception e) {
-            logger.error("登录异常: " + e.getMessage());
+            LOGGER.error("登录异常: " + e.getMessage());
             return "login";
         }
     }

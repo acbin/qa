@@ -2,13 +2,14 @@ package com.bingo.qa.service.impl;
 
 import com.bingo.qa.dao.QuestionDAO;
 import com.bingo.qa.model.Question;
+import com.bingo.qa.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class QuestionService {
+public class QuestionServiceImpl implements QuestionService {
     @Autowired
     private QuestionDAO questionDAO;
 

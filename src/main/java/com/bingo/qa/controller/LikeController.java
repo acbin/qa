@@ -7,8 +7,8 @@ import com.bingo.qa.model.Comment;
 import com.bingo.qa.model.EntityType;
 import com.bingo.qa.model.HostHolder;
 import com.bingo.qa.model.User;
-import com.bingo.qa.service.impl.CommentServiceImpl;
-import com.bingo.qa.service.impl.LikeService;
+import com.bingo.qa.service.CommentService;
+import com.bingo.qa.service.LikeService;
 import com.bingo.qa.util.QaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ public class LikeController {
     EventProducer eventProducer;
 
     @Autowired
-    CommentServiceImpl commentServiceImpl;
+    CommentService commentService;
 
     @PostMapping(value = {"/like"})
     @ResponseBody
@@ -38,7 +38,7 @@ public class LikeController {
             return QaUtil.getJSONString(999);
         }
 
-        Comment comment = commentServiceImpl.getCommentById(commentId);
+        Comment comment = commentService.getCommentById(commentId);
 
         // 用户点了个赞，那么就发送一个event出去，通知被点赞的评论的owner
         eventProducer.fireEvent(new EventModel(EventType.LIKE)

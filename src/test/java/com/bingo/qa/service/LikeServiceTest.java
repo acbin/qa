@@ -1,13 +1,13 @@
 package com.bingo.qa.service;
 
-import com.bingo.qa.service.impl.LikeService;
+import com.bingo.qa.service.impl.LikeServiceImpl;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class LikeServiceTest {
 
     @Autowired
-    LikeService likeService;
+    LikeServiceImpl likeService;
 
     @Test
     public void like() {

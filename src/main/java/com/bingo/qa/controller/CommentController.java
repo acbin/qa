@@ -5,8 +5,8 @@ import com.bingo.qa.async.EventProducer;
 import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.*;
 import com.bingo.qa.service.CommentService;
-import com.bingo.qa.service.impl.QuestionService;
-import com.bingo.qa.service.impl.SensitiveService;
+import com.bingo.qa.service.QuestionService;
+import com.bingo.qa.service.SensitiveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.Date;
 @Controller
 public class CommentController {
 
-    private static Logger logger = LoggerFactory.getLogger(CommentController.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
 
     @Autowired
     HostHolder hostHolder;
@@ -87,7 +87,7 @@ public class CommentController {
                     .setEntityId(question.getId()));
 
         } catch (Exception e) {
-            logger.error("增加评论失败" + e.getMessage());
+            LOGGER.error("增加评论失败" + e.getMessage());
         }
 
         return "redirect:/question/" + questionId;
