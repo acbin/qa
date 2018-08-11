@@ -5,8 +5,7 @@ import com.bingo.qa.model.Feed;
 import java.util.List;
 
 /**
- * @author bingo
- * @since 2018/8/11
+ * Created by bingo on 2018/8/11.
  */
 
 public interface FeedService {

@@ -1,6 +1,7 @@
 package com.bingo.qa.service.impl;
 
 import com.bingo.qa.model.Question;
+import com.bingo.qa.service.SearchService;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 
 @Service
-public class SearchService {
+public class SearchServiceImpl implements SearchService {
 
 
     private static final String SOLR_ULR = "http://localhost:8983/solr/qa";

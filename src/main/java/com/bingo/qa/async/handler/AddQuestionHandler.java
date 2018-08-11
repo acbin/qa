@@ -3,7 +3,7 @@ package com.bingo.qa.async.handler;
 import com.bingo.qa.async.EventHandler;
 import com.bingo.qa.async.EventModel;
 import com.bingo.qa.async.EventType;
-import com.bingo.qa.service.impl.SearchService;
+import com.bingo.qa.service.impl.SearchServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +22,13 @@ public class AddQuestionHandler implements EventHandler{
     private static final Logger logger = LoggerFactory.getLogger(AddQuestionHandler.class);
 
     @Autowired
-    SearchService searchService;
+    SearchServiceImpl searchServiceImpl;
 
     @Override
     public void doHandler(EventModel model) {
         try {
             // 增加问题时，为问题增加索引
-            searchService.indexQuestion(model.getEntityId(),
+            searchServiceImpl.indexQuestion(model.getEntityId(),
                     model.getExt("title"), model.getExt("content"));
         } catch (Exception e) {
             logger.error("增加索引失败" + e.getMessage());

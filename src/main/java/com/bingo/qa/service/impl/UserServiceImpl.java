@@ -4,6 +4,7 @@ import com.bingo.qa.dao.LoginTicketDAO;
 import com.bingo.qa.dao.UserDAO;
 import com.bingo.qa.model.LoginTicket;
 import com.bingo.qa.model.User;
+import com.bingo.qa.service.UserService;
 import com.bingo.qa.util.QaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO userDAO;

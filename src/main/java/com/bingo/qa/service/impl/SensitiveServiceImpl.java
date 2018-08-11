@@ -1,5 +1,6 @@
 package com.bingo.qa.service.impl;
 
+import com.bingo.qa.service.SensitiveService;
 import org.apache.commons.lang3.CharUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class SensitiveService implements InitializingBean{
+public class SensitiveServiceImpl implements InitializingBean, SensitiveService {
 
-    private static final Logger logger = LoggerFactory.getLogger(SensitiveService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SensitiveServiceImpl.class);
 
 
     /**
@@ -24,7 +25,7 @@ public class SensitiveService implements InitializingBean{
      * @throws Exception
      */
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
         try {
             // 读取敏感词文件
@@ -39,7 +40,7 @@ public class SensitiveService implements InitializingBean{
             br.close();
 
         } catch (Exception e) {
-            logger.error("读取敏感词文件失败:" + e.getMessage());
+            LOGGER.error("读取敏感词文件失败:" + e.getMessage());
         }
 
     }
