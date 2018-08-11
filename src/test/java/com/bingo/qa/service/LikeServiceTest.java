@@ -1,9 +1,8 @@
 package com.bingo.qa.service;
 
+import com.bingo.qa.service.impl.LikeService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.junit.Assert.*;
 
 public class LikeServiceTest {
 

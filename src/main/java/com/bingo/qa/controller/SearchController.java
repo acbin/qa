@@ -3,10 +3,10 @@ package com.bingo.qa.controller;
 import com.bingo.qa.model.EntityType;
 import com.bingo.qa.model.Question;
 import com.bingo.qa.model.ViewObject;
-import com.bingo.qa.service.FollowService;
-import com.bingo.qa.service.QuestionService;
-import com.bingo.qa.service.SearchService;
-import com.bingo.qa.service.UserService;
+import com.bingo.qa.service.impl.FollowServiceImpl;
+import com.bingo.qa.service.impl.QuestionService;
+import com.bingo.qa.service.impl.SearchService;
+import com.bingo.qa.service.impl.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class SearchController {
     SearchService searchService;
 
     @Autowired
-    FollowService followService;
+    FollowServiceImpl followService;
 
     @Autowired
     UserService userService;

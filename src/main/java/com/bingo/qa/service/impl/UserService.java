@@ -1,4 +1,4 @@
-package com.bingo.qa.service;
+package com.bingo.qa.service.impl;
 
 import com.bingo.qa.dao.LoginTicketDAO;
 import com.bingo.qa.dao.UserDAO;

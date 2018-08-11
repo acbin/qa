@@ -5,7 +5,7 @@ import com.bingo.qa.model.Feed;
 import com.bingo.qa.model.HostHolder;
 import com.bingo.qa.model.User;
 import com.bingo.qa.service.FeedService;
-import com.bingo.qa.service.FollowService;
+import com.bingo.qa.service.impl.FollowServiceImpl;
 import com.bingo.qa.util.JedisAdapter;
 import com.bingo.qa.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class FeedController {
     HostHolder hostHolder;
 
     @Autowired
-    FollowService followService;
+    FollowServiceImpl followService;
 
     @Autowired
     JedisAdapter jedisAdapter;

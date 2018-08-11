@@ -1,7 +1,7 @@
 package com.bingo.qa.controller;
 
 
-import com.bingo.qa.service.UserService;
+import com.bingo.qa.service.impl.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

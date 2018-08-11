@@ -1,10 +1,10 @@
 package com.bingo.qa.controller;
 
 import com.bingo.qa.model.*;
-import com.bingo.qa.service.CommentService;
-import com.bingo.qa.service.FollowService;
-import com.bingo.qa.service.QuestionService;
-import com.bingo.qa.service.UserService;
+import com.bingo.qa.service.impl.CommentServiceImpl;
+import com.bingo.qa.service.impl.FollowServiceImpl;
+import com.bingo.qa.service.impl.QuestionService;
+import com.bingo.qa.service.impl.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,10 @@ public class IndexController {
     private HostHolder hostHolder;
 
     @Autowired
-    FollowService followService;
+    FollowServiceImpl followService;
 
     @Autowired
-    CommentService commentService;
+    CommentServiceImpl commentServiceImpl;
 
     @GetMapping(value = {"/", "/index"})
     public String index(Model model) {
@@ -67,7 +67,7 @@ public class IndexController {
         User user = userService.selectById(userId);
         ViewObject vo = new ViewObject();
         vo.set("user", user);
-        vo.set("commentCount", commentService.getUserCommentCount(userId));
+        vo.set("commentCount", commentServiceImpl.getUserCommentCount(userId));
         vo.set("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER, userId));
         vo.set("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER));
         if (hostHolder.getUser() != null) {

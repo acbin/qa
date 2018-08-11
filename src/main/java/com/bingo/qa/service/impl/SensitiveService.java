@@ -1,4 +1,4 @@
-package com.bingo.qa.service;
+package com.bingo.qa.service.impl;
 
 import org.apache.commons.lang3.CharUtils;
 import org.slf4j.Logger;

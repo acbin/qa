@@ -5,7 +5,7 @@ import com.bingo.qa.async.EventModel;
 import com.bingo.qa.async.EventProducer;
 import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.*;
-import com.bingo.qa.service.*;
+import com.bingo.qa.service.impl.*;
 import com.bingo.qa.util.QaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,13 +36,13 @@ public class QuestionController {
     UserService userService;
 
     @Autowired
-    CommentService commentService;
+    CommentServiceImpl commentServiceImpl;
 
     @Autowired
     LikeService likeService;
 
     @Autowired
-    FollowService followService;
+    FollowServiceImpl followService;
 
     @Autowired
     EventProducer eventProducer;
@@ -97,7 +97,7 @@ public class QuestionController {
         Question question = questionService.getQuestionById(qid);
         model.addAttribute("question", question);
 
-        List<Comment> commentList = commentService.getCommentsByEntity(qid, EntityType.ENTITY_QUESTION);
+        List<Comment> commentList = commentServiceImpl.getCommentsByEntity(qid, EntityType.ENTITY_QUESTION);
         List<ViewObject> vos = new ArrayList<>();
         for (Comment comment : commentList) {
             ViewObject vo = new ViewObject();

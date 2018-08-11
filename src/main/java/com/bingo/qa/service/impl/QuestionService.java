@@ -1,4 +1,4 @@
-package com.bingo.qa.service;
+package com.bingo.qa.service.impl;
 
 import com.bingo.qa.dao.QuestionDAO;
 import com.bingo.qa.model.Question;

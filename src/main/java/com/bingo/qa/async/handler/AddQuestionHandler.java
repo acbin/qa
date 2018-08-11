@@ -3,7 +3,7 @@ package com.bingo.qa.async.handler;
 import com.bingo.qa.async.EventHandler;
 import com.bingo.qa.async.EventModel;
 import com.bingo.qa.async.EventType;
-import com.bingo.qa.service.SearchService;
+import com.bingo.qa.service.impl.SearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

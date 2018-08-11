@@ -6,10 +6,10 @@ import com.bingo.qa.async.EventHandler;
 import com.bingo.qa.async.EventModel;
 import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.*;
-import com.bingo.qa.service.FeedService;
-import com.bingo.qa.service.FollowService;
-import com.bingo.qa.service.QuestionService;
-import com.bingo.qa.service.UserService;
+import com.bingo.qa.service.impl.FeedServiceImpl;
+import com.bingo.qa.service.impl.FollowServiceImpl;
+import com.bingo.qa.service.impl.QuestionService;
+import com.bingo.qa.service.impl.UserService;
 import com.bingo.qa.util.JedisAdapter;
 import com.bingo.qa.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +27,10 @@ public class FeedHandler implements EventHandler{
     QuestionService questionService;
 
     @Autowired
-    FeedService feedService;
+    FeedServiceImpl feedServiceImpl;
 
     @Autowired
-    FollowService followService;
+    FollowServiceImpl followService;
 
     @Autowired
     JedisAdapter jedisAdapter;
@@ -85,7 +85,7 @@ public class FeedHandler implements EventHandler{
         }
 
         // 将新鲜事数据(json格式)存入数据库中
-        feedService.addFeed(feed);
+        feedServiceImpl.addFeed(feed);
 
         // 找出触发该事件的用户的粉丝
         List<Integer> followers = followService.getFollowers(
