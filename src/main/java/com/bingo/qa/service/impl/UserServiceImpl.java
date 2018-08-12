@@ -22,16 +22,25 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private LoginTicketDAO loginTicketDAO;
 
+    @Override
     public User selectById(int id) {
         return userDAO.selectById(id);
     }
 
+    @Override
     public User selectByName(String name) {
         return userDAO.selectByName(name);
     }
 
 
-    // 注册
+    /**
+     * 注册
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    @Override
     public Map<String, String> register(String username, String password) {
         Map<String, String> map = new HashMap<>();
         if (StringUtils.isEmpty(username)) {
@@ -70,7 +79,14 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    // 登录
+    /**
+     * 登录
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    @Override
     public Map<String, String> login(String username, String password) {
         Map<String, String> map = new HashMap<>();
         if (StringUtils.isEmpty(username)) {
@@ -100,12 +116,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
-    public String addLoginTicket(int userId) {
+    private String addLoginTicket(int userId) {
         LoginTicket loginTicket = new LoginTicket();
         loginTicket.setUserId(userId);
         Date now = new Date();
-        now.setTime(now.getTime() + 3600 * 24 * 100 );
+        now.setTime(now.getTime() + 3600 * 24 * 100);
         loginTicket.setExpired(now);
         loginTicket.setStatus(0);
         loginTicket.setTicket(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -115,8 +130,10 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户退出，将ticket的status设置为1
+     *
      * @param ticket
      */
+    @Override
     public void logout(String ticket) {
         loginTicketDAO.updateStatus(ticket, 1);
     }

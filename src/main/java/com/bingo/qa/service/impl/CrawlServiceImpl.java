@@ -23,16 +23,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-/** 爬虫service
+/**
+ * 爬虫service
+ *
  * @author bingo
  * @since 2018/8/11
  */
 
 @Service
 public class CrawlServiceImpl implements CrawlService {
-
-    @Autowired
-    private QuestionDAO questionDAO;
 
     @Autowired
     private SensitiveService sensitiveService;
@@ -80,14 +79,13 @@ public class CrawlServiceImpl implements CrawlService {
                     Question question = new Question();
                     question.setUserId(new Random().nextInt(16) + 1);
 
-
                     question.setContent(sensitiveService.filter(HtmlUtils.htmlEscape(QaUtil.dealString(content))));
                     question.setCreatedDate(new Date());
                     question.setTitle(title);
                     question.setCommentCount(0);
 
                     questionService.addQuestion(question);
-                    long count = questionDAO.getQuestionCount();
+                    long count = questionService.getQuestionCount();
 
                     Elements comments = doc.select("table > tbody > tr div.reply_content");
 
@@ -110,8 +108,6 @@ public class CrawlServiceImpl implements CrawlService {
                 // 休眠2s,防止ip被禁
                 TimeUtil.wait2s();
             }
-
         }
-
     }
 }

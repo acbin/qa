@@ -20,20 +20,24 @@ public class FeedServiceImpl implements FeedService {
 
     /**
      * 拉模式，把关注的所有用户的feed都查找出来
+     *
      * @param maxId
      * @param userIds
      * @param count
      * @return list
      */
+    @Override
     public List<Feed> getUserFeeds(int maxId, List<Integer> userIds, int count) {
         return feedDAO.selectUserFeeds(maxId, userIds, count);
     }
 
+    @Override
     public boolean addFeed(Feed feed) {
         feedDAO.addFeed(feed);
         return feed.getId() > 0;
     }
 
+    @Override
     public Feed getFeedById(int id) {
         return feedDAO.getFeedById(id);
     }

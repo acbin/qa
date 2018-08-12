@@ -22,6 +22,7 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
 
     /**
      * 实现InitializingBean，在该类其他属性设置完之后，开始读取敏感词
+     *
      * @throws Exception
      */
     @Override
@@ -55,7 +56,7 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
         TrieNode tempNode = root;
         char[] arr = lineTxt.toCharArray();
         int len = arr.length;
-        for (int i = 0 ; i < len; ++i) {
+        for (int i = 0; i < len; ++i) {
             Character c = arr[i];
             if (isSymbol(c)) {
                 continue;
@@ -122,9 +123,11 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
 
     /**
      * 敏感词过滤方法
+     *
      * @param text UGC
      * @return 过滤后的UGC
      */
+    @Override
     public String filter(String text) {
         if (StringUtils.isEmpty(text)) {
             // 空文本直接返回
@@ -176,5 +179,4 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
         result.append(text.substring(begin));
         return result.toString();
     }
-
 }

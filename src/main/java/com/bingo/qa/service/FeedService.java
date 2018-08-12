@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface FeedService {
     List<Feed> getUserFeeds(int maxId, List<Integer> userIds, int count);
+
     boolean addFeed(Feed feed);
+
     Feed getFeedById(int id);
 }

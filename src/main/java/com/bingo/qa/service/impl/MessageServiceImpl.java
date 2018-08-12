@@ -19,26 +19,32 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private MessageDAO messageDAO;
 
+    @Override
     public int addMessage(Message message) {
         return messageDAO.addMessage(message);
     }
 
+    @Override
     public List<Message> getConversationDetail(String conversationId, int offset, int limit) {
         return messageDAO.getConversationDetail(conversationId, offset, limit);
     }
 
+    @Override
     public List<Message> getConversationList(int userId, int offset, int limit) {
         return messageDAO.getConversationList(userId, offset, limit);
     }
 
+    @Override
     public int getConversationUnreadCount(int userId, String conversationId) {
         return messageDAO.getConversationUnreadCount(userId, conversationId);
     }
 
+    @Override
     public boolean updateStatus(int id) {
         return messageDAO.updateStatus(id, 1) > 0;
     }
 
+    @Override
     public Message getById(int id) {
         return messageDAO.getById(id);
     }

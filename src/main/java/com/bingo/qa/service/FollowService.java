@@ -9,12 +9,20 @@ import java.util.Set;
 
 public interface FollowService {
     boolean follow(int userId, int entityType, int entityId);
+
     boolean unfollow(int userId, int entityType, int entityId);
+
     List<Integer> getFollowers(int entityType, int entityId, int count);
+
     List<Integer> getFollowers(int entityType, int entityId, int offset, int count);
+
     List<Integer> getFollowees(int entityType, int userId, int count);
+
     List<Integer> getFollowees(int entityType, int userId, int offset, int count);
+
     long getFollowerCount(int entityType, int entityId);
+
     long getFolloweeCount(int userId, int entityType);
+
     boolean isFollower(int userId, int entityType, int entityId);
 }

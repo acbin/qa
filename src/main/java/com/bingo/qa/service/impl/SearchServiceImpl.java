@@ -22,7 +22,6 @@ import java.util.Map;
 @Service
 public class SearchServiceImpl implements SearchService {
 
-
     private static final String SOLR_ULR = "http://localhost:8983/solr/qa";
     private HttpSolrClient client = new HttpSolrClient.Builder(SOLR_ULR).build();
     private static final String QUESTION_TITLE_FIELD = "question_title";
@@ -30,14 +29,14 @@ public class SearchServiceImpl implements SearchService {
 
 
     /**
-     *
      * @param keyword 关键词
      * @param offset  偏移
-     * @param count 数量
-     * @param hlPre 高亮前置
-     * @param hlPos 高亮后置
+     * @param count   数量
+     * @param hlPre   高亮前置
+     * @param hlPos   高亮后置
      * @return
      */
+    @Override
     public List<Question> searchQuestion(String keyword,
                                          int offset,
                                          int count,
@@ -83,7 +82,7 @@ public class SearchServiceImpl implements SearchService {
         return questionList;
     }
 
-
+    @Override
     public boolean indexQuestion(int qid, String title, String content) throws IOException, SolrServerException {
         SolrInputDocument doc = new SolrInputDocument();
         doc.setField("id", qid);
@@ -93,5 +92,4 @@ public class SearchServiceImpl implements SearchService {
         UpdateResponse response = client.add(doc, 1000);
         return response != null && response.getStatus() == 0;
     }
-
 }
