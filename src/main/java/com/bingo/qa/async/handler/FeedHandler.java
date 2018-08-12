@@ -6,10 +6,11 @@ import com.bingo.qa.async.EventHandler;
 import com.bingo.qa.async.EventModel;
 import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.*;
-import com.bingo.qa.service.impl.FeedServiceImpl;
+import com.bingo.qa.service.FeedService;
+import com.bingo.qa.service.FollowService;
+import com.bingo.qa.service.QuestionService;
+import com.bingo.qa.service.UserService;
 import com.bingo.qa.service.impl.FollowServiceImpl;
-import com.bingo.qa.service.impl.QuestionServiceImpl;
-import com.bingo.qa.service.impl.UserServiceImpl;
 import com.bingo.qa.util.JedisAdapter;
 import com.bingo.qa.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,16 @@ import java.util.*;
 public class FeedHandler implements EventHandler{
 
     @Autowired
-    UserServiceImpl userServiceImpl;
+    UserService userService;
 
     @Autowired
-    QuestionServiceImpl questionServiceImpl;
+    QuestionService questionService;
 
     @Autowired
-    FeedServiceImpl feedServiceImpl;
+    FeedService feedService;
 
     @Autowired
-    FollowServiceImpl followService;
+    FollowService followService;
 
     @Autowired
     JedisAdapter jedisAdapter;
@@ -42,7 +43,7 @@ public class FeedHandler implements EventHandler{
      */
     private String buildFeedData(EventModel model) {
         Map<String, String> map = new HashMap<>();
-        User actor = userServiceImpl.selectById(model.getActorId());
+        User actor = userService.selectById(model.getActorId());
         if (actor == null) {
             return null;
         }
@@ -54,7 +55,7 @@ public class FeedHandler implements EventHandler{
         // 当前是一个评论事件或者是一个用户关注了一个问题(排除"用户关注的是人"的情况)
         if (model.getType() == EventType.COMMENT ||
                 (model.getType() == EventType.FOLLOW && model.getEntityType() == EntityType.ENTITY_QUESTION)) {
-            Question question = questionServiceImpl.getQuestionById(model.getEntityId());
+            Question question = questionService.getQuestionById(model.getEntityId());
             if (question == null) {
                 return null;
             }
@@ -85,7 +86,7 @@ public class FeedHandler implements EventHandler{
         }
 
         // 将新鲜事数据(json格式)存入数据库中
-        feedServiceImpl.addFeed(feed);
+        feedService.addFeed(feed);
 
         // 找出触发该事件的用户的粉丝
         List<Integer> followers = followService.getFollowers(

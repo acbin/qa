@@ -32,7 +32,7 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
     @Autowired
     JedisAdapter jedisAdapter;
 
-    private static final Logger logger = LoggerFactory.getLogger(EventConsumer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventConsumer.class);
 
     // 每个eventType对应一系列的eventHandler
     private Map<EventType, List<EventHandler>> config = new HashMap<>();
@@ -91,7 +91,7 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
                     EventModel eventModel = JSON.parseObject(message, EventModel.class);
                     if (!config.containsKey(eventModel.getType())) {
                         // 该事件包含系统不能识别的eventType，直接跳过
-                        logger.error("不能识别的eventType");
+                        LOGGER.error("不能识别的eventType");
                         continue;
                     }
 
