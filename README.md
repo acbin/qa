@@ -189,8 +189,8 @@ class EventModel {
 ) ]。
 
 
-### Python 爬虫
-由于系统初始数据较少，为了丰富网站内容，本项目采用 [pyspider](http://docs.pyspider.org/en/latest/) 实现对 [V2EX](https://www.v2ex.com/) 网站的数据爬取，存储到后台数据库，并展示在前端页面上。
+### 网站爬虫
+由于系统初始数据较少，为了丰富网站内容，本项目初期采用 [pyspider](http://docs.pyspider.org/en/latest/) 实现对 [V2EX](https://www.v2ex.com/) 网站的数据爬取，存储到后台数据库，并展示在前端页面上。
 
 安装 pyspider：
 
@@ -202,7 +202,12 @@ pip install pyspider
 ```
 pyspider
 ```
-> 目前考虑使用 JSoup 库进行爬虫。
+
+目前，项目已更新爬虫服务。新的爬虫服务采用`Jsoup`第三方库，通过`Jsoup`发送`url`请求，并获得`Document`文档对象，通过`CSS`选择器方式找到相应的节点，解析数据，并存储到数据库中。新的服务不仅对`V2EX`上的`question`进行爬取，还把`question`相关的`comment`一起爬取下来，网站内容更加丰富。
+
+爬取过程中要注意设置`request`请求头，模拟浏览器行为，同时爬取速度不能过快，否则 IP 容易被封。
+
+> 爬虫会给别人家网站服务器带来负担，be a responsible crawler。
 
 ###  站内全文检索服务
 数据大致分为两种：
