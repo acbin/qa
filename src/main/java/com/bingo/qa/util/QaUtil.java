@@ -110,4 +110,8 @@ public class QaUtil {
         return json.toJSONString();
     }
 
+    public static String dealString(String str) {
+        return str.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "*");
+    }
+
 }

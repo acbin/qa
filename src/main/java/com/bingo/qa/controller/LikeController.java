@@ -31,7 +31,9 @@ public class LikeController {
 
     @PostMapping(value = {"/like"})
     @ResponseBody
-    public String like(@RequestParam("commentId") int commentId) {
+    public String like(@RequestParam("commentId") String id) {
+        int commentId = Integer.parseInt(id.replaceAll(",", ""));
+
         User user = hostHolder.getUser();
         if (user == null) {
             // 用户未登录，直接返回
@@ -56,7 +58,9 @@ public class LikeController {
 
     @PostMapping(value = {"/dislike"})
     @ResponseBody
-    public String dislike(@RequestParam("commentId") int commentId) {
+    public String dislike(@RequestParam("commentId") String id) {
+        int commentId = Integer.parseInt(id.replaceAll(",", ""));
+
         User user = hostHolder.getUser();
         if (user == null) {
             // 用户未登录，直接返回

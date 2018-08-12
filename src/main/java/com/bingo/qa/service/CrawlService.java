@@ -5,5 +5,5 @@ package com.bingo.qa.service;
  */
 
 public interface CrawlService {
-    void crawl();
+    void crawl(String type, int pageNum);
 }

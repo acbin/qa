@@ -8,6 +8,7 @@ import com.bingo.qa.service.CommentService;
 import com.bingo.qa.service.CrawlService;
 import com.bingo.qa.service.QuestionService;
 import com.bingo.qa.service.SensitiveService;
+import com.bingo.qa.util.QaUtil;
 import com.bingo.qa.util.RequestUtil;
 import com.bingo.qa.util.TimeUtil;
 import org.jsoup.nodes.Document;
@@ -43,9 +44,11 @@ public class CrawlServiceImpl implements CrawlService {
     private QuestionService questionService;
 
     @Override
-    public void crawl() {
-        String url = "https://www.v2ex.com/go/programmer?p=1";
+    public void crawl(String type, int pageNum) {
+        // 获得字符串
+        String url = RequestUtil.getUrl(type, pageNum);
 
+        // 封装请求头
         Map<String, String> header = new HashMap<>();
         header.put("Host", "www.v2ex.com");
         header.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
@@ -53,25 +56,32 @@ public class CrawlServiceImpl implements CrawlService {
         header.put("Accept-Language", "zh-CN,zh;q=0.9");
         header.put("Accept-Encoding", "gzip, deflate, br");
 
-
+        // 获取文档document对象
         Document document = RequestUtil.getDocument(url, header);
         if (document != null) {
+            // 获取页面上所有question的a标签
             Elements elements = document.select("div#TopicsNode table td span.item_title a");
 
             for (Element ele : elements) {
+
+                // 获取每个question详情页的url
                 String href = "https://www.v2ex.com" + ele.attr("href");
                 Document doc = RequestUtil.getDocument(href, header);
                 if (doc != null) {
+                    // 获取标题
                     String title = doc.selectFirst("div#Main div.box div.header h1").text();
 
+                    // 获取question的内容
                     Element e = doc.selectFirst("div#Main div.box div.cell div.topic_content div.markdown_body p");
                     e = e == null ? doc.selectFirst("div#Main div.box div.cell div.topic_content") : e;
                     String content = e == null ? "内容如题" : e.ownText();
 
+                    // 创建question对象并设置相应属性
                     Question question = new Question();
                     question.setUserId(new Random().nextInt(16) + 1);
 
-                    question.setContent(sensitiveService.filter(HtmlUtils.htmlEscape(content.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "*"))));
+
+                    question.setContent(sensitiveService.filter(HtmlUtils.htmlEscape(QaUtil.dealString(content))));
                     question.setCreatedDate(new Date());
                     question.setTitle(title);
                     question.setCommentCount(0);
@@ -84,10 +94,10 @@ public class CrawlServiceImpl implements CrawlService {
                     comments.stream().map(a -> a.text()).filter(txt -> !txt.contains("@")).forEach(txt -> {
                         Comment comment = new Comment();
                         comment.setUserId(new Random().nextInt(16) + 1);
-                        comment.setContent(sensitiveService.filter(HtmlUtils.htmlEscape(txt.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "*"))));
+                        comment.setContent(sensitiveService.filter(HtmlUtils.htmlEscape(QaUtil.dealString(txt))));
                         comment.setCreatedDate(new Date());
 
-                        // 评论所对应的实体的id
+                        // 设置评论所对应的实体的id
                         comment.setEntityId((int) count);
                         comment.setEntityType(EntityType.ENTITY_QUESTION);
                         commentService.addComment(comment);
@@ -97,11 +107,11 @@ public class CrawlServiceImpl implements CrawlService {
 
                 }
 
+                // 休眠2s,防止ip被禁
                 TimeUtil.wait2s();
             }
 
         }
-
 
     }
 }

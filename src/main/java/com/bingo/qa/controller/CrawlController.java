@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 爬虫controller
@@ -20,8 +21,9 @@ public class CrawlController {
     private CrawlService crawlService;
 
     @GetMapping
-    public String crawl() {
-        crawlService.crawl();
+    public String crawl(@RequestParam(value = "type") String type,
+                        @RequestParam(value = "pageNum") int pageNum) {
+        crawlService.crawl(type, pageNum);
         return "200";
     }
 }

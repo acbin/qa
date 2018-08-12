@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 @RunWith(SpringRunner.class)
 public class CrawlServiceTest {
 
-
     @Test
     public void testCrawl() {
 

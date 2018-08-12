@@ -26,4 +26,9 @@ public class RequestUtil {
             return null;
         }
     }
+
+    public static String getUrl(String type, int pageNum) {
+        return String.format("https://www.v2ex.com/go/%s?p=%s", type, pageNum);
+    }
+
 }
