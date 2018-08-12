@@ -1,14 +1,20 @@
 package com.bingo.qa.service.impl;
 
+import com.bingo.qa.dao.QuestionDAO;
+import com.bingo.qa.model.Question;
 import com.bingo.qa.service.CrawlService;
 import com.bingo.qa.util.RequestUtil;
-import org.jsoup.Jsoup;
+import com.bingo.qa.util.TimeUtil;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /** 爬虫service
  * @author bingo
@@ -17,6 +23,9 @@ import java.util.Map;
 
 @Service
 public class CrawlServiceImpl implements CrawlService {
+
+    @Autowired
+    private QuestionDAO questionDAO;
 
     @Override
     public void crawl() {
@@ -30,6 +39,28 @@ public class CrawlServiceImpl implements CrawlService {
 
         Document document = RequestUtil.getDocument(url, header);
         if (document != null) {
+            Elements elements = document.select("div#TopicsNode table td span.item_title a");
+
+            for (Element ele : elements) {
+                String href = "https://www.v2ex.com" + ele.attr("href");
+                Document doc = RequestUtil.getDocument(href, header);
+                if (doc != null) {
+                    String title = doc.selectFirst("div#Main div.box div.header h1").text();
+                    String content = doc.selectFirst("#Main > div:nth-child(2) > div.cell > div > div > p").text();
+
+                    Question question = new Question();
+                    question.setUserId(new Random().nextInt(16));
+                    question.setContent(content);
+                    question.setCreatedDate(new Date());
+                    question.setTitle(title);
+                    question.setCommentCount(0);
+
+                }
+
+                // 休眠1s
+                TimeUtil.wait1s();
+            }
+
 
 
         }

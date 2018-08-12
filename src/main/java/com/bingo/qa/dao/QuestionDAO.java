@@ -51,4 +51,8 @@ public interface QuestionDAO {
     @Update({"update ", TABLE_NAME, " set comment_count = #{comment_count} where id = #{entityId}"})
     int updateCommentCount(@Param("entityId") int entityId,
                            @Param("comment_count") int comment_count);
+
+    @Select({"select count(*) from ", TABLE_NAME})
+    long getQuestionCount();
+
 }
