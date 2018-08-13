@@ -1,6 +1,5 @@
 package com.bingo.qa.service.impl;
 
-import com.bingo.qa.dao.QuestionDAO;
 import com.bingo.qa.model.Comment;
 import com.bingo.qa.model.EntityType;
 import com.bingo.qa.model.Question;
@@ -14,7 +13,10 @@ import com.bingo.qa.util.TimeUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
@@ -33,6 +35,8 @@ import java.util.Random;
 @Service
 public class CrawlServiceImpl implements CrawlService {
 
+    private Logger LOGGER = LoggerFactory.getLogger(CrawlServiceImpl.class);
+
     @Autowired
     private SensitiveService sensitiveService;
 
@@ -42,8 +46,16 @@ public class CrawlServiceImpl implements CrawlService {
     @Autowired
     private QuestionService questionService;
 
+    /**
+     * 异步爬取
+     * @param type
+     * @param pageNum
+     */
     @Override
+    @Async
     public void crawl(String type, int pageNum) {
+        LOGGER.info("start crawling");
+
         // 获得字符串
         String url = RequestUtil.getUrl(type, pageNum);
 
@@ -109,5 +121,7 @@ public class CrawlServiceImpl implements CrawlService {
                 TimeUtil.wait2s();
             }
         }
+
+        LOGGER.info("finish crawling");
     }
 }

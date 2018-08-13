@@ -19,16 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/crawl")
 public class CrawlController {
 
-    private Logger LOGGER = LoggerFactory.getLogger(CrawlController.class);
     @Autowired
     private CrawlService crawlService;
 
     @GetMapping
     public String crawl(@RequestParam(value = "type") String type,
                         @RequestParam(value = "pageNum") int pageNum) {
-        LOGGER.info("start crawling");
+
         crawlService.crawl(type, pageNum);
-        LOGGER.info("finish crawling");
+
         return "ok";
     }
 }
