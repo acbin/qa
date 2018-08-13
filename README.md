@@ -203,9 +203,12 @@ pip install pyspider
 pyspider
 ```
 
-目前，项目已更新爬虫服务。新的爬虫服务采用`Jsoup`第三方库，通过`Jsoup`发送`url`请求，并获得`Document`文档对象，通过`CSS`选择器方式找到相应的节点，解析数据，并存储到数据库中。新的服务不仅对`V2EX`上的`question`进行爬取，还把`question`相关的`comment`一起爬取下来，网站内容更加丰富。
+近期，项目更新了爬虫服务。新的爬虫服务采用`Jsoup`第三方库，通过`Jsoup`发送`url`请求，并获得`Document`文档对象，通过`CSS`选择器方式找到相应的节点，解析数据，并存储到数据库中。新的服务不仅对`V2EX`上的`question`进行爬取，还把`question`相关的`comment`一起爬取下来，网站内容更加丰富。
+
+本爬虫服务采用 Spring `@Async` 异步进行爬取，避免因页面阻塞而影响用户体验的情况。当然，也可以使用**线程池**的方式。不过使用 Spring 的话，只需要`@EnableAsync`和`@Async`两个注解，更加方便。
 
 爬取过程中要注意设置`request`请求头，模拟浏览器行为，同时爬取速度不能过快，否则 IP 容易被封。
+
 
 > 爬虫会给别人家网站服务器带来负担，be a responsible crawler。
 
