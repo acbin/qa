@@ -20,8 +20,6 @@ import java.util.List;
 @Controller
 public class IndexController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
-
     @Autowired
     private UserService userService;
 

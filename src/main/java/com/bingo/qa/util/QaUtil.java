@@ -110,6 +110,11 @@ public class QaUtil {
         return json.toJSONString();
     }
 
+    /**
+     * 处理4/6字节的特殊字符串
+     * @param str
+     * @return
+     */
     public static String dealString(String str) {
         return str.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "*");
     }

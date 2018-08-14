@@ -177,10 +177,5 @@ public class JedisTest {
         // 将Json串转为对象
         String value = jedis.get("user1");
         User user2 = JSONObject.parseObject(value, User.class);
-
-
-
-
-
     }
 }
