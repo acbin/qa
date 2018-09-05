@@ -3,7 +3,10 @@ package com.bingo.qa.dao;
 import com.bingo.qa.model.LoginTicket;
 import org.apache.ibatis.annotations.*;
 
-
+/**
+ *
+ * @author bingo
+ */
 @Mapper
 public interface LoginTicketDAO {
     String TABLE_NAME = " login_ticket ";

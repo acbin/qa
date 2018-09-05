@@ -23,8 +23,8 @@ public interface AuthUserDAO {
      * @return
      */
     @Insert({"insert into ", TABLE_NAME, "(", INSERT_FIELDS, ") values(#{userId})"})
-    public int addAuthUser(@Param("userId") int userId);
+    int addAuthUser(@Param("userId") int userId);
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, "where user_id = #{userId}"})
-    public AuthUser selectAuthUser(@Param("userId") int userId);
+    AuthUser selectAuthUser(@Param("userId") int userId);
 }

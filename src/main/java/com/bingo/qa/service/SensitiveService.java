@@ -1,9 +1,15 @@
 package com.bingo.qa.service;
 
 /**
- * Created by bingo on 2018/8/11.
+ * @author bingo
+ * @since 2018/8/11
  */
 
 public interface SensitiveService {
+    /**
+     * 过滤文本
+     * @param text
+     * @return
+     */
     String filter(String text);
 }

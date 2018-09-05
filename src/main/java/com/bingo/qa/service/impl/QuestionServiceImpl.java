@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author bingo
+ */
 @Service
 public class QuestionServiceImpl implements QuestionService {
     @Autowired

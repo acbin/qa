@@ -17,6 +17,9 @@ import org.springframework.web.util.HtmlUtils;
 
 import java.util.Date;
 
+/**
+ * @author bingo
+ */
 @Controller
 public class CommentController {
 

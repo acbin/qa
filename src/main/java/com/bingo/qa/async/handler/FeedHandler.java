@@ -10,7 +10,6 @@ import com.bingo.qa.service.FeedService;
 import com.bingo.qa.service.FollowService;
 import com.bingo.qa.service.QuestionService;
 import com.bingo.qa.service.UserService;
-import com.bingo.qa.service.impl.FollowServiceImpl;
 import com.bingo.qa.util.JedisAdapter;
 import com.bingo.qa.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+/**
+ * @author bingo
+ */
 @Component
 public class FeedHandler implements EventHandler{
 

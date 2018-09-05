@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
  * 这是事件的入口
  * 由它统一发送事件:放到队列中,
  * 而EventConsumer将事件从队列中取出来
+ *
+ * @author bingo
  */
 @Service
 public class EventProducer {

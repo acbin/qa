@@ -16,6 +16,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author bingo
+ */
 @Component
 public class LikeHandler implements EventHandler{
 

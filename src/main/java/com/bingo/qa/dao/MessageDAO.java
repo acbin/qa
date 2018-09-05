@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
+/**
+ * @author bingo
+ */
 @Mapper
 public interface MessageDAO {
     String TABLE_NAME = " message ";

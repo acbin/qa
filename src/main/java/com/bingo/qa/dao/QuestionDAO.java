@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
+/**
+ * @author bingo
+ */
 @Mapper
 public interface QuestionDAO {
     String TABLE_NAME = " question ";
@@ -52,6 +55,10 @@ public interface QuestionDAO {
     int updateCommentCount(@Param("entityId") int entityId,
                            @Param("comment_count") int comment_count);
 
+    /**
+     * 查询问题数量
+     * @return count
+     */
     @Select({"select count(*) from ", TABLE_NAME})
     long getQuestionCount();
 

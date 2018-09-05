@@ -1,4 +1,4 @@
-package com.bingo.qa.Interceptor;
+package com.bingo.qa.interceptor;
 
 import com.bingo.qa.dao.LoginTicketDAO;
 import com.bingo.qa.dao.UserDAO;
@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
+/**
+ * @author bingo
+ */
 @Component
 public class PassportInterceptor implements HandlerInterceptor{
 

@@ -16,7 +16,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-
+/**
+ * @author bingo
+ */
 @Controller
 public class LoginController {
 

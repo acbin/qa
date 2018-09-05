@@ -14,6 +14,9 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author bingo
+ */
 @Service
 public class SensitiveServiceImpl implements InitializingBean, SensitiveService {
 
@@ -47,7 +50,10 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
     }
 
 
-    // 读取敏感词文本中的每一行，建立前缀树
+    /**
+     * 读取敏感词文本中的每一行，建立前缀树
+     * @param lineTxt
+     */
     private void addWord(String lineTxt) {
         if (StringUtils.isEmpty(lineTxt)) {
             return;
@@ -85,17 +91,25 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
      * 3）每个结点的所有子结点包含的字符都不相同
      */
     private class TrieNode {
-        // 表示是否是敏感词的结尾
+        /**
+         * 表示是否是敏感词的结尾
+         */
         private boolean end = false;
 
-        // 该结点下所有后续子结点
+        /**
+         * 该结点下所有后续子结点
+         */
         private Map<Character, TrieNode> subNodes = new HashMap<>();
 
         public void addSubNode(Character key, TrieNode node) {
             subNodes.put(key, node);
         }
 
-        // 根据key获取map中的某个子结点
+        /**
+         * 根据key获取map中的某个子结点
+         * @param key
+         * @return
+         */
         TrieNode getSubNode(Character key) {
             return subNodes.get(key);
         }
@@ -112,7 +126,11 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
 
     private TrieNode root = new TrieNode();
 
-    // 判断是否是特殊字符
+    /**
+     * 判断是否是特殊字符
+     * @param c
+     * @return
+     */
     private boolean isSymbol(char c) {
         int ic = (int) c;
         // 0x2E80~0x9FFF 为东亚文字

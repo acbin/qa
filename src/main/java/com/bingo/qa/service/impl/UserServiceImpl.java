@@ -13,6 +13,9 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * @author bingo
+ */
 @Service
 public class UserServiceImpl implements UserService {
 

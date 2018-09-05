@@ -2,8 +2,13 @@ package com.bingo.qa.async;
 
 /**
  * 事件类型
+ *
+ * @author bingo
  */
 public enum EventType {
+    /**
+     * 类型
+     */
     LIKE(0),
     COMMENT(1),
     LOGIN(2),

@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by bingo on 2018/6/2.
+ *
+ * @author bingo
+ * @since 2018/6/2
  */
 
 @Controller
@@ -35,7 +37,11 @@ public class FeedController {
     @Autowired
     JedisAdapter jedisAdapter;
 
-    // 拉模式:取出登录用户所关注的人的动态
+    /**
+     * 拉模式:取出登录用户所关注的人的动态
+     * @param model
+     * @return
+     */
     @GetMapping(value = {"/pullfeeds"})
     public String getPullFeeds(Model model) {
         User user = hostHolder.getUser();
@@ -60,7 +66,11 @@ public class FeedController {
         return "feeds";
     }
 
-    // 推模式
+    /**
+     * 推模式
+     * @param model
+     * @return
+     */
     @GetMapping(value = {"/pushfeeds"})
     public String getPushFeeds(Model model) {
         User user = hostHolder.getUser();

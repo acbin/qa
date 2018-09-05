@@ -3,6 +3,9 @@ package com.bingo.qa.dao;
 import com.bingo.qa.model.User;
 import org.apache.ibatis.annotations.*;
 
+/**
+ * @author bingo
+ */
 @Mapper
 public interface UserDAO {
 

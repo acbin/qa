@@ -25,6 +25,8 @@ import java.util.Map;
  * 先从上下文获取一系列实现了 Handler 接口的类，每个 Handler 实现类都关注着多个不同类型的事件
  * 我们的目标就是：找出某个类型的事件所对应的一系列 Handler
  * 这样可以根据 EventModel 中的事件类型，交由一系列 Handler 去处理。
+ *
+ * @author bingo
  */
 @Service
 public class EventConsumer implements InitializingBean, ApplicationContextAware {
@@ -34,7 +36,9 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventConsumer.class);
 
-    // 每个eventType对应一系列的eventHandler
+    /**
+     * 每个eventType对应一系列的eventHandler
+     */
     private Map<EventType, List<EventHandler>> config = new HashMap<>();
 
     private ApplicationContext applicationContext;

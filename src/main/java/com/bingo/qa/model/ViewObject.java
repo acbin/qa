@@ -3,6 +3,9 @@ package com.bingo.qa.model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author bingo
+ */
 public class ViewObject {
     private Map<String, Object> objs = new HashMap<>();
 

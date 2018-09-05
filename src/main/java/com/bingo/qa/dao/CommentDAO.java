@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
+/**
+ * @author bingo
+ */
 @Mapper
 public interface CommentDAO {
     String TABLE_NAME = " comment ";
@@ -19,7 +22,7 @@ public interface CommentDAO {
      */
     @Insert({"insert into ", TABLE_NAME, "(", INSERT_FIELDS,
             ") values(#{userId}, #{content}, #{createdDate}, #{entityId}, #{entityType}, #{status})"})
-    public int addComment(Comment comment);
+    int addComment(Comment comment);
 
 
     /**

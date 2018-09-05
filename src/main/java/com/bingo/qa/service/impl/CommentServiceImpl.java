@@ -1,6 +1,5 @@
 package com.bingo.qa.service.impl;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
 import com.bingo.qa.dao.CommentDAO;
 import com.bingo.qa.model.Comment;
 import com.bingo.qa.service.CommentService;
@@ -9,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author bingo
+ */
 @Service
 public class CommentServiceImpl implements CommentService {
     @Autowired

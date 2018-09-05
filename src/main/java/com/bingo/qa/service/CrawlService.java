@@ -1,9 +1,16 @@
 package com.bingo.qa.service;
 
 /**
- * Created by bingo on 2018/8/11.
+ *
+ * @author bingo
+ * @since 2018/8/11
  */
 
 public interface CrawlService {
+    /**
+     * 爬虫方法
+     * @param type
+     * @param pageNum
+     */
     void crawl(String type, int pageNum);
 }

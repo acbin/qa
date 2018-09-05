@@ -1,4 +1,4 @@
-package com.bingo.qa.Interceptor;
+package com.bingo.qa.interceptor;
 
 import com.bingo.qa.model.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author bingo
+ */
 @Component
 public class LoginRequiredInterceptor implements HandlerInterceptor{
 

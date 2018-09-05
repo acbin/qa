@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author bingo
+ */
 @Controller
 public class MessageController {
     private static Logger logger = LoggerFactory.getLogger(MessageController.class);

@@ -3,6 +3,10 @@ package com.bingo.qa.async;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ * @author bingo
+ */
 public class EventModel {
     /**
      * eg.
@@ -17,7 +21,9 @@ public class EventModel {
     private int entityId;
     private int entityOwnerId;
 
-    // 一些扩展字段
+    /**
+     * 一些扩展字段
+     */
     private Map<String, String> exts = new HashMap<>();
 
     public EventModel() {

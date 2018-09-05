@@ -12,10 +12,12 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by bingo on 2018/6/5.
- */
 
+/**
+ *
+ * @author bingo
+ * @since 2018/8/12
+ */
 @Component
 public class AddQuestionHandler implements EventHandler{
 

@@ -6,6 +6,9 @@ package com.bingo.qa.common;
  */
 
 public enum CommonRespConst {
+    /**
+     * 响应类型
+     */
     SUCCESS(1, "success"),
     FAIL(0, "fail"),
     NOTHING_FOUND(2, "find nothing"),
