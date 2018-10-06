@@ -35,16 +35,20 @@ import java.util.Random;
 @Service
 public class CrawlServiceImpl implements CrawlService {
 
-    private Logger LOGGER = LoggerFactory.getLogger(CrawlServiceImpl.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(CrawlServiceImpl.class);
+
+    private final SensitiveService sensitiveService;
+
+    private final CommentService commentService;
+
+    private final QuestionService questionService;
 
     @Autowired
-    private SensitiveService sensitiveService;
-
-    @Autowired
-    private CommentService commentService;
-
-    @Autowired
-    private QuestionService questionService;
+    public CrawlServiceImpl(SensitiveService sensitiveService, CommentService commentService, QuestionService questionService) {
+        this.sensitiveService = sensitiveService;
+        this.commentService = commentService;
+        this.questionService = questionService;
+    }
 
     /**
      * 异步爬取
@@ -101,7 +105,7 @@ public class CrawlServiceImpl implements CrawlService {
 
                     Elements comments = doc.select("table > tbody > tr div.reply_content");
 
-                    comments.stream().map(a -> a.text()).filter(txt -> !txt.contains("@")).forEach(txt -> {
+                    comments.stream().map(Element::text).filter(txt -> !txt.contains("@")).forEach(txt -> {
                         Comment comment = new Comment();
                         comment.setUserId(new Random().nextInt(16) + 1);
                         comment.setContent(sensitiveService.filter(HtmlUtils.htmlEscape(QaUtil.dealString(txt))));

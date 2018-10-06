@@ -23,26 +23,30 @@ import java.util.Map;
 
 @Controller
 public class FollowController {
-    @Autowired
-    FollowService followService;
+    private final FollowService followService;
+
+    private final CommentService commentService;
+
+    private final QuestionService questionService;
+
+    private final UserService userService;
+
+    private final LikeService likeService;
+
+    private final HostHolder hostHolder;
+
+    private final EventProducer eventProducer;
 
     @Autowired
-    CommentService commentService;
-
-    @Autowired
-    QuestionService questionService;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    LikeService likeService;
-
-    @Autowired
-    HostHolder hostHolder;
-
-    @Autowired
-    EventProducer eventProducer;
+    public FollowController(FollowService followService, CommentService commentService, QuestionService questionService, UserService userService, LikeService likeService, HostHolder hostHolder, EventProducer eventProducer) {
+        this.followService = followService;
+        this.commentService = commentService;
+        this.questionService = questionService;
+        this.userService = userService;
+        this.likeService = likeService;
+        this.hostHolder = hostHolder;
+        this.eventProducer = eventProducer;
+    }
 
     @PostMapping(value = {"/followUser"})
     @ResponseBody

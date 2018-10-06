@@ -19,11 +19,15 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
+
+    private final LoginTicketDAO loginTicketDAO;
 
     @Autowired
-    private LoginTicketDAO loginTicketDAO;
+    public UserServiceImpl(UserDAO userDAO, LoginTicketDAO loginTicketDAO) {
+        this.userDAO = userDAO;
+        this.loginTicketDAO = loginTicketDAO;
+    }
 
     @Override
     public User selectById(int id) {

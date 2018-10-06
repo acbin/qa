@@ -20,20 +20,24 @@ import java.util.List;
 @Controller
 public class IndexController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final QuestionService questionService;
+
+    private final HostHolder hostHolder;
+
+    private final FollowService followService;
+
+    private final CommentService commentService;
 
     @Autowired
-    private QuestionService questionService;
-
-    @Autowired
-    private HostHolder hostHolder;
-
-    @Autowired
-    FollowService followService;
-
-    @Autowired
-    CommentService commentService;
+    public IndexController(UserService userService, QuestionService questionService, HostHolder hostHolder, FollowService followService, CommentService commentService) {
+        this.userService = userService;
+        this.questionService = questionService;
+        this.hostHolder = hostHolder;
+        this.followService = followService;
+        this.commentService = commentService;
+    }
 
     @GetMapping(value = {"/", "/index"})
     public String index(Model model) {

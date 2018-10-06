@@ -12,8 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class LikeServiceImpl implements LikeService {
 
+    private final JedisAdapter jedisAdapter;
+
     @Autowired
-    JedisAdapter jedisAdapter;
+    public LikeServiceImpl(JedisAdapter jedisAdapter) {
+        this.jedisAdapter = jedisAdapter;
+    }
 
     /**
      * 当前登录用户点赞某一实体(实体：EntityType + EntityId)

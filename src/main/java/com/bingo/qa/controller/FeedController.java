@@ -25,17 +25,21 @@ import java.util.List;
 @Controller
 public class FeedController {
 
-    @Autowired
-    FeedService feedService;
+    private final FeedService feedService;
+
+    private final HostHolder hostHolder;
+
+    private final FollowService followService;
+
+    private final JedisAdapter jedisAdapter;
 
     @Autowired
-    HostHolder hostHolder;
-
-    @Autowired
-    FollowService followService;
-
-    @Autowired
-    JedisAdapter jedisAdapter;
+    public FeedController(FeedService feedService, HostHolder hostHolder, FollowService followService, JedisAdapter jedisAdapter) {
+        this.feedService = feedService;
+        this.hostHolder = hostHolder;
+        this.followService = followService;
+        this.jedisAdapter = jedisAdapter;
+    }
 
     /**
      * 拉模式:取出登录用户所关注的人的动态

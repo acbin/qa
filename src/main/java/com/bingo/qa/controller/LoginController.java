@@ -24,10 +24,19 @@ public class LoginController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    // 用户登录注册
+    @Autowired
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
+
+    /**
+     * 用户登录注册
+     * @param model 数据model
+     * @param next 下一个目标页
+     * @return login
+     */
     @GetMapping(value = {"/reglogin"})
     public String reglogin(Model model,
                            @RequestParam(value = "next", required = false) String next) {
@@ -36,7 +45,16 @@ public class LoginController {
     }
 
 
-    // 用户注册
+    /**
+     * 用户注册
+     * @param model
+     * @param username
+     * @param password
+     * @param next
+     * @param rememberme
+     * @param response
+     * @return
+     */
     @PostMapping(value = {"/reg"})
     public String reg(Model model,
                       @RequestParam("username") String username,
@@ -77,7 +95,16 @@ public class LoginController {
     }
 
 
-    // 用户登录
+    /**
+     * 用户登录
+     * @param model
+     * @param username
+     * @param password
+     * @param next
+     * @param rememberme
+     * @param response
+     * @return
+     */
     @PostMapping(value = {"/login"})
     public String login(Model model,
                         @RequestParam("username") String username,
@@ -111,7 +138,11 @@ public class LoginController {
         }
     }
 
-
+    /**
+     * 注销
+     * @param ticket
+     * @return
+     */
     @RequestMapping(path = {"/logout"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String logout(@CookieValue("ticket") String ticket) {
         userService.logout(ticket);

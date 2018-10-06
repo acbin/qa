@@ -31,17 +31,21 @@ import java.util.List;
 public class MessageController {
     private static Logger logger = LoggerFactory.getLogger(MessageController.class);
 
-    @Autowired
-    private HostHolder hostHolder;
+    private final HostHolder hostHolder;
+
+    private final MessageService messageService;
+
+    private final SensitiveService sensitiveService;
+
+    private final UserService userService;
 
     @Autowired
-    private MessageService messageService;
-
-    @Autowired
-    private SensitiveService sensitiveService;
-
-    @Autowired
-    private UserService userService;
+    public MessageController(HostHolder hostHolder, MessageService messageService, SensitiveService sensitiveService, UserService userService) {
+        this.hostHolder = hostHolder;
+        this.messageService = messageService;
+        this.sensitiveService = sensitiveService;
+        this.userService = userService;
+    }
 
     @PostMapping(value = {"/msg/addMessage"})
     @ResponseBody
@@ -116,7 +120,12 @@ public class MessageController {
         return "/letter";
     }
 
-    // 与某人的所有会话(详情)
+    /**
+     * 与某人的所有会话详情
+     * @param model
+     * @param conversationId
+     * @return
+     */
     @GetMapping(value = {"/msg/detail"})
     public String getConversationDetail(Model model,
                                         @RequestParam("conversationId") String conversationId) {

@@ -22,17 +22,21 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class LikeController {
 
-    @Autowired
-    private LikeService likeService;
+    private final LikeService likeService;
+
+    private final HostHolder hostHolder;
+
+    private final EventProducer eventProducer;
+
+    private final CommentService commentService;
 
     @Autowired
-    private HostHolder hostHolder;
-
-    @Autowired
-    EventProducer eventProducer;
-
-    @Autowired
-    CommentService commentService;
+    public LikeController(LikeService likeService, HostHolder hostHolder, EventProducer eventProducer, CommentService commentService) {
+        this.likeService = likeService;
+        this.hostHolder = hostHolder;
+        this.eventProducer = eventProducer;
+        this.commentService = commentService;
+    }
 
     @PostMapping(value = {"/like"})
     @ResponseBody

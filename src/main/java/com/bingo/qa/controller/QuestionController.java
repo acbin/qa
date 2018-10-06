@@ -26,29 +26,33 @@ import java.util.List;
 public class QuestionController {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuestionController.class);
 
-    @Autowired
-    QuestionService questionService;
+    private final QuestionService questionService;
+
+    private final SensitiveService sensitiveService;
+
+    private final HostHolder hostHolder;
+
+    private final UserService userService;
+
+    private final CommentService commentService;
+
+    private final LikeService likeService;
+
+    private final FollowService followService;
+
+    private final EventProducer eventProducer;
 
     @Autowired
-    SensitiveService sensitiveService;
-
-    @Autowired
-    HostHolder hostHolder;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    CommentService commentService;
-
-    @Autowired
-    LikeService likeService;
-
-    @Autowired
-    FollowService followService;
-
-    @Autowired
-    EventProducer eventProducer;
+    public QuestionController(QuestionService questionService, SensitiveService sensitiveService, HostHolder hostHolder, UserService userService, CommentService commentService, LikeService likeService, FollowService followService, EventProducer eventProducer) {
+        this.questionService = questionService;
+        this.sensitiveService = sensitiveService;
+        this.hostHolder = hostHolder;
+        this.userService = userService;
+        this.commentService = commentService;
+        this.likeService = likeService;
+        this.followService = followService;
+        this.eventProducer = eventProducer;
+    }
 
     @PostMapping(value = {"/question/add"})
     @ResponseBody

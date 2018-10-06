@@ -20,8 +20,12 @@ import java.util.Set;
 @Service
 public class FollowServiceImpl implements FollowService {
 
+    private final JedisAdapter jedisAdapter;
+
     @Autowired
-    JedisAdapter jedisAdapter;
+    public FollowServiceImpl(JedisAdapter jedisAdapter) {
+        this.jedisAdapter = jedisAdapter;
+    }
 
     /**
      * 关注功能:关注的发起者是用户，关注的实体可以是用户，也可以是问题等..

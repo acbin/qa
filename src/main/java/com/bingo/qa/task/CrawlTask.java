@@ -17,10 +17,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class CrawlTask {
 
-    private Logger LOGGER = LoggerFactory.getLogger(CrawlTask.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(CrawlTask.class);
+
+    private final CrawlService crawlService;
 
     @Autowired
-    private CrawlService crawlService;
+    public CrawlTask(CrawlService crawlService) {
+        this.crawlService = crawlService;
+    }
 
     @Scheduled(cron = "0 0 10 * * ?")
     public void crawl() {

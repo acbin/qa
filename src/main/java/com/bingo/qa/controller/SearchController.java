@@ -28,17 +28,21 @@ import java.util.List;
 public class SearchController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
-    @Autowired
-    SearchService searchService;
+    private final SearchService searchService;
+
+    private final FollowService followService;
+
+    private final UserService userService;
+
+    private final QuestionService questionService;
 
     @Autowired
-    FollowService followService;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    QuestionService questionService;
+    public SearchController(SearchService searchService, FollowService followService, UserService userService, QuestionService questionService) {
+        this.searchService = searchService;
+        this.followService = followService;
+        this.userService = userService;
+        this.questionService = questionService;
+    }
 
     @GetMapping(value = {"/search"})
     public String search(Model model,

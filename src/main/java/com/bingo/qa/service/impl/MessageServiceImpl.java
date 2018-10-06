@@ -16,8 +16,12 @@ import java.util.List;
 @Service
 public class MessageServiceImpl implements MessageService {
 
+    private final MessageDAO messageDAO;
+
     @Autowired
-    private MessageDAO messageDAO;
+    public MessageServiceImpl(MessageDAO messageDAO) {
+        this.messageDAO = messageDAO;
+    }
 
     @Override
     public int addMessage(Message message) {

@@ -16,8 +16,12 @@ import java.util.List;
 @Service
 public class FeedServiceImpl implements FeedService {
 
+    private final FeedDAO feedDAO;
+
     @Autowired
-    FeedDAO feedDAO;
+    public FeedServiceImpl(FeedDAO feedDAO) {
+        this.feedDAO = feedDAO;
+    }
 
     /**
      * 拉模式，把关注的所有用户的feed都查找出来

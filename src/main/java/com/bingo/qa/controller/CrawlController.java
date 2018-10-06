@@ -21,14 +21,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/crawl")
 public class CrawlController {
 
-    @Autowired
-    private CrawlService crawlService;
+    private final CrawlService crawlService;
+
+    private final AuthUserService authUserService;
+
+    private final HostHolder hostHolder;
 
     @Autowired
-    private AuthUserService authUserService;
-
-    @Autowired
-    private HostHolder hostHolder;
+    public CrawlController(CrawlService crawlService, AuthUserService authUserService, HostHolder hostHolder) {
+        this.crawlService = crawlService;
+        this.authUserService = authUserService;
+        this.hostHolder = hostHolder;
+    }
 
     @GetMapping
     public String crawl(@RequestParam(value = "type") String type,

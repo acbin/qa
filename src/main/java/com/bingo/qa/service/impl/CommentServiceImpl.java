@@ -13,8 +13,12 @@ import java.util.List;
  */
 @Service
 public class CommentServiceImpl implements CommentService {
+    private final CommentDAO commentDAO;
+
     @Autowired
-    private CommentDAO commentDAO;
+    public CommentServiceImpl(CommentDAO commentDAO) {
+        this.commentDAO = commentDAO;
+    }
 
     @Override
     public List<Comment> getCommentsByEntity(int entityId, int entityType) {

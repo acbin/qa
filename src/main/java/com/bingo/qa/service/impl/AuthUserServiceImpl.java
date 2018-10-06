@@ -14,8 +14,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthUserServiceImpl implements AuthUserService {
 
+    private final AuthUserDAO authUserDAO;
+
     @Autowired
-    private AuthUserDAO authUserDAO;
+    public AuthUserServiceImpl(AuthUserDAO authUserDAO) {
+        this.authUserDAO = authUserDAO;
+    }
 
     @Override
     public void addAuthUser(int userId) {

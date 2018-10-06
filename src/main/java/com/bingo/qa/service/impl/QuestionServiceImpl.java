@@ -13,8 +13,12 @@ import java.util.List;
  */
 @Service
 public class QuestionServiceImpl implements QuestionService {
+    private final QuestionDAO questionDAO;
+
     @Autowired
-    private QuestionDAO questionDAO;
+    public QuestionServiceImpl(QuestionDAO questionDAO) {
+        this.questionDAO = questionDAO;
+    }
 
     @Override
     public List<Question> selectLatestQuestions(int userId, int offset, int limit) {

@@ -25,20 +25,24 @@ public class CommentController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
 
-    @Autowired
-    HostHolder hostHolder;
+    private final HostHolder hostHolder;
+
+    private final CommentService commentService;
+
+    private final QuestionService questionService;
+
+    private final SensitiveService sensitiveService;
+
+    private final EventProducer eventProducer;
 
     @Autowired
-    CommentService commentService;
-
-    @Autowired
-    QuestionService questionService;
-
-    @Autowired
-    SensitiveService sensitiveService;
-
-    @Autowired
-    EventProducer eventProducer;
+    public CommentController(HostHolder hostHolder, CommentService commentService, QuestionService questionService, SensitiveService sensitiveService, EventProducer eventProducer) {
+        this.hostHolder = hostHolder;
+        this.commentService = commentService;
+        this.questionService = questionService;
+        this.sensitiveService = sensitiveService;
+        this.eventProducer = eventProducer;
+    }
 
     /**
      *
