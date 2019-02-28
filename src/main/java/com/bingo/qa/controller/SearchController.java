@@ -78,9 +78,6 @@ public class SearchController {
             LOGGER.error("搜索评论失败:" + e.getMessage());
 
         }
-
         return "result";
-
     }
-
 }

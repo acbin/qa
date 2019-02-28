@@ -40,6 +40,7 @@ public class LoginController {
     @GetMapping(value = {"/reglogin"})
     public String reglogin(Model model,
                            @RequestParam(value = "next", required = false) String next) {
+        // 设置到页面
         model.addAttribute("next", next);
         return "login";
     }
@@ -109,6 +110,7 @@ public class LoginController {
     public String login(Model model,
                         @RequestParam("username") String username,
                         @RequestParam("password") String password,
+                        // 页面埋了next这个值，会传递过来
                         @RequestParam(value = "next", required = false) String next,
                         @RequestParam(value = "rememberme", defaultValue = "false") boolean rememberme,
                         HttpServletResponse response) {

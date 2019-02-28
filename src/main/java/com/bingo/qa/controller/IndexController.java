@@ -55,7 +55,7 @@ public class IndexController {
             ViewObject vo = new ViewObject();
             vo.set("question", question);
             vo.set("user", userService.selectById(question.getUserId()));
-            vo.set("followCount", followService.getFollowerCount(EntityType.ENTITY_QUESTION,  question.getId()));
+            vo.set("followCount", followService.getFollowerCount(EntityType.ENTITY_QUESTION, question.getId()));
             vos.add(vo);
         }
         return vos;

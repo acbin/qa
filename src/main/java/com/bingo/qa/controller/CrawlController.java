@@ -34,6 +34,13 @@ public class CrawlController {
         this.hostHolder = hostHolder;
     }
 
+    /**
+     * e.g. https://www.v2ex.com/go/type?p=pageNum
+     *
+     * @param type 类别
+     * @param pageNum 页码
+     * @return 首页
+     */
     @GetMapping
     public String crawl(@RequestParam(value = "type") String type,
                         @RequestParam(value = "pageNum") int pageNum) {

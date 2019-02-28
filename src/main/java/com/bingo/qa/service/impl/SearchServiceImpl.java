@@ -48,8 +48,8 @@ public class SearchServiceImpl implements SearchService {
         SolrQuery query = new SolrQuery(keyword);
         query.setRows(count);
         query.setStart(offset);
-        query.setHighlight(true); // 设置高亮
-        // query.setParam("hl", "true");
+        // 设置高亮
+        query.setHighlight(true);
 
         query.setHighlightSimplePre(hlPre);
         query.setHighlightSimplePost(hlPos);

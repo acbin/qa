@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Map<String, String> register(String username, String password) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(2);
         if (StringUtils.isEmpty(username)) {
             map.put("msg", "用户名不能为空");
             return map;
@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
             map.put("msg", "用户名已经被注册");
             return map;
         }
+
         // 用户不存在，可以创建用户
         user = new User();
         user.setName(username);
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
             return map;
         }
 
-        // 下发ticket
+        // 下发ticket，之后会返回给客户端
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);
         return map;
@@ -126,10 +127,16 @@ public class UserServiceImpl implements UserService {
     private String addLoginTicket(int userId) {
         LoginTicket loginTicket = new LoginTicket();
         loginTicket.setUserId(userId);
+
         Date now = new Date();
+        // 在当前时间上加上一个偏移，成为有效期
         now.setTime(now.getTime() + 3600 * 24 * 100);
         loginTicket.setExpired(now);
+
+        // 0 表示状态有效；1 表示无效
         loginTicket.setStatus(0);
+
+        // 生成随机 ticket
         loginTicket.setTicket(UUID.randomUUID().toString().replaceAll("-", ""));
         loginTicketDAO.addTicket(loginTicket);
         return loginTicket.getTicket();

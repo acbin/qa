@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author bingo
+ */
 @Data
 public class Question {
     private int id;
