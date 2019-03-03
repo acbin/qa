@@ -32,7 +32,7 @@ public class LikeHandler implements EventHandler{
     public void doHandler(EventModel model) {
         Message message = new Message();
         // 给某个实体点了个赞
-        // 实体对应的owner应该收到来自System的一条消息
+        // 实体对应的owner应该收到来自System的一条消息（设置为12）
         message.setFromId(QaUtil.SYSTEM_USERID);
         message.setToId(model.getEntityOwnerId());
         message.setCreatedDate(new Date());

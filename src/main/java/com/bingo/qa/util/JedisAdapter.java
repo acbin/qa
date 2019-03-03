@@ -12,6 +12,9 @@ import redis.clients.jedis.Transaction;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author bingo
+ */
 @Service
 public class JedisAdapter implements InitializingBean{
 
@@ -21,13 +24,15 @@ public class JedisAdapter implements InitializingBean{
 
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
+        // 选择 redis 第一个库
         pool = new JedisPool("redis://localhost:6379/1");
     }
 
     public long sadd(String key, String value) {
         Jedis jedis = null;
         try {
+            // 每一次操作，都是从连接池中取一个链接
             jedis = pool.getResource();
             return jedis.sadd(key, value);
         } catch (Exception e) {

@@ -21,5 +21,4 @@ public interface EventHandler {
      * @return list
      */
     List<EventType> getSupportEventTypes();
-
 }

@@ -4,6 +4,7 @@ package com.bingo.qa.async;
 import com.alibaba.fastjson.JSON;
 import com.bingo.qa.util.JedisAdapter;
 import com.bingo.qa.util.RedisKeyUtil;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * 将队列中的event取出,将event与handler关联起来
@@ -36,6 +40,8 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventConsumer.class);
 
+    // private static final ExecutorService POOL = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern("example-schedule-pool-%d").daemon(true).build());
+
     /**
      * 每个eventType对应一系列的eventHandler
      */
@@ -54,25 +60,22 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
         // key为bean的名字，key对应的value为bean的实例(eventHandler)
         Map<String, EventHandler> beans = applicationContext.getBeansOfType(EventHandler.class);
 
-        if (beans != null) {
-            // 此处可以使用 Java 8 Stream 形式
-            for (Map.Entry<String, EventHandler> entry : beans.entrySet()) {
+        // 此处可以使用 Java 8 Stream 形式
+        for (Map.Entry<String, EventHandler> entry : beans.entrySet()) {
 
-                // 实现EventHandler接口的类
-                EventHandler eventHandler = entry.getValue();
+            // 实现EventHandler接口的类(这是一次for循环里的一个handler)
+            EventHandler eventHandler = entry.getValue();
 
-                // 找到该Handler所关注的eventType
-                List<EventType> eventTypes = eventHandler.getSupportEventTypes();
-
-                if (eventTypes != null) {
-                    for (EventType eventType : eventTypes) {
-                        if (!config.containsKey(eventType)) {
-                            config.put(eventType, new ArrayList<>());
-                        }
-
-                        // 为该eventType添加一个eventHandler
-                        config.get(eventType).add(eventHandler);
+            // 找到该Handler所关注的eventType
+            List<EventType> eventTypes = eventHandler.getSupportEventTypes();
+            if (eventTypes != null) {
+                for (EventType eventType : eventTypes) {
+                    if (!config.containsKey(eventType)) {
+                        config.put(eventType, new ArrayList<>());
                     }
+
+                    // 为该eventType添加一个eventHandler
+                    config.get(eventType).add(eventHandler);
                 }
             }
         }

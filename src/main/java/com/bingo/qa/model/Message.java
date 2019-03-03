@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author bingo
+ */
 @Data
 public class Message {
     private int id;
@@ -14,6 +17,11 @@ public class Message {
     private int hasRead;
     private String conversationId;
 
+    /**
+     * 保证无论在 from 方还是 to 方，conversation_id 都是一致的
+     *
+     * @return str
+     */
     public String getConversationId() {
         if (fromId < toId) {
             return String.format("%d_%d", fromId, toId);

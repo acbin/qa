@@ -61,7 +61,7 @@ public class MessageController {
             // 查找私信接收方
             User user = userService.selectByName(toName);
             if (user == null) {
-                return QaUtil.getJSONString(1, "用户不存在");
+                return QaUtil.getJSONString(1, "目标用户不存在");
             }
 
             Message message = new Message();

@@ -26,7 +26,6 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
     /**
      * 实现InitializingBean，在该类其他属性设置完之后，开始读取敏感词
      *
-     * @throws Exception
      */
     @Override
     public void afterPropertiesSet() {
@@ -65,11 +64,13 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
         for (int i = 0; i < len; ++i) {
             Character c = arr[i];
             if (isSymbol(c)) {
+                // 在建立敏感词树的时候，也是忽略敏感词中的一些特殊字符
                 continue;
             }
 
             // 判断temp下是否有此子结点
             TrieNode node = tempNode.getSubNode(c);
+
             if (node == null) {
                 // 没有此结点，则新建一个结点
                 node = new TrieNode();
@@ -134,7 +135,7 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
     private boolean isSymbol(char c) {
         int ic = (int) c;
         // 0x2E80~0x9FFF 为东亚文字
-        // 如果既不是东亚文字，也不是英文字符，返回false（说明是非法词）
+        // 如果既不是东亚文字，也不是英文字符，说明是一些特殊符号，返回true
         return !CharUtils.isAsciiAlphanumeric(c) && (ic < 0x2E80 || ic > 0x9FFF);
     }
 
@@ -165,13 +166,15 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
         while (position < text.length()) {
             char c = text.charAt(position);
 
+            // 是一些特殊符号
             if (isSymbol(c)) {
-
+                // 又是根节点
                 if (tempNode == root) {
                     result.append(c);
                     ++begin;
                 }
-                // 非法字符，直接跳过
+                // 非法字符，但敏感词树当前不在根节点，直接跳过：
+                // 字符串的position指针直接向后移动，而敏感词树的指针不做移动，继续下一次的判断
                 ++position;
                 continue;
             }
@@ -180,14 +183,12 @@ public class SensitiveServiceImpl implements InitializingBean, SensitiveService 
             if (tempNode == null) {
                 // 该字符在敏感词前缀树中没有,直接将begin字符添加至result串中
                 result.append(text.charAt(begin));
-                position = begin + 1;
-                begin = position;
+                position = ++begin;
                 tempNode = root;
             } else if (tempNode.isKeyWord()) {
                 // 发现敏感词
                 result.append(replacement);
-                ++position;
-                begin = position;
+                begin = ++position;
                 tempNode = root;
             } else {
                 ++position;

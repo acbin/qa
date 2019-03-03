@@ -113,6 +113,6 @@ public class FeedHandler implements EventHandler{
     public List<EventType> getSupportEventTypes() {
         // 该FeedHandler监听COMMENT、FOLLOW事件
         // 当有评论或者关注事件发生时，此handler会被调用
-        return Arrays.asList(new EventType[] {EventType.COMMENT, EventType.FOLLOW});
+        return Arrays.asList(EventType.COMMENT, EventType.FOLLOW);
     }
 }

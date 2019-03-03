@@ -82,7 +82,7 @@ public class CommentController {
             // 查出当前评论对应的问题的总评论数
             int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
 
-            // 更新问题的总评论数
+            // 因为增加了一条评论，所以需要更新问题的总评论数
             questionService.updateCommentCount(comment.getEntityId(), count);
 
             Question question = questionService.getQuestionById(questionId);

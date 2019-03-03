@@ -41,7 +41,7 @@ public class LikeServiceImpl implements LikeService {
 
 
     /**
-     * 当前登录用户点踩某一实体
+     * 当前登录用户点踩某一实体，like 和 dislike 方法都返回当前点赞数(利用 scard )
      *
      * @param userId
      * @param entityType

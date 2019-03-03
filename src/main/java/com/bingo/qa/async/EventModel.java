@@ -97,5 +97,4 @@ public class EventModel {
         this.entityOwnerId = entityOwnerId;
         return this;
     }
-
 }

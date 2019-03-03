@@ -122,7 +122,7 @@ public class QuestionController {
 
         model.addAttribute("vos", vos);
 
-        List<ViewObject> followUsers = new ArrayList<ViewObject>();
+        List<ViewObject> followUsers = new ArrayList<>();
         // 获取关注的用户信息
         List<Integer> users = followService.getFollowers(EntityType.ENTITY_QUESTION, qid, 20);
         for (Integer userId : users) {
