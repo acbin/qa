@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author bingo
@@ -91,12 +92,11 @@ public class FollowServiceImpl implements FollowService {
 
     }
 
-    private List<Integer> getIdsFromSet(Set<String> idset) {
-        List<Integer> ids = new ArrayList<>();
-        for (String str : idset) {
-            ids.add(Integer.parseInt(str));
-        }
-        return ids;
+    private List<Integer> getIdsFromSet(Set<String> idSet) {
+        return idSet.stream()
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .collect(Collectors.toList());
     }
 
 

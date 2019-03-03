@@ -1,5 +1,8 @@
 package com.bingo.qa.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bingo.qa.async.EventModel;
 import com.bingo.qa.async.EventProducer;
 import com.bingo.qa.async.EventType;
@@ -225,13 +228,16 @@ public class FollowController {
     @GetMapping(value = {"/user/{uid}/followers"})
     public String followers(Model model,
                             @PathVariable("uid") int userId) {
-        List<Integer> ids = followService.getFollowers(userId, EntityType.ENTITY_USER, 0, 10);
+        List<Integer> ids = followService.getFollowers(EntityType.ENTITY_USER, userId, 0, 10);
 
         int localUserId = 0;
         if (hostHolder.getUser() != null) {
+            // 当前登录用户的id
             localUserId = hostHolder.getUser().getId();
         }
         List<ViewObject> vos = getUsersInfo(localUserId, ids);
+
+
         /**
          * followers: uid对应的用户的所有粉丝 -> user \ followerCount \ followeeCount \ followed
          * followerCount:uid对应的用户的所有粉丝数
@@ -263,7 +269,7 @@ public class FollowController {
             vo.set("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER, uid));
 
             // 关注数
-            vo.set("followeeCount", followService.getFolloweeCount(EntityType.ENTITY_USER, uid));
+            vo.set("followeeCount", followService.getFolloweeCount(uid, EntityType.ENTITY_USER));
 
             // 评论数
             vo.set("commentCount", commentService.getUserCommentCount(uid));
@@ -272,6 +278,7 @@ public class FollowController {
                 vo.set("followed", followService.isFollower(localUserId, EntityType.ENTITY_USER, uid));
 
             } else {
+                // 说明当前用户没有登录，关注状态直接设为 false
                 vo.set("followed", false);
             }
 
@@ -279,6 +286,4 @@ public class FollowController {
         }
         return userInfos;
     }
-
-
 }
