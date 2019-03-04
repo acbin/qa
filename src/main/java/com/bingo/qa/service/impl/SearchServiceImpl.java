@@ -53,6 +53,7 @@ public class SearchServiceImpl implements SearchService {
 
         query.setHighlightSimplePre(hlPre);
         query.setHighlightSimplePost(hlPos);
+        query.set("df", QUESTION_TITLE_FIELD);
         query.set("hl.fl", QUESTION_TITLE_FIELD + "," + QUESTION_CONTENT_FIELD);
 
         QueryResponse response = client.query(query);

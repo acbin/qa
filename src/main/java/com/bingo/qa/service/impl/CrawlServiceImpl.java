@@ -1,5 +1,8 @@
 package com.bingo.qa.service.impl;
 
+import com.bingo.qa.async.EventModel;
+import com.bingo.qa.async.EventProducer;
+import com.bingo.qa.async.EventType;
 import com.bingo.qa.model.Comment;
 import com.bingo.qa.model.EntityType;
 import com.bingo.qa.model.Question;
@@ -44,14 +47,19 @@ public class CrawlServiceImpl implements CrawlService {
     private final QuestionService questionService;
 
     @Autowired
-    public CrawlServiceImpl(SensitiveService sensitiveService, CommentService commentService, QuestionService questionService) {
+    private EventProducer eventProducer;
+
+    @Autowired
+    public CrawlServiceImpl(SensitiveService sensitiveService, CommentService commentService, QuestionService questionService, EventProducer eventProducer) {
         this.sensitiveService = sensitiveService;
         this.commentService = commentService;
         this.questionService = questionService;
+        this.eventProducer = eventProducer;
     }
 
     /**
      * 异步爬取
+     *
      * @param type
      * @param pageNum
      */
@@ -100,7 +108,17 @@ public class CrawlServiceImpl implements CrawlService {
                     question.setTitle(title);
                     question.setCommentCount(0);
 
-                    questionService.addQuestion(question);
+                    int i = questionService.addQuestion(question);
+                    if (i <= 0) {
+                        continue;
+                    }
+
+                    // 添加问题成功之后，发送一个事件，创建索引
+                    eventProducer.fireEvent(new EventModel(EventType.ADD_QUESTION)
+                            .setActorId(question.getUserId()).setEntityId(question.getId())
+                            .setExt("title", question.getTitle()).setExt("content", question.getContent()));
+
+
                     long count = questionService.getQuestionCount();
 
                     Elements comments = doc.select("table > tbody > tr div.reply_content");

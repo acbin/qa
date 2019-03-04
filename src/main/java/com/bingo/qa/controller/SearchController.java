@@ -51,7 +51,7 @@ public class SearchController {
                          @RequestParam(value = "count", defaultValue = "10") int count) {
 
         try {
-            List<Question> questionList = searchService.searchQuestion(keyword, offset, count, "<em>", "</em>");
+            List<Question> questionList = searchService.searchQuestion(keyword, offset, count, "<span style='background:yellow;'>", "</span>");
             List<ViewObject> vos = new ArrayList<>();
 
             for (Question question : questionList) {
