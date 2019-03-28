@@ -48,7 +48,7 @@ public class SearchController {
     public String search(Model model,
                          @RequestParam("q") String keyword,
                          @RequestParam(value = "offset", defaultValue = "0") int offset,
-                         @RequestParam(value = "count", defaultValue = "10") int count) {
+                         @RequestParam(value = "count", defaultValue = "30") int count) {
 
         try {
             List<Question> questionList = searchService.searchQuestion(keyword, offset, count, "<span style='background:yellow;'>", "</span>");
@@ -59,6 +59,7 @@ public class SearchController {
 
                 ViewObject vo = new ViewObject();
 
+                // 替换为高亮后的 content & title
                 if (question.getContent() != null) {
                     q.setContent(question.getContent());
                 }

@@ -1,10 +1,12 @@
 package com.bingo.qa.common;
 
+import lombok.Data;
+
 /**
  * @author bingo
  * @since 2018/8/15
  */
-
+@Data
 public class CommonResp<T> {
     /**
      * response code
@@ -20,39 +22,6 @@ public class CommonResp<T> {
      * response data
      */
     private T data;
-
-    public CommonResp() {
-    }
-
-    public CommonResp(Integer code, String message, T data) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
 
     /**
      * @param <T>
@@ -88,5 +57,4 @@ public class CommonResp<T> {
         resp.setMessage(msg);
         return resp;
     }
-
 }

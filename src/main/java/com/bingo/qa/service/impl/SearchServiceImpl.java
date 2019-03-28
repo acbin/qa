@@ -8,6 +8,8 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,6 +24,8 @@ import java.util.Map;
 
 @Service
 public class SearchServiceImpl implements SearchService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchServiceImpl.class);
 
     private static final String SOLR_ULR = "http://localhost:8983/solr/qa";
     private HttpSolrClient client = new HttpSolrClient.Builder(SOLR_ULR).build();
@@ -87,11 +91,13 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public boolean indexQuestion(int qid, String title, String content) throws IOException, SolrServerException {
         SolrInputDocument doc = new SolrInputDocument();
-        doc.setField("id", qid);
-        doc.setField(QUESTION_TITLE_FIELD, title);
-        doc.setField(QUESTION_CONTENT_FIELD, content);
+        doc.addField("id", qid);
+        doc.addField(QUESTION_TITLE_FIELD, title);
+        doc.addField(QUESTION_CONTENT_FIELD, content);
 
         UpdateResponse response = client.add(doc, 1000);
+        client.optimize();
+        client.commit();
         return response != null && response.getStatus() == 0;
     }
 }
