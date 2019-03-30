@@ -19,6 +19,13 @@
 ## 技术选型
 [Spring Boot](https://spring.io/projects/spring-boot) + [MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html) + MySQL + [Redis](https://redis.io/) + [FreeMarker](http://freemarker.foofun.cn/index.html)
 
+注意，为保证系统正常运行，请安装并创建好以下环境：
+
+- MySQL
+- Redis
+- Solr（搜索服务时用到）
+
+
 ## 功能描述
 
 ### 注册登录
@@ -223,4 +230,3 @@ pyspider
 本项目在全文检索服务上采用 [Solr](http://lucene.apache.org/solr/) 框架，中文分词采用 Solr 自带的中文分词插件 solr_cnAnalyzer 。
 
 这个项目还有很多需要优化，我会抽空更新。
-
