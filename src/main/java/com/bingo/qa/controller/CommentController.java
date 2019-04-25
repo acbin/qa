@@ -87,7 +87,7 @@ public class CommentController {
 
             Question question = questionService.getQuestionById(questionId);
 
-            // 这是一个评论事件
+            // 用户评论了某个问题，产生一个事件，压入Redis队列中
             eventProducer.fireEvent(new EventModel(EventType.COMMENT)
                     .setActorId(comment.getUserId())
                     .setEntityOwnerId(question.getUserId())

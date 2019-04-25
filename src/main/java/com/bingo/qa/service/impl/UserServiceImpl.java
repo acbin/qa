@@ -69,16 +69,17 @@ public class UserServiceImpl implements UserService {
         user = new User();
         user.setName(username);
         user.setSalt(UUID.randomUUID().toString().substring(0, 5));
-        user.setHeadUrl("/images/avatar/" + username + ".png");
+        //user.setHeadUrl("/images/avatar/" + username + ".png");
+        user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000)));
 
         // 利用md5和盐加密用户密码
         user.setPassword(QaUtil.MD5(password + user.getSalt()));
-        try {
+     /*   try {
             QaUtil.createIdenticon(username, 200);
         } catch (IOException e) {
             map.put("msg", "头像生成失败，请重试");
             return map;
-        }
+        }*/
         userDAO.addUser(user);
 
         String ticket = addLoginTicket(user.getId());

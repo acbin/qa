@@ -42,7 +42,6 @@ public class PassportInterceptor implements HandlerInterceptor{
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String ticket = null;
-
         // 从request中取出ticket
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
@@ -66,7 +65,6 @@ public class PassportInterceptor implements HandlerInterceptor{
             // 此时ticket真实有效
             // 将ticket关联的用户取出来，放入hostHolder上下文中
             User user = userDAO.selectById(loginTicket.getUserId());
-
             hostHolder.setUser(user);
         }
 

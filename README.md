@@ -14,7 +14,7 @@
 - 关注
 - 站内全文检索
 
-![Demo](/images/687474703a2f2f70397563646c6768642e626b742e636c6f7564646e2e636f6d2f696e6465782e706e67.png)
+![Demo](/images/demo.png)
 
 ## 技术选型
 [Spring Boot](https://spring.io/projects/spring-boot) + [MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html) + MySQL + [Redis](https://redis.io/) + [FreeMarker](http://freemarker.foofun.cn/index.html)

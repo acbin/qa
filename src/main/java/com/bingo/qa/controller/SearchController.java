@@ -51,10 +51,12 @@ public class SearchController {
                          @RequestParam(value = "count", defaultValue = "30") int count) {
 
         try {
+            // 通过keyword关键词调用搜索服务，获得结果列表
             List<Question> questionList = searchService.searchQuestion(keyword, offset, count, "<span style='background:yellow;'>", "</span>");
             List<ViewObject> vos = new ArrayList<>();
 
             for (Question question : questionList) {
+                // 从数据库获取到每个question的完整数据
                 Question q = questionService.getQuestionById(question.getId());
 
                 ViewObject vo = new ViewObject();
@@ -69,7 +71,7 @@ public class SearchController {
 
                 vo.set("question", q);
                 vo.set("user", userService.selectById(q.getUserId()));
-                vo.set("followCount", followService.getFollowerCount(EntityType.ENTITY_QUESTION,  question.getId()));
+                vo.set("followCount", followService.getFollowerCount(EntityType.ENTITY_QUESTION, question.getId()));
                 vos.add(vo);
             }
             model.addAttribute("vos", vos);
