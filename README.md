@@ -14,7 +14,7 @@
 - 关注
 - 站内全文检索
 
-![Demo](/images/demo.png)
+![Demo](/images/demo.jpg)
 
 ## 技术选型
 [Spring Boot](https://spring.io/projects/spring-boot) + [MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html) + MySQL + [Redis](https://redis.io/) + [FreeMarker](http://freemarker.foofun.cn/index.html)
@@ -117,7 +117,7 @@ Redis 适合放一些频繁使用、比较热的数据。因为数据放在了�
 因此，设计一个异步事件处理框架尤为重要。
 本项目的异步框架如下图所示：
 
-![Async Event](/images/687474703a2f2f70397563646c6768642e626b742e636c6f7564646e2e636f6d2f6576656e745f796c622e6a7067.jpg)
+![Async Event](/images/async-event.jpg)
 
 业务触发一个异步事件，EventProducer 将该事件(EventModel)序列化并存入队列(Redis List)中，EventConsumer 开启线程循环从队列中取出事件，识别该事件的类型，找出该类型对应的一系列 EventHandler，交由这些 Handler 去处理。
 
