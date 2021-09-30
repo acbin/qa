@@ -2,7 +2,7 @@ name: Starcharts
 
 on:
   push:
-    branches: [main]
+    branches: master
 
 jobs:
   update-readme:
